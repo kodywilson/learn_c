@@ -5,9 +5,9 @@
 int main(void)
 {
   int number;
-  printf("Enter a two-digit number: ");
-  scanf("%2d", &number);
-  printf("The reversal is: %d%d\n", number % 10, number / 10);
+  printf("Enter a three-digit number: ");
+  scanf("%3d", &number);
+  printf("The reversal is: %d%d%d\n", (number % 100) % 10, (number % 100) / 10, number / 100);
 
   return 0;
 }
