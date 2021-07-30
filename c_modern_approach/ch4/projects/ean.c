@@ -8,7 +8,7 @@ int main()
   int check, first, sum1, sum2, x1, x2, x3, x4, x5, x6,
       y1, y2, y3, y4, y5;
 
-  // Take input from user
+  // Take input from user - get all of EAN code except check digit
   printf("Enter the first 12 digits of an EAN: ");
   scanf("%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d%1d", &first, &x1, &x2, &x3, &x4, &x5, &x6, &y1, &y2, &y3, &y4, &y5);
 
