@@ -12,7 +12,7 @@ int main(void)
   // print out square table up to x
   while (i <= x)
   {
-    printf("\t\t%d\t\t%d\n", i, i * i);
+    printf("\t%-10d%-10d\n", i, i * i);
     i++;
   }
 
