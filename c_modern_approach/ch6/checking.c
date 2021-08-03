@@ -36,6 +36,9 @@ int main(void)
       case 4:
         printf("Have a good one!\n");
         return 0;
+      default:
+        printf("Commands: 0=clear, 1=credit, 2=debit, 3=balance, 4=exit\n");
+        break;
     }
   }
 
