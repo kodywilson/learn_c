@@ -12,6 +12,16 @@ int main(void)
   }
   printf("\n");
 
+  // ex2
+  i = 9384;
+  do
+  {
+    printf("%d ", i);
+    i /= 10;
+  }
+  while (i > 0);
+  printf("\n");
+
 
   return 0;
 }
