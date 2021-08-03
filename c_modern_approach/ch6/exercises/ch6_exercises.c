@@ -2,7 +2,7 @@
 
 int main(void)
 {
-  int i = 1;
+  int i = 1, j;
   
   // ex1
   while (i <= 128)
@@ -22,6 +22,12 @@ int main(void)
   while (i > 0);
   printf("\n");
 
+  // ex3
+  for (i = 5, j = i - 1; j > 0; --i, j = i - 1)
+  {
+    printf("%d ", i);
+  }
+  printf("\n");
 
   return 0;
 }
