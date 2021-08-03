@@ -39,6 +39,20 @@ int main(void)
     printf("%d ", i);
   printf("\n");
 
+  // ex8
+  for (i = 10; i > 1; i /= 2)
+    printf("%d ", i++);
+  printf("\n");
+
+  // ex 9
+  i = 10;
+  while (i > 1)
+  {
+    printf("%d ", i++);
+    i /= 2;
+  }
+  printf("\n");
+
   return 0;
 }
 
