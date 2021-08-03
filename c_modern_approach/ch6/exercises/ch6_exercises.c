@@ -44,7 +44,7 @@ int main(void)
     printf("%d ", i++);
   printf("\n");
 
-  // ex 9
+  // ex9
   i = 10;
   while (i > 1)
   {
@@ -52,6 +52,23 @@ int main(void)
     i /= 2;
   }
   printf("\n");
+
+  // ex10
+  for (i = 1; i < 11; i++)
+  {
+    if (i % 2 == 0)
+      continue;
+    printf("%d is odd\n", i);
+  }
+
+  // now use goto in place of continue
+  for (i = 1; i < 11; i++)
+  {
+    if (i % 2 == 0)
+      goto skip;
+    printf("%d is odd\n", i);
+    skip: ;
+  }
 
   return 0;
 }
