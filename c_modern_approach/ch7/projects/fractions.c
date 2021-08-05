@@ -14,6 +14,10 @@ int main(void)
     case '*':
       numerator = numerator1 * numerator2;
       denominator = denominator1 * denominator2;
+      break;
+    case '/':
+      numerator = numerator1 * denominator2;
+      denominator = denominator1 * numerator2;
   }
 
   // set a to highest val
