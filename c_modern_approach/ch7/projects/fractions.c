@@ -6,8 +6,8 @@ int main(void)
   int a, b, c, numerator, denominator, numerator1, denominator1, numerator2, denominator2;
   char operator;
 
-  printf("Enter math expression (1/2*3/4 or 1/3+2/3, etc.): ");
-  scanf("%d/%d%c%d/%d", &numerator1, &denominator1, &operator, &numerator2, &denominator2);
+  printf("Enter math expression (1/2 * 3/4 or 1/3 + 2/3, etc.): ");
+  scanf("%d/%d %c %d/%d", &numerator1, &denominator1, &operator, &numerator2, &denominator2);
 
   switch (operator)
   {
@@ -18,6 +18,17 @@ int main(void)
     case '/':
       numerator = numerator1 * denominator2;
       denominator = denominator1 * numerator2;
+      break;
+    case '+':
+      numerator = numerator1 * denominator2 + denominator1 * numerator2;
+      denominator = denominator1 * denominator2;
+      break;
+    case '-':
+      numerator = numerator1 * denominator2 - denominator1 * numerator2;
+      denominator = denominator1 * denominator2;
+      break;
+    default:
+      printf("I did not understand the expression.\n");
   }
 
   // set a to highest val
@@ -42,7 +53,10 @@ int main(void)
     b = c;
   }
 
-  printf("In lowest terms: %d/%d\n", numerator / a, denominator / a);
+  if (denominator / a == 1)
+    printf("The result is: %d\n", numerator / a);
+  else
+    printf("In lowest terms: %d/%d\n", numerator / a, denominator / a);
 
   return 0;
 }
