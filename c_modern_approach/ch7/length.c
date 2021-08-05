@@ -10,6 +10,8 @@ int main(void)
 
   printf("Your message was %d character(s) long.\n", count);
 
+  printf("Size of int: %ld\n", sizeof(int));
+
   return 0;
 }
 
