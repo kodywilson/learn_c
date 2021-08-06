@@ -1,10 +1,11 @@
 #include <stdio.h>
 
 #define I 5 // Interest rate table array length
+#define VALUE 100.00f
 
 int main(void)
 {
-  float row[I];
+  float columns[I] = {VALUE, VALUE, VALUE, VALUE, VALUE};
   int rate, years;
 
   printf("Enter interest rate: ");
@@ -19,8 +20,15 @@ int main(void)
     {
       if (i == 0 && j == 0)
         printf("Years\t");
+      else if (i > 0 && j == 0)
+        printf("%d\t", i);
+      else if (i == 0 && j > 0)
+        printf("%d%%\t\t", rate - 1 + j);
       else
-        printf("%d%%\t", rate - 1 + j);
+      {
+        columns[j-1] = columns[j-1] + (columns[j-1] * (rate - 1 + j) / 100);
+        printf("%.2f\t\t", columns[j-1]);
+      }
     }
     printf("\n");
   }
