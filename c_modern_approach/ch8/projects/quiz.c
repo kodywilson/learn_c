@@ -1,46 +1,46 @@
 #include <stdio.h>
 
-#define S 5 // size of square array
+#define S 5 // number of students and quizzes
 
 int main(void)
 {
-  int column_sum = 0, high, low = 100, row_sum = 0, a[S][S];
+  int high, low, quiz, student, total, grades[S][S];
 
-  for (int i = 0; i < S; i++)
+  for (student = 0; student < S; student++)
   {
-    printf("Enter scores for quiz #%d: ", i + 1);
-    for (int j = 0; j < S; j++)
-      scanf("%d", &a[i][j]);
+    printf("Enter grades for student #%d: ", student + 1);
+    for (quiz = 0; quiz < S; quiz++)
+      scanf("%d", &grades[student][quiz]);
   }
-  printf("\n");
+
+  printf("\nStudent Total Average\n");
+  for (student = 0; student < S; student++)
+  {
+    printf("%4d      ", student + 1);
+    total = 0;
+    for (quiz = 0; quiz < S; quiz++)
+      total += grades[student][quiz];
+    printf("%3d    %3d\n", total, total / S);
+  }
 
   // calculate quiz stats
-  for (int i = 0; i < S; i++)
+  printf("\n Quiz  Average  High  Low\n");
+  for (quiz = 0; quiz < S; quiz++)
   {
-    for (int j = 0; j < S; j++)
-    {
-      row_sum += a[i][j];
-      if (a[i][j] > high)
-        high = a[i][j];
-      if (a[i][j] < low)
-        low = a[i][j];
-    }
-    printf("Quiz %d Stats:  Average Score: %d  High Score: %d  Low Score: %d\n", i + 1, row_sum / S, high, low);
-    row_sum = 0;
+    printf("%d    ", quiz + 1);
+    total = 0;
     high = 0;
     low = 100;
+    for (student = 0; student < S; student++)
+    {
+      total += grades[student][quiz];
+      if (grades[student][quiz] > high)
+        high = grades[student][quiz];
+      if (grades[student][quiz] < low)
+        low = grades[student][quiz];
+    }
+    printf("%3d    %3d    %3d\n", total / S, high, low);
   }
-  printf("\n");
-
-  // calculate student stats
-  for (int i = 0; i < S; i++)
-  {
-    for (int j = 0; j < S; j++)
-      column_sum += a[j][i];
-    printf("Student %d Stats:  Total Score: %d  Average Score: %d\n", i + 1, column_sum, column_sum / S);
-    column_sum = 0;
-  }
-  printf("\n");
 
   return 0;
 }
