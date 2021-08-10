@@ -1,15 +1,16 @@
 // test if number is prime
 
+#include <stdbool.h>
 #include <stdio.h>
 
-int prime(int n)
+bool is_prime(int n)
 {
   for (int i = 2; i * i <= n; i++)
   {
     if (n % i == 0)
-      return 0;
+      return false;
   }
-  return 1;
+  return true;
 }
 
 int main(void)
@@ -22,8 +23,8 @@ int main(void)
     printf("Enter a number: ");
     scanf("%d", &x);
     if (x == 0)
-      break;
-    if (prime(x) == 0)
+      return 0;
+    if (is_prime(x) == false)
       printf("%d is not prime\n", x);
     else
       printf("%d is prime\n", x);
