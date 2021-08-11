@@ -1,10 +1,7 @@
 // find averages of two numbers
 #include <stdio.h>
 
-double average(double a, double b)
-{
-  return (a + b) / 2;
-}
+double average(double a, double b);
 
 int main(void)
 {
@@ -18,5 +15,10 @@ int main(void)
   printf("Average of %g and %g is %g\n", y, z, average(y, z));
 
   return 0;
+}
+
+double average(double a, double b)
+{
+  return (a + b) / 2;
 }
 
