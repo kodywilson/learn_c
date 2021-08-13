@@ -11,6 +11,7 @@ int positives(int n, int a[n]); // ex10
 float compute_GPA(int n, char grades[]); // ex11
 double inner_product(int n, double a[], double b[]); // ex12
 int evaluate_position(char board[][8]);
+int gcdr(int m, int n); // ex19
 
 int main(void)
 {
@@ -51,6 +52,7 @@ int main(void)
 
   printf("Chess match advantage: %d\n", evaluate_position(board));
 
+  printf("The GCD of %d and %d is %d\n", x, y, gcdr(x, y)); // ex11
   return 0;
 }
 
@@ -196,5 +198,10 @@ int evaluate_position(char board[][8])
       }
 
   return advantage;
+}
+
+int gcdr(int m, int n)
+{
+  return n == 0 ? m : gcd(n, m % n);
 }
 
