@@ -3,16 +3,18 @@
 int check(int x, int y, int n); // ex2
 int gcd(int m, int n); // ex3
 int day_of_year(int month, int day, int year); // ex4
-int num_digits(int n);
-int digit(int n, int k);
-int largest(int n, int a[n]);
-int average(int n, int a[n]);
-int positives(int n, int a[n]);
+int num_digits(int n); // ex5
+int digit(int n, int k); // ex6
+int largest(int n, int a[n]); // ex10
+int average(int n, int a[n]); // ex10
+int positives(int n, int a[n]); // ex10
+float compute_GPA(int n, char grades[]);
 
 int main(void)
 {
   int x = 15, y = 25, n = 100, month = 6, day = 24, year = 2020;
   int a[] = {1, 100, 1000, 50, 673, 445};
+  char grades[] = {'A', 'B', 'C', 'C', 'B', 'A'};
 
   if (check(x, y, n) == 1 )
     printf("Both %d and %d are between 0 and %d\n", x, y, n);
@@ -32,6 +34,8 @@ int main(void)
   printf("The average value of all elements is %d\n", average(month, a)); // ex10
 
   printf("Number of positive elements: %d\n", positives(month, a)); // ex10
+
+  printf("Average grade is %f\n", compute_GPA(month, grades));
 
   return 0;
 }
@@ -129,5 +133,23 @@ int positives(int n, int a[n])
       count++;
 
   return count;
+}
+
+float compute_GPA(int n, char grades[])
+{
+  float total = .0f;
+  for (int i = 0; i < n; i++)
+  {
+    switch (grades[i])
+    {
+      case 'A': total += 4.0f; break;
+      case 'B': total += 3.0f; break;
+      case 'C': total += 2.0f; break;
+      case 'D': total += 1.0f; break;
+      case 'F': total += 0.0f; break;
+    }
+  }
+
+  return total / n;
 }
 
