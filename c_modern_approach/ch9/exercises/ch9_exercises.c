@@ -8,12 +8,15 @@ int digit(int n, int k); // ex6
 int largest(int n, int a[n]); // ex10
 int average(int n, int a[n]); // ex10
 int positives(int n, int a[n]); // ex10
-float compute_GPA(int n, char grades[]);
+float compute_GPA(int n, char grades[]); // ex11
+double inner_product(int n, double a[], double b[]); // ex12
 
 int main(void)
 {
   int x = 15, y = 25, n = 100, month = 6, day = 24, year = 2020;
   int a[] = {1, 100, 1000, 50, 673, 445};
+  double ad[] = {1, 100, 1000, 50, 673, 445};
+  double bd[] = {5, 200, 2000, 70, 773, 145};
   char grades[] = {'A', 'B', 'C', 'C', 'B', 'A'};
 
   if (check(x, y, n) == 1 )
@@ -35,7 +38,9 @@ int main(void)
 
   printf("Number of positive elements: %d\n", positives(month, a)); // ex10
 
-  printf("Average grade is %f\n", compute_GPA(month, grades));
+  printf("Average grade is %f\n", compute_GPA(month, grades)); // ex11
+
+  printf("Double sum is %f\n", inner_product(month, ad, bd)); // ex12
 
   return 0;
 }
@@ -153,3 +158,11 @@ float compute_GPA(int n, char grades[])
   return total / n;
 }
 
+double inner_product(int n, double a[], double b[]) // ex12
+{
+  double sum;
+  for (int i = 0; i < n; i++)
+    sum += a[i] * b[i];
+
+  return sum;
+}
