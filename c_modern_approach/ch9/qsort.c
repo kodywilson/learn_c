@@ -41,7 +41,7 @@ int split(int a[], int low, int high)
   {
     while (low < high && part_element <= a[high])
       high--;
-    if (low < high) break;
+    if (low >= high) break;
     a[low++] = a[high];
 
     while (low < high && a[low] <= part_element)
