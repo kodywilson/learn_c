@@ -10,6 +10,7 @@ int average(int n, int a[n]); // ex10
 int positives(int n, int a[n]); // ex10
 float compute_GPA(int n, char grades[]); // ex11
 double inner_product(int n, double a[], double b[]); // ex12
+int evaluate_position(char board[][8]);
 
 int main(void)
 {
@@ -18,6 +19,12 @@ int main(void)
   double ad[] = {1, 100, 1000, 50, 673, 445};
   double bd[] = {5, 200, 2000, 70, 773, 145};
   char grades[] = {'A', 'B', 'C', 'C', 'B', 'A'};
+  char board[8][8] = {
+                       {'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R'},
+                       {'P', 'P', 'P', 'P', 'P', 'P', 'P'},
+                       {'p', 'p', 'p', 'p', 'p', 'p'},
+                       {'r', 'n', 'b', 'k', 'q', 'b', 'n', 'r'}
+                     };
 
   if (check(x, y, n) == 1 )
     printf("Both %d and %d are between 0 and %d\n", x, y, n);
@@ -41,6 +48,8 @@ int main(void)
   printf("Average grade is %f\n", compute_GPA(month, grades)); // ex11
 
   printf("Double sum is %f\n", inner_product(month, ad, bd)); // ex12
+
+  printf("Chess match advantage: %d\n", evaluate_position(board));
 
   return 0;
 }
@@ -166,3 +175,26 @@ double inner_product(int n, double a[], double b[]) // ex12
 
   return sum;
 }
+
+int evaluate_position(char board[][8])
+{
+  int advantage;
+  for (int i = 0; i < 8; i++)
+    for (int j = 0; j < 8; j++)
+      switch (board[i][j])
+      {
+        case 'Q': advantage += 9; break;
+        case 'q': advantage -= 9; break;
+        case 'R': advantage += 5; break;
+        case 'r': advantage -= 5; break;
+        case 'B': 
+        case 'N': advantage += 3; break;
+        case 'b': 
+        case 'n': advantage -= 3; break;
+        case 'P': advantage += 1; break;
+        case 'p': advantage -= 1; break;
+      }
+
+  return advantage;
+}
+
