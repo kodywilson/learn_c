@@ -8,7 +8,7 @@ int digit(int n, int k);
 
 int main(void)
 {
-  int x = 15, y = 25, n = 100, month = 6, day = 24, year = 2021;
+  int x = 15, y = 25, n = 100, month = 6, day = 24, year = 2020;
 
   if (check(x, y, n) == 1 )
     printf("Both %d and %d are between 0 and %d\n", x, y, n);
@@ -64,9 +64,11 @@ int day_of_year(int month, int day, int year)
   
   for (int i = 0; i < month - 1; i++)
     days += months[i];
-  days += day;
+  // handle leap years
+  if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
+    days++;
 
-  return days;
+  return days + day;
 }
 
 int num_digits(int n)
