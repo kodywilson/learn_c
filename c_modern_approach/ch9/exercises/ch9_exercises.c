@@ -3,6 +3,7 @@
 int check(int x, int y, int n); // ex2
 int gcd(int m, int n); // ex3
 int day_of_year(int month, int day, int year); // ex4
+int num_digits(int n);
 
 int main(void)
 {
@@ -16,6 +17,8 @@ int main(void)
   printf("The GCD of %d and %d is %d\n", x, y, gcd(x, y)); // ex3
 
   printf("%d/%d/%d is the %d day of the year\n", month, day, year, day_of_year(month, day, year));
+
+  printf("There are %d digits in %d\n", num_digits(year), year);
 
   return 0;
 }
@@ -64,5 +67,18 @@ int day_of_year(int month, int day, int year)
   days += day;
 
   return days;
+}
+
+int num_digits(int n)
+{
+  int count = 1;
+  while (n != 0)
+  {
+    n /= 10;
+    if (n != 0)
+      count++;
+  }
+
+  return count;
 }
 
