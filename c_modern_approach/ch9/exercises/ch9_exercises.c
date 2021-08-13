@@ -4,6 +4,7 @@ int check(int x, int y, int n); // ex2
 int gcd(int m, int n); // ex3
 int day_of_year(int month, int day, int year); // ex4
 int num_digits(int n);
+int digit(int n, int k);
 
 int main(void)
 {
@@ -16,9 +17,11 @@ int main(void)
 
   printf("The GCD of %d and %d is %d\n", x, y, gcd(x, y)); // ex3
 
-  printf("%d/%d/%d is the %d day of the year\n", month, day, year, day_of_year(month, day, year));
+  printf("%d/%d/%d is the %d day of the year\n", month, day, year, day_of_year(month, day, year)); // ex4
 
-  printf("There are %d digits in %d\n", num_digits(year), year);
+  printf("There are %d digits in %d\n", num_digits(year), year); // ex5
+
+  printf("%d is digit #%d in %d\n", digit(year, 3), 3, year); // ex6
 
   return 0;
 }
@@ -80,5 +83,20 @@ int num_digits(int n)
   }
 
   return count;
+}
+
+int digit(int n, int k)
+{
+  int digit, num;
+  num = num_digits(n);
+  if (k > num)
+    return 0;
+  for (int i = 0; i < k; i++)
+  {
+    digit = n % 10;
+    n /= 10;
+  }
+
+  return digit;
 }
 
