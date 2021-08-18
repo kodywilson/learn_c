@@ -1,12 +1,11 @@
 test:
 	make build;
-	make run;
+	./demo.out;
 
 build:
-	gcc -Wall hello.c -o hello.out;
-
-run:
-	./hello.out;
+	gcc -Wall -c demo.c -I "/usr/include/SDL";
+	gcc demo.o -lSDL -o demo.out;
 
 clean:
-	-rm hello.out;
+	-rm demo.o;
+	-rm demo.out;
