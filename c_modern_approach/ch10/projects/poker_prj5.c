@@ -126,11 +126,11 @@ void analyze_hand(void)
   if (num_consec == NUM_CARDS)
   {
     straight = true;
-    //return;
+    return;
   }
 
   // check for ace low straight
-  if (num_in_rank[0] > 0 && num_in_rank[1] > 0 && num_in_rank[2] > 0 && num_in_rank[3] > 0 && num_in_rank[12] > 0)
+  if (num_consec == NUM_CARDS - 1 && num_in_rank[0] > 0 && num_in_rank[NUM_RANKS-1] > 0)
     straight = true;
 
   // check for 4 of a kind, 3 of a kind, and pairs
