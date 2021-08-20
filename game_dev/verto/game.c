@@ -33,7 +33,7 @@ int main(void)
                             480,                      // height, in pixels
                             0                         // flags
                             );
-  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
   // this time we will keep window open until an event occurs
   int done = 0;
@@ -44,7 +44,7 @@ int main(void)
     doRender(renderer, &mob); // render screen
 
     // go easy on the cpu
-    SDL_Delay(20);
+    // SDL_Delay(20); // using vsync now
   }
 
   // close and destroy window
@@ -107,7 +107,7 @@ int doRender(SDL_Renderer *renderer, Mob *mob)
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
 
   // create a white rectangle 
-  SDL_Rect rect = { mob->x, mob->y, 200, 200 };  // x, y, width, height of rectangle
+  SDL_Rect rect = { mob->x, mob->y, 50, 50 };  // x, y, width, height of rectangle
   SDL_RenderFillRect(renderer, &rect);
 
   // present to the window
