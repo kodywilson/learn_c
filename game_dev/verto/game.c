@@ -5,6 +5,7 @@
 
 // prototypes
 int processEvents(SDL_Window *window);
+int doRender(SDL_Renderer *renderer);
 
 int main(void)
 {
@@ -29,18 +30,9 @@ int main(void)
   {
     done = processEvents(window);  // check for events
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // set drawing color to blue
-    SDL_RenderClear(renderer); // clear the screen to blue
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
+    doRender(renderer); // render screen
 
-    // create a white rectangle
-    SDL_Rect rect = { 220, 140, 200, 200 };  // x, y, width, height of rectangle
-    SDL_RenderFillRect(renderer, &rect);
-
-    // present to the window
-    SDL_RenderPresent(renderer);
-
-    // wait a few seconds and then quit program
+    // go easy on the cpu
     SDL_Delay(100);
   }
 
@@ -87,5 +79,19 @@ int processEvents(SDL_Window *window)
   }
 
   return done;
+}
+
+int doRender(SDL_Renderer *renderer)
+{
+  SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // set drawing color to blue
+  SDL_RenderClear(renderer); // clear the screen to blue 
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
+
+  // create a white rectangle 
+  SDL_Rect rect = { 220, 140, 200, 200 };  // x, y, width, height of rectangle
+  SDL_RenderFillRect(renderer, &rect);
+
+  // present to the window
+  SDL_RenderPresent(renderer);
 }
 
