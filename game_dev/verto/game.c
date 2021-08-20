@@ -3,9 +3,16 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
+typedef struct
+{
+  int x, y;
+  short life;
+  char *name;
+} Mob;
+
 // prototypes
-int processEvents(SDL_Window *window);
-int doRender(SDL_Renderer *renderer);
+int processEvents(SDL_Window *window, Mob *mob);
+int doRender(SDL_Renderer *renderer, Mob *mob);
 
 int main(void)
 {
@@ -13,6 +20,10 @@ int main(void)
   SDL_Renderer *renderer;   // declare a renderer
 
   SDL_Init(SDL_INIT_VIDEO); // initialize SDL2
+
+  Mob mob;
+  mob.x = 220;
+  mob.y = 140;
 
   // Create an application window with the following settings:
   window = SDL_CreateWindow("Game Window",            // window title
@@ -28,9 +39,9 @@ int main(void)
   int done = 0;
   while (!done)
   {
-    done = processEvents(window);  // check for events
+    done = processEvents(window, &mob);  // check for events
 
-    doRender(renderer); // render screen
+    doRender(renderer, &mob); // render screen
 
     // go easy on the cpu
     SDL_Delay(100);
@@ -46,7 +57,7 @@ int main(void)
   return 0;
 }
 
-int processEvents(SDL_Window *window)
+int processEvents(SDL_Window *window, Mob *mob)
 {
   SDL_Event event;
   int done = 0;
@@ -57,22 +68,20 @@ int processEvents(SDL_Window *window)
     switch(event.type)
     {
       case SDL_WINDOWEVENT_CLOSE:
-      {
         if (window)
         {
           SDL_DestroyWindow(window);
           window = NULL;
           done = 1;
         }
-      }
       break;
       case SDL_KEYDOWN:
-      {
         switch (event.key.keysym.sym)
         {
           case SDLK_ESCAPE: done = 1; break;
+          case SDLK_RIGHT: mob->x += 10; break;
+          case SDLK_LEFT: mob->x -= 10; break;
         }
-      }
       break;
       case SDL_QUIT: done = 1; break;
     }
@@ -81,14 +90,14 @@ int processEvents(SDL_Window *window)
   return done;
 }
 
-int doRender(SDL_Renderer *renderer)
+int doRender(SDL_Renderer *renderer, Mob *mob)
 {
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // set drawing color to blue
   SDL_RenderClear(renderer); // clear the screen to blue 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
 
   // create a white rectangle 
-  SDL_Rect rect = { 220, 140, 200, 200 };  // x, y, width, height of rectangle
+  SDL_Rect rect = { mob->x, mob->y, 200, 200 };  // x, y, width, height of rectangle
   SDL_RenderFillRect(renderer, &rect);
 
   // present to the window
