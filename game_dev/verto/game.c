@@ -10,20 +10,28 @@ typedef struct
   char *name;
 } Mob;
 
+typedef struct
+{
+  // players
+  Mob mob;
+
+} GameState;
+
 // prototypes
-int processEvents(SDL_Window *window, Mob *mob);
-int doRender(SDL_Renderer *renderer, Mob *mob);
+int processEvents(SDL_Window *window, GameState *game);
+int doRender(SDL_Renderer *renderer, GameState *game);
 
 int main(void)
 {
+  GameState gameState;      // use GameState struct
   SDL_Window *window;       // declare a window
   SDL_Renderer *renderer;   // declare a renderer
 
   SDL_Init(SDL_INIT_VIDEO); // initialize SDL2
 
-  Mob mob;
-  mob.x = 220;
-  mob.y = 140;
+  //Mob mob;
+  gameState.mob.x = 320-50;
+  gameState.mob.y = 240-40;
 
   // Create an application window with the following settings:
   window = SDL_CreateWindow("Game Window",            // window title
@@ -39,9 +47,8 @@ int main(void)
   int done = 0;
   while (!done)
   {
-    done = processEvents(window, &mob);  // check for events
-
-    doRender(renderer, &mob); // render screen
+    done = processEvents(window, &gameState);  // check for events
+    doRender(renderer, &gameState); // render screen
 
     // go easy on the cpu
     // SDL_Delay(20); // using vsync now
@@ -57,7 +64,7 @@ int main(void)
   return 0;
 }
 
-int processEvents(SDL_Window *window, Mob *mob)
+int processEvents(SDL_Window *window, GameState *game)
 {
   SDL_Event event;
   int done = 0;
@@ -79,8 +86,6 @@ int processEvents(SDL_Window *window, Mob *mob)
         switch (event.key.keysym.sym)
         {
           case SDLK_ESCAPE: done = 1; break;
-          //case SDLK_RIGHT: mob->x += 10; break;
-          //case SDLK_LEFT: mob->x -= 10; break;
         }
       break;
       case SDL_QUIT: done = 1; break;
@@ -89,25 +94,25 @@ int processEvents(SDL_Window *window, Mob *mob)
   
   const Uint8 *state = SDL_GetKeyboardState(NULL);
   if (state[SDL_SCANCODE_RIGHT])
-    mob->x+=10;
+    game->mob.x+=10;
   if (state[SDL_SCANCODE_LEFT])
-    mob->x-=10;
+    game->mob.x-=10;
   if (state[SDL_SCANCODE_UP])
-    mob->y-=10;
+    game->mob.y-=10;
   if (state[SDL_SCANCODE_DOWN])
-    mob->y+=10;
+    game->mob.y+=10;
 
   return done;
 }
 
-int doRender(SDL_Renderer *renderer, Mob *mob)
+int doRender(SDL_Renderer *renderer, GameState *game)
 {
   SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // set drawing color to blue
   SDL_RenderClear(renderer); // clear the screen to blue 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
 
   // create a white rectangle 
-  SDL_Rect rect = { mob->x, mob->y, 50, 50 };  // x, y, width, height of rectangle
+  SDL_Rect rect = { game->mob.x, game->mob.y, 50, 50 };  // x, y, width, height of rectangle
   SDL_RenderFillRect(renderer, &rect);
 
   // present to the window
