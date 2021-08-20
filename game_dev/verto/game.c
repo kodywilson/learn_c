@@ -44,7 +44,7 @@ int main(void)
     doRender(renderer, &mob); // render screen
 
     // go easy on the cpu
-    SDL_Delay(100);
+    SDL_Delay(20);
   }
 
   // close and destroy window
@@ -79,13 +79,23 @@ int processEvents(SDL_Window *window, Mob *mob)
         switch (event.key.keysym.sym)
         {
           case SDLK_ESCAPE: done = 1; break;
-          case SDLK_RIGHT: mob->x += 10; break;
-          case SDLK_LEFT: mob->x -= 10; break;
+          //case SDLK_RIGHT: mob->x += 10; break;
+          //case SDLK_LEFT: mob->x -= 10; break;
         }
       break;
       case SDL_QUIT: done = 1; break;
     }
   }
+  
+  const Uint8 *state = SDL_GetKeyboardState(NULL);
+  if (state[SDL_SCANCODE_RIGHT])
+    mob->x+=10;
+  if (state[SDL_SCANCODE_LEFT])
+    mob->x-=10;
+  if (state[SDL_SCANCODE_UP])
+    mob->y-=10;
+  if (state[SDL_SCANCODE_DOWN])
+    mob->y+=10;
 
   return done;
 }
