@@ -3,6 +3,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
+// prototypes
+int processEvents(SDL_Window *window);
+
 int main(void)
 {
   SDL_Window *window;       // declare a window
@@ -22,36 +25,9 @@ int main(void)
 
   // this time we will keep window open until an event occurs
   int done = 0;
-  SDL_Event event;
-
-  // event loop
   while (!done)
   {
-    while(SDL_PollEvent(&event))
-    {
-      switch(event.type)
-      {
-        case SDL_WINDOWEVENT_CLOSE:
-        {
-          if (window)
-          {
-            SDL_DestroyWindow(window);
-            window = NULL;
-            done = 1;
-          }
-        }
-        break;
-        case SDL_KEYDOWN:
-        {
-          switch (event.key.keysym.sym)
-          {
-            case SDLK_ESCAPE: done = 1; break;
-          }
-        }
-        break;
-        case SDL_QUIT: done = 1; break;
-      }
-    }
+    done = processEvents(window);  // check for events
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // set drawing color to blue
     SDL_RenderClear(renderer); // clear the screen to blue
@@ -76,5 +52,40 @@ int main(void)
   SDL_Quit();
 
   return 0;
+}
+
+int processEvents(SDL_Window *window)
+{
+  SDL_Event event;
+  int done = 0;
+
+  // event loop
+  while(SDL_PollEvent(&event))
+  {
+    switch(event.type)
+    {
+      case SDL_WINDOWEVENT_CLOSE:
+      {
+        if (window)
+        {
+          SDL_DestroyWindow(window);
+          window = NULL;
+          done = 1;
+        }
+      }
+      break;
+      case SDL_KEYDOWN:
+      {
+        switch (event.key.keysym.sym)
+        {
+          case SDLK_ESCAPE: done = 1; break;
+        }
+      }
+      break;
+      case SDL_QUIT: done = 1; break;
+    }
+  }
+
+  return done;
 }
 
