@@ -20,21 +20,53 @@ int main(void)
                             );
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-  SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // set drawing color to blue
+  // this time we will keep window open until an event occurs
+  int done = 0;
+  SDL_Event event;
 
-  SDL_RenderClear(renderer); // clear the screen to blue
+  // event loop
+  while (!done)
+  {
+    while(SDL_PollEvent(&event))
+    {
+      switch(event.type)
+      {
+        case SDL_WINDOWEVENT_CLOSE:
+        {
+          if (window)
+          {
+            SDL_DestroyWindow(window);
+            window = NULL;
+            done = 1;
+          }
+        }
+        break;
+        case SDL_KEYDOWN:
+        {
+          switch (event.key.keysym.sym)
+          {
+            case SDLK_ESCAPE: done = 1; break;
+          }
+        }
+        break;
+        case SDL_QUIT: done = 1; break;
+      }
+    }
 
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);  // set drawing color to blue
+    SDL_RenderClear(renderer); // clear the screen to blue
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
 
-  // create a white rectangle
-  SDL_Rect rect = { 220, 140, 200, 200 };  // x, y, width, height of rectangle
-  SDL_RenderFillRect(renderer, &rect);
+    // create a white rectangle
+    SDL_Rect rect = { 220, 140, 200, 200 };  // x, y, width, height of rectangle
+    SDL_RenderFillRect(renderer, &rect);
 
-  // present to the window
-  SDL_RenderPresent(renderer);
+    // present to the window
+    SDL_RenderPresent(renderer);
 
-  // wait a few seconds and then quit program
-  SDL_Delay(3000);
+    // wait a few seconds and then quit program
+    SDL_Delay(100);
+  }
 
   // close and destroy window
   SDL_DestroyWindow(window);
