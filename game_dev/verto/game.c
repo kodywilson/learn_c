@@ -127,7 +127,12 @@ int doRender(SDL_Renderer *renderer, GameState *game)
   SDL_Rect rect = { game->mob.x, game->mob.y, 50, 50 };  // x, y, width, height of rectangle
   SDL_RenderFillRect(renderer, &rect);
 
-  // draw the hero
+  // draw the heros
+  for(int i = 0; i < 100; i++)
+  {
+    SDL_Rect heroRect = { game->heros[i].x, game->heros[i].y, 50, 37 };
+    SDL_RenderCopy(renderer, game->hero, NULL, &heroRect);
+  }
   SDL_Rect heroRect = { 50, 50, 50, 37 };
   SDL_RenderCopy(renderer, game->hero, NULL, &heroRect);
 
@@ -153,5 +158,12 @@ int loadGame(GameState *game)
 
   game->hero = SDL_CreateTextureFromSurface(game->renderer, heroSurface);
   SDL_FreeSurface(heroSurface);
+
+  // init heros
+  for(int i = 0; i < 100; i++)
+  {
+    game->heros[i].x = i*5;
+    game->heros[i].y = i*2;
+  }
 }
 
