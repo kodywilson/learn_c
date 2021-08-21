@@ -1,6 +1,7 @@
 // simple demo game
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 
 typedef struct
@@ -15,6 +16,9 @@ typedef struct
   // players
   Mob mob;
 
+  // images
+  SDL_Texture *hero;
+
 } GameState;
 
 // prototypes
@@ -24,8 +28,9 @@ int doRender(SDL_Renderer *renderer, GameState *game);
 int main(void)
 {
   GameState gameState;      // use GameState struct
-  SDL_Window *window;       // declare a window
-  SDL_Renderer *renderer;   // declare a renderer
+  SDL_Window *window = NULL;       // declare a window
+  SDL_Renderer *renderer = NULL;   // declare a renderer
+  SDL_Surface *heroSurface = NULL;
 
   SDL_Init(SDL_INIT_VIDEO); // initialize SDL2
 
@@ -43,7 +48,19 @@ int main(void)
                             );
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-  // this time we will keep window open until an event occurs
+  // Load images and create rendering textures from them
+  heroSurface = IMG_Load("hero.png");
+  if (heroSurface == NULL)
+  {
+    printf("Can not find hero.png!\n\n");
+    SDL_Quit();
+    return 1;
+  }
+
+  gameState.hero = SDL_CreateTextureFromSurface(renderer, heroSurface);
+  SDL_FreeSurface(heroSurface);
+
+  // The window is open, enter main loop
   int done = 0;
   while (!done)
   {
@@ -54,7 +71,8 @@ int main(void)
     // SDL_Delay(20); // using vsync now
   }
 
-  // close and destroy window
+  // close and destroy textures and window
+  SDL_DestroyTexture(gameState.hero);
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
 
@@ -111,9 +129,13 @@ int doRender(SDL_Renderer *renderer, GameState *game)
   SDL_RenderClear(renderer); // clear the screen to blue 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // set drawing color to white
 
-  // create a white rectangle 
+  // draw a white rectangle at mob's position
   SDL_Rect rect = { game->mob.x, game->mob.y, 50, 50 };  // x, y, width, height of rectangle
   SDL_RenderFillRect(renderer, &rect);
+
+  // draw the hero
+  SDL_Rect heroRect = { 50, 50, 50, 37 };
+  SDL_RenderCopy(renderer, game->hero, NULL, &heroRect);
 
   // present to the window
   SDL_RenderPresent(renderer);
