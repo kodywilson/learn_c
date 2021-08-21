@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include <time.h>
 
 typedef struct
 {
@@ -40,6 +41,7 @@ int main(void)
   SDL_Renderer *renderer = NULL;   // declare a renderer
 
   SDL_Init(SDL_INIT_VIDEO); // initialize SDL2
+  srandom((int) time(NULL));
 
   // Create an application window with the following settings:
   window = SDL_CreateWindow("Game Window",            // window title
@@ -162,8 +164,8 @@ int loadGame(GameState *game)
   // init heros
   for(int i = 0; i < 100; i++)
   {
-    game->heros[i].x = i*5;
-    game->heros[i].y = i*2;
+    game->heros[i].x = random() % 640;
+    game->heros[i].y = random() % 480;
   }
 }
 
