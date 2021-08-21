@@ -13,30 +13,33 @@ typedef struct
 
 typedef struct
 {
+  int x, y;
+} Hero;
+
+typedef struct
+{
   // players
   Mob mob;
 
+  Hero heros[100];
+
   // images
   SDL_Texture *hero;
-
+  SDL_Renderer *renderer;
 } GameState;
 
 // prototypes
 int processEvents(SDL_Window *window, GameState *game);
 int doRender(SDL_Renderer *renderer, GameState *game);
+int loadGame(GameState *game);
 
 int main(void)
 {
   GameState gameState;      // use GameState struct
   SDL_Window *window = NULL;       // declare a window
   SDL_Renderer *renderer = NULL;   // declare a renderer
-  SDL_Surface *heroSurface = NULL;
 
   SDL_Init(SDL_INIT_VIDEO); // initialize SDL2
-
-  //Mob mob;
-  gameState.mob.x = 320-50;
-  gameState.mob.y = 240-40;
 
   // Create an application window with the following settings:
   window = SDL_CreateWindow("Game Window",            // window title
@@ -47,18 +50,9 @@ int main(void)
                             0                         // flags
                             );
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  gameState.renderer = renderer;
 
-  // Load images and create rendering textures from them
-  heroSurface = IMG_Load("hero.png");
-  if (heroSurface == NULL)
-  {
-    printf("Can not find hero.png!\n\n");
-    SDL_Quit();
-    return 1;
-  }
-
-  gameState.hero = SDL_CreateTextureFromSurface(renderer, heroSurface);
-  SDL_FreeSurface(heroSurface);
+  loadGame(&gameState);
 
   // The window is open, enter main loop
   int done = 0;
@@ -139,5 +133,25 @@ int doRender(SDL_Renderer *renderer, GameState *game)
 
   // present to the window
   SDL_RenderPresent(renderer);
+}
+
+int loadGame(GameState *game)
+{
+  //Mob mob;
+  game->mob.x = 320-50;
+  game->mob.y = 240-40;
+  SDL_Surface *heroSurface = NULL;
+
+  // Load images and create rendering textures from them
+  heroSurface = IMG_Load("hero.png");
+  if (heroSurface == NULL)
+  {
+    printf("Can not find hero.png!\n\n");
+    SDL_Quit();
+    exit(1);
+  }
+
+  game->hero = SDL_CreateTextureFromSurface(game->renderer, heroSurface);
+  SDL_FreeSurface(heroSurface);
 }
 
