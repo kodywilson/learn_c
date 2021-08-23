@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 int j, k;
+int a[] = { 1, 23, 17, 4, -5, 100 };
 int *ptr;
 
 int main(void)
@@ -13,6 +14,13 @@ int main(void)
   printf("k has the value %d and is stored at %p\n", k, (void *) &k);
   printf("ptr has the value %p and is stored at %p\n", ptr, (void *) &ptr);
   printf("The value of the integer pointed to by ptr is %d\n", *ptr);
+
+  ptr = &a[0];
+  for ( int i = 0; i < 6; i++)
+  {
+    printf("a[%d] = %d   ", i, a[i]);
+    printf("ptr + %d = %d\n", i, *(ptr + i));
+  }
 
   return 0;
 }
