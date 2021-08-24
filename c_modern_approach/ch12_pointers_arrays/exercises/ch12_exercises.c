@@ -16,12 +16,16 @@ int main(void)
   int temperatures[DAYS][HOURS];
   for (p = &temperatures[0][0]; p < &temperatures[DAYS-1][HOURS-1]; p++)
     *p = 1;
-  p = p - DAYS;
+  p = temperatures[3];
   *p = 32;
 
   for (p = &temperatures[0][0]; p < &temperatures[DAYS-1][HOURS-1]; p++)
     if (*p == 32)
-      printf("Found a 32 at %p\n", p);
+      printf("Found a 32 at %p\n", &p);
+
+  for (p = temperatures[3]; p < temperatures[3] + HOURS; p++)
+    printf("%d ", *p);
+  printf("\n");
 
   return 0;
 }
