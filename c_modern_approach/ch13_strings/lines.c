@@ -17,7 +17,10 @@ int main(void)
 
   puts(msg1);
 
-  printf("msg1 is %ld characters long\n", strlen(msg1)); 
+  printf("msg1 is %ld characters long\n", strlen(msg1));
+
+  strcat(msg1, msg2);
+  puts (msg1);
 
   return 0;
 }
