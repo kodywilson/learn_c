@@ -3,7 +3,7 @@
 
 int main(void)
 {
-  int i, n, *p;
+  int n, *p;
 
   printf("How many numbers do you want to reverse? ");
   scanf("%d", &n);
@@ -11,8 +11,8 @@ int main(void)
   int a[n];
 
   printf("Enter %d numbers: ", n);
-  for (i = 0; i < n; i++)
-    scanf("%d", &a[i]);
+  for (p = a; p < a + n; p++)
+    scanf("%d", p);
 
   printf("In reverse order: ");
   for (p = a + n - 1; p >= a; p--)
