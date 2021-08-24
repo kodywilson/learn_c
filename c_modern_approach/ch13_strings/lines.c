@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int main(void)
 {
@@ -9,6 +10,12 @@ int main(void)
   printf("%-8s%s\n", "Yak", "Yak");
 
   puts("This is only a test");
+
+  char msg1[64], msg2[64] = "The secret is in the secret.";
+
+  strcpy(msg1, msg2);
+
+  puts(msg1);
 
   return 0;
 }
