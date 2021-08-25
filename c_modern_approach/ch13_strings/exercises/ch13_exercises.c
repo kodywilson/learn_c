@@ -17,16 +17,15 @@ int main(void)
 
 int read_line(char str[], int n)
 {
-  int ch, i = 0, nsp_char = 0;
+  int ch, i = 0;
 
-  while ((ch = getchar()) != '\n')
-    if (i < n && ch != ' ')
-    {
+  do
+  {
+    ch = getchar();
+    if (i < n)
       str[i++] = ch;
-      nsp_char = 1;
-    }
-    else if (i < n && ch == ' ' && nsp_char == 1)
-      break;
+  }
+  while (ch != '\n');
   str[i] = '\0';
   return i;
 }
