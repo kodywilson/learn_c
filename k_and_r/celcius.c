@@ -9,6 +9,7 @@ int main(void)
   upper = 300.0f;  // upper limit
   step = 20.0f;    // step size
 
+  printf("Fahrenheit Celsius\n");
   fahr = lower;
   while (fahr <= upper)
   {
