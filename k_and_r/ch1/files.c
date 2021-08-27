@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <string.h>
 
 
 int main(int argc, char *argv[])
@@ -11,12 +11,14 @@ int main(int argc, char *argv[])
     puts("Options are lc (line count), wc (word count), or cat (display file) followed by file name");
   else if (argc == 3)
   {
-    fp = fopen("exercises.c", "r");
+    fp = fopen(argv[2], "r");
     while ((c = fgetc(fp)) != EOF)
       printf("%c", c);
+    if (strcmp(argv[1], "cat") == 0) {
+      while ((c = fgetc(fp)) != EOF)
+        printf("%c", c);
+    }
     fclose(fp);
-    //if (argv[1] == "cat")
-    //  puts("Meow");
   }
   else {
     puts("Too many arguments! Please specify command followed by file name");
