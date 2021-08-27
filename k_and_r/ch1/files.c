@@ -6,8 +6,7 @@ int main(int argc, char *argv[])
 {
   FILE *fp; // pointer to file
   char c;   // char to read content
-  long nb, nc, nl, nt;  // various counts
-  nb = nc = nl = nt = 0;  // start all counts at 0
+  long nb, nc, nl, nt = nl = nc = nb = 0;  // various counts
   
   if (argc <= 2) // show help text
     puts("Options are cc (char count), lc (line count), wc (word count), or cat (display file) followed by file name");
