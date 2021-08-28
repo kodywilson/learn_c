@@ -6,6 +6,7 @@ int main(int argc, char *argv[])
 {
   FILE *fp; // pointer to file
   char c;   // char to read content
+  int bc;  // blank space counter
   long nb, nc, nl, nt = nl = nc = nb = 0;  // various counts
   
   if (argc <= 2) // show help text
@@ -33,6 +34,17 @@ int main(int argc, char *argv[])
           case '\t': ++nt; break;
         }
       printf("%s has %ld lines %ld blanks and %ld tabs\n", argv[2], nl, nb, nt);
+    } else if (strcmp(argv[1], "blanks") == 0) {
+      bc = 0;
+      while ((c = fgetc(fp)) != EOF)
+        if (c != ' ') {
+          printf("%c", c);
+          bc = 0;
+        }
+        else if (c == ' ' && bc < 1) {
+          printf("%c", c);
+          bc++;
+        }
     }
 
     fclose(fp);
