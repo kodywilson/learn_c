@@ -45,6 +45,16 @@ int main(int argc, char *argv[])
           printf("%c", c);
           bc++;
         }
+    } else if (strcmp(argv[1], "fmt") == 0) {
+      while ((c = fgetc(fp)) != EOF)
+        if (c == '\t')
+          printf("\\t");
+        else if (c == '\b')
+          printf("\\b");
+        else if (c == '\\')
+          printf("\\");
+        else
+          printf("%c", c);
     }
 
     fclose(fp);
