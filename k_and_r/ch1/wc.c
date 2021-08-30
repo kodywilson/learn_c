@@ -20,7 +20,10 @@ int main(int argc, char *argv[])
     else if (state == OUT) {
       state = IN;
       ++nw;
+      printf("\n");
     }
+    if (state == IN)
+      printf("%c", c);
   }
   fclose(fp);
 
