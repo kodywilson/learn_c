@@ -11,12 +11,12 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
     return written;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
     CURL *curl;
     FILE *fp;
     CURLcode res;
-    char *url = "url.here";
-    char outfilename[FILENAME_MAX] = "f250.sql";
+    char *url = argv[1];
+    char outfilename[FILENAME_MAX] = "test.out";
     curl = curl_easy_init();
     if (curl) {
         fp = fopen(outfilename,"wb");
