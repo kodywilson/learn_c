@@ -44,13 +44,12 @@ int countline(char s[], int lim)
 {
   int c, i;
 
-  for (i = 0; (c = s[i]) != '\n' && c != '\0'; i++)
-    ;
-  /*if (c == '\n') {
-    s[i] = c;
-    ++i;
-  }
-  s[i] = '\0';*/
+  for (i = 0; (c = s[i]) != '\n' && c != '\0'; i++) 
+    // the count really isn't accurate. To be accurate, you'd have to
+    // count each tab as 2-8 characters, depending on tab stop
+    if (c == '\t')
+      i += 3; // each tab is worth 4 (3 + the one from i incrementing)
+
   return i;
 }
 
