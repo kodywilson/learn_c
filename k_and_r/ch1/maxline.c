@@ -22,9 +22,11 @@ int main(int argc, char *argv[])
   }
 
   while (fgets(line, sizeof(line), fp)) {
-    printf("%s", line);
+    // printf("%s", line); // ch1 exe1.16
     len = countline(line, MAXLINE);
-    printf("max is %d and len is %d\n", max, len);
+    if (len > 40)
+      printf("Over 40: %s", line);
+    //printf("max is %d and len is %d\n", max, len); // ch1 exe1.16
       if (len > max) {
         max = len;
         copy(longest, line);
