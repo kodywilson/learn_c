@@ -2,7 +2,8 @@
 #include <ctype.h>
 
 // prototypes
-void squeeze(char s[], int c);
+void squeeze(char s[], int c); // ch2 exe2.4
+int any(char s1[], char s2[]);
 
 int main(void)
 {
@@ -25,5 +26,10 @@ void squeeze(char s[], int c)
     if (toupper(s[i]) != toupper(c))
       s[j++] = s[i];
   s[j] = '\0';
+}
+
+int any(char s1[], char s2[])
+{
+
 }
 
