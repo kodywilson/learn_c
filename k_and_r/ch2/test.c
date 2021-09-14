@@ -6,6 +6,7 @@ int main(void)
 
   printf("%d\n", i);
   printf("%d\n", ++i * 3);
+  printf("%d\n", --i * 3);
 
   return 0;
 }
