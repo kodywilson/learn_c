@@ -1,13 +1,13 @@
 #include <stdio.h>
 
-#define A_SIZE 10
+#define A_SIZE 1000
 
 // prototypes
 int binsearch(int x, int v[], int n);
 
 int main(void)
 {
-  int v[A_SIZE], x = 3, y;
+  int v[A_SIZE], x = 502, y; // setting x to 501 creates infinite loop, figure out why
 
   for (int i = 1; i <= A_SIZE; i++) // initialize array
     v[i - 1] = i;
@@ -27,6 +27,7 @@ int binsearch(int x, int v[], int n)
   low = 0;
   high = n - 1;
   while (low <= high) {
+    printf("Low: %d  High: %d\n", low, high);
     mid = (low + high)/2;
     if (x < v[mid])
       high = mid + 1;
