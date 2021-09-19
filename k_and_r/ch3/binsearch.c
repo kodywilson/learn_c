@@ -7,7 +7,7 @@ int binsearch(int x, int v[], int n);
 
 int main(void)
 {
-  int v[A_SIZE], x = 502, y; // setting x to 501 creates infinite loop, figure out why
+  int v[A_SIZE], x = 751, y; // setting x to 501 creates infinite loop, figure out why
 
   for (int i = 1; i <= A_SIZE; i++) // initialize array
     v[i - 1] = i;
