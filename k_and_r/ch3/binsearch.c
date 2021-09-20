@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define A_SIZE 1000
+#define A_SIZE 1000 // array size
 
 // prototypes
 int binsearch(int x, int v[], int n);
@@ -24,16 +24,20 @@ int binsearch(int x, int v[], int n)
 {
   int low, high, mid;
 
-  low = 0;
-  high = n - 1;
+  low = 0; // array position, low
+  high = n - 1; // array position, high
   while (low <= high) {
     printf("Low: %d  High: %d\n", low, high);
+    printf("Val at low: %d  Val at high: %d\n", v[low], v[high]);
     mid = (low + high)/2;
-    if (x < v[mid])
+    printf("mid: %d  x: %d\n", mid, x);
+    if (x < v[mid] && x != v[low])
       high = mid + 1;
-    else if (x > v[mid])
+    else if (x > v[mid] && x != v[low])
       low = mid + 1;
-    else // found match
+    else if (x == v[low])
+      return low;
+    else
       return mid;
   }
   return -1; // no match
