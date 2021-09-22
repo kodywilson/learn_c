@@ -6,7 +6,8 @@ void escape(char t[]);
 int main(int argc, char *argv[])
 {
   char t[] = "This  is a test     try newline \
-    maybe it works";
+    \
+              maybe it works";
 
   printf("Original string: %s\n", t);
   printf("Altered string: ");
