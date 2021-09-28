@@ -4,7 +4,7 @@
 void swap(int *, int *);
 
 int main(void) {
-  int a = 21;
+  int a = 24;
   int b = 17;
 
   printf("original values:  a = %d  b = %d\n", a, b);
