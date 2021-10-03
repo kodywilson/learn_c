@@ -9,8 +9,11 @@ int main(void) {
   if (booly)
     puts("It's true!");
 
-  if(!wooly)
+  if (!wooly)
     puts("It's false!");
+
+  if (!(!(!wooly)) && booly)
+    puts("Whatdya know, that's true!");
 
   return 0;
 }
