@@ -7,6 +7,12 @@ int main(void) {
   bool wooly = !(true);
   int a[10] = {1,2,3,4,5,6,7,8,9,10};
 
+  struct sigrecord {
+    int signum;
+    char signame[20];
+    char sigdesc[100];
+  } sigline, *sigline_p;
+
   if (booly)
     puts("It's true!");
 
@@ -21,6 +27,13 @@ int main(void) {
   for (int i = 0; i < 10; i++)
     printf("%d ", i[a]);
   printf("\n");
+
+  // structs
+  sigline.signum = 5;
+
+  printf("Signature number is %d\n", sigline.signum);
+
+  sigline_p = &sigline;
 
   return 0;
 }
