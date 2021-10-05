@@ -15,6 +15,8 @@ int main(void) {
   if (!(!(!wooly)) && booly)
     puts("Whatdya know, that's true!");
 
+  printf("The value of booly is %d. :)\n", booly);
+
   return 0;
 }
 
