@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 int main(void) {
 
@@ -30,8 +31,10 @@ int main(void) {
 
   // structs
   sigline.signum = 5;
+  strcpy(sigline.signame, "SIGINT");
 
   printf("Signature number is %d\n", sigline.signum);
+  printf("Signature name is %s\n", sigline.signame);
 
   sigline_p = &sigline;
 
