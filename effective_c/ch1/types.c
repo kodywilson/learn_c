@@ -37,6 +37,13 @@ int main(void) {
   printf("Signature name is %s\n", sigline.signame);
 
   sigline_p = &sigline;
+  strcpy(sigline_p->sigdesc, "Interrupt from keyboard");
+
+  puts(sigline_p->sigdesc);
+
+  // update structure member
+  sigline_p->signum = 7;
+  printf("Signature number is now %d\n", sigline_p->signum);
 
   return 0;
 }
