@@ -7,6 +7,7 @@
 
 int main(void) {
   printf("The number is %d\n", numby());
+  printf("Now, the number is %d\n", numby() * 3);
 
   return 0;
 }
