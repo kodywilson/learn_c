@@ -5,6 +5,16 @@
 #include "test_linux.h"
 #endif
 
+#if __STDC__ && __STDC_NO_THREADS__ != 1
+#include <threads.h>
+//
+#elif POSIX_THREADS == 200809L
+#include <pthread.h>
+//
+#else
+int compile_error[-1]; // Induce a compilation error
+#endif
+
 int main(void) {
   printf("The number is %d\n", numby());
   printf("Now, the number is %d\n", numby() * 3);
