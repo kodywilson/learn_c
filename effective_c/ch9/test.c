@@ -12,7 +12,7 @@
 #include <pthread.h>
 //
 #else
-int compile_error[-1]; // Induce a compilation error
+#error Neither <threads.h> nor <pthread.h> is available
 #endif
 
 int main(void) {
