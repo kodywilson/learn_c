@@ -16,8 +16,18 @@
 #endif
 
 int main(void) {
+  int a[ARRAY_SIZE];
+
+  for (int i = 0; i < ARRAY_SIZE; i++)
+    a[i] = i;
+
   printf("The number is %d\n", numby());
   printf("Now, the number is %d\n", numby() * 3);
+
+  printf("Let's print some numbers, here's 0 to 99\n");
+  for (int j = 0; j < ARRAY_SIZE; j++)
+    printf("%d ", a[j]);
+  printf("\n");
 
   return 0;
 }
