@@ -6,9 +6,11 @@
 int main(void) {
   int i = FOO;
   int j = BAR(10);
+  int k = BAR(2 + 2);
 
-  printf("i = %d  and  j = %d\n", i, j);
+  printf("i = %d  and  j = %d  and  k = %d\n", i, j, k);
+  printf("The value of func is %d\n", func());
 
-  return func();
+  return 1;
 }
 
