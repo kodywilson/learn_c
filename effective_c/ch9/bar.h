@@ -5,5 +5,5 @@ int func(void) {
   return 1;
 }
 #endif // BAR_H
-#define BAR(y) ((y) * (y))
+#define BAR_sq(y) ((y) * (y))
 
