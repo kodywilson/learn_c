@@ -5,7 +5,7 @@
 
 int main(void) {
   int i = FOO;
-  int j = BAR_sq(10);
+  int j = BAR_sq(100);
   int k = BAR_sq(7 + 7);
 
   printf("i = %d  and  j = %d  and  k = %d\n", i, j, k);
