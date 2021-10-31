@@ -6,4 +6,4 @@ int func(void) {
 }
 #endif // BAR_H
 #define BAR_sq(y) ((y) * (y))
-
+#define BAR_triple(x) ((x) * 3)

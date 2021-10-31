@@ -10,6 +10,7 @@ int main(void) {
 
   printf("i = %d  and  j = %d  and  k = %d\n", i, j, k);
   printf("The value of func is %d\n", func());
+  printf("k * 3 = %d\n", BAR_triple(k));
 
   return 1;
 }
