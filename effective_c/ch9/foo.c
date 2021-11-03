@@ -7,7 +7,7 @@ int main(void) {
   int i = FOO;
   int j = BAR_sq(100);
   int k = BAR_sq(3 + 3);
-  int a[];
+  int a[26];
 
   printf("i = %d  and  j = %d  and  k = %d\n", i, j, k);
   printf("The value of func is %d\n", func());
