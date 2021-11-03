@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "bar.h"
 #include "bar.h" // normally duplicate inclusion is not so obvious
-#define FOO (1 + 1)
+#define FOO (6 + 6)
 
 int main(void) {
   int i = FOO;
@@ -15,6 +15,10 @@ int main(void) {
 
   for (int m = 1; m < 11; m++)
     a[m - 1] = BAR_sq(m);
+
+  printf("The first letter of the alphabet is %c\n", letter());
+  printf("We saw above that i is %d. That would be %c on the alphabet\n", i, 'A' + a[i - 1]);
+
 
   return 1;
 }
