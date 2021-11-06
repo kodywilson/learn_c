@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "bar.h"
 #include "bar.h" // normally duplicate inclusion is not so obvious
-#define FOO (30 + 30)
+#define FOO (35 + 35)
 
 int main(void) {
   int i = FOO;
