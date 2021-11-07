@@ -25,7 +25,7 @@ int main(void) {
   printf("We saw above that i is %d. That would be %c on the alphabet\n", i, c);
   
   for (int n = 0; n < ALF; n++)
-    printf("%d ", a[n]);
+    printf("%d ", a[n] * a[n]);
   printf("\n");
 
   return 1;
