@@ -23,6 +23,7 @@ int main(void) {
 
   c = i + '0';
   printf("We saw above that i is %d. That would be %c on the alphabet\n", i, c);
+  printf("You can add %d to %c to get %c\n", 3, c, (char) c + 3);
   
   for (int n = 0; n < ALF; n++)
     printf("%d ", a[n] * a[n]);
