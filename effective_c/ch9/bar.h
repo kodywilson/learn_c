@@ -2,7 +2,8 @@
 #ifndef BAR_H
 #define BAR_H
 int func(void) {
-  return 1;
+  int i = 3 + 3;
+  return i;
 }
 char letter(void) { return 'A'; }
 #endif // BAR_H
