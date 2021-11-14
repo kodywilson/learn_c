@@ -30,6 +30,10 @@ int main(void) {
     printf("%d ", a[n] * a[n]);
   printf("\n");
 
+  for (int o = ALF - 1; o >= 0; o--)
+    printf("%d ", a[o] * a[o]);
+  printf("\n");
+
   return 1;
 }
 
