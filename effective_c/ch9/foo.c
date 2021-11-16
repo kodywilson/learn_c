@@ -19,7 +19,8 @@ int main(void) {
   for (int m = 1; m < ALF + 1; m++)
     a[m - 1] = BAR_sq(m);
 
-  printf("The first letter of the alphabet is %c\n", letter());
+  //printf("The first letter of the alphabet is %c\n", letter());
+  printf("The first letter of the alphabet is %c\n", (char) a[0] - 1 + 'A');
 
   c = i + '0';
   printf("We saw above that i is %d. That would be %c on the alphabet\n", i, c);
