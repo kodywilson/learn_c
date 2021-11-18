@@ -6,7 +6,7 @@
 
 int main(void) {
   int i = FOO;
-  int j = BAR_sq(100);
+  int j = BAR_sq(200);
   int k = BAR_sq(3 + 3);
   int a[ALF];
 
