@@ -7,7 +7,7 @@
 int main(void) {
   int i = FOO;
   int j = BAR_sq(10);
-  int k = BAR_sq(3 + 3);
+  int k = BAR_sq(7 + 7);
   int a[ALF];
 
   char c;
