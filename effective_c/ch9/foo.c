@@ -9,6 +9,7 @@ int main(void) {
   int j = BAR_sq(10);
   int k = BAR_sq(7 + 7);
   int a[ALF];
+  char kay = 'K';
 
   char c;
 
@@ -34,6 +35,8 @@ int main(void) {
   for (int o = ALF - 1; o >= 0; o--)
     printf("%d ", a[o] * a[o]);
   printf("\n");
+
+  printf("The letter of the day is %c\n", kay);
 
   return 1;
 }
