@@ -10,6 +10,7 @@ int main(void) {
   int k = BAR_sq(7 + 7);
   int a[ALF];
   char kay = 'K';
+  char ay = 65;
 
   char c;
 
@@ -37,6 +38,7 @@ int main(void) {
   printf("\n");
 
   printf("The letter of the day is %c\n", kay);
+  printf("%d in ascii is the letter %c\n", ay, ay);
 
   return 1;
 }
