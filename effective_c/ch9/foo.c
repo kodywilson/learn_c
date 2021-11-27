@@ -11,6 +11,7 @@ int main(void) {
   int a[ALF];
   char kay = 'K';
   char ay = 65;
+  char tiny_ay = ay + 32;
 
   char c;
 
@@ -39,6 +40,7 @@ int main(void) {
 
   printf("The letter of the day is %c\n", kay);
   printf("%d in ascii is the letter %c\n", ay, ay);
+  printf("%d in ascii is the letter %c\n", tiny_ay, tiny_ay);
 
   return 1;
 }
