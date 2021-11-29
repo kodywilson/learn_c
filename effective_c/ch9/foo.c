@@ -12,6 +12,7 @@ int main(void) {
   char kay = 'K';
   char ay = 65;
   char zee = 'Z';
+  char tiny_zee = zee + 32;
   char tiny_ay = ay + 32;
 
   char c;
@@ -43,6 +44,7 @@ int main(void) {
   printf("%d in ascii is the letter %c\n", ay, ay);
   printf("%d in ascii is the letter %c\n", tiny_ay, tiny_ay);
   printf("%d in ascii is the letter %c\n", zee, zee);
+  printf("%d in ascii is the letter %c\n", tiny_zee, tiny_zee);
 
   return 1;
 }
