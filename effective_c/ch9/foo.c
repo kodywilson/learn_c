@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "bar.h"
 #include "bar.h" // normally duplicate inclusion is not so obvious
 #define FOO (19 + 39)
@@ -16,6 +18,9 @@ int main(void) {
   char tiny_ay = ay + 32;
 
   char c;
+
+  srand(time(NULL));
+  int r = rand() % ALF;
 
   printf("i = %d  and  j = %d  and  k = %d\n", i, j, k);
   printf("The value of func is %d\n", func());
@@ -45,6 +50,8 @@ int main(void) {
   printf("%d in ascii is the letter %c\n", tiny_ay, tiny_ay);
   printf("%d in ascii is the letter %c\n", zee, zee);
   printf("%d in ascii is the letter %c\n", tiny_zee, tiny_zee);
+  printf("\n");
+  printf("Ok, now I am going to summon a random letter. It is %c this time!\n", a[r]);
 
   return 1;
 }
