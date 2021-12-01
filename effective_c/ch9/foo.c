@@ -27,10 +27,10 @@ int main(void) {
   printf("k * 3 = %d\n", BAR_triple(k));
 
   for (int m = 1; m < ALF + 1; m++)
-    a[m - 1] = BAR_sq(m);
+    a[m - 1] = m + 64;
 
   //printf("The first letter of the alphabet is %c\n", letter());
-  printf("The first letter of the alphabet is %c\n", (char) a[0] - 1 + 'A');
+  printf("The first letter of the alphabet is %c\n", (char) a[0]);
 
   c = i + '0';
   printf("We saw above that i is %d. That would be %c on the alphabet\n", i, c);
