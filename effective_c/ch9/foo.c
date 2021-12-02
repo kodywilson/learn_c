@@ -52,6 +52,8 @@ int main(void) {
   printf("%d in ascii is the letter %c\n", tiny_zee, tiny_zee);
   printf("\n");
   printf("Ok, now I am going to summon a random letter. It is %c this time!\n", a[r]);
+  r = rand() % ALF;
+  printf("Ok, now I am going to summon a random letter. It is %c this time!\n", a[r]);
 
   return 1;
 }
