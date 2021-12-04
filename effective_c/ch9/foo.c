@@ -56,6 +56,8 @@ int main(void) {
   printf("Ok, now I am going to summon a random letter. It is %c this time!\n", a[r]);
   r = rand() % ALF;
   printf("Ok, now I am going to summon a random letter. It is %c this time!\n", a[r]);
+  r = rand() % ALF;
+  printf("Ok, now I am going to summon a random letter. It is %c this time!\n", a[r]);
 
   return 1;
 }
