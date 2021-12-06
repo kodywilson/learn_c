@@ -6,6 +6,10 @@ int func(void) {
   return i;
 }
 char letter(void) { return 'A'; }
+char letter2(void) { // terrible name, lol
+  return 'K';
+}
+
 #endif // BAR_H
 #define BAR_sq(y) ((y) * (y))
 #define BAR_triple(x) ((x) * 3)
