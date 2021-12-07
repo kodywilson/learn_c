@@ -7,7 +7,7 @@ int func(void) {
 }
 char letter(void) { return 'A'; }
 char letter2(void) { // terrible name, lol
-  return 'K';
+  return 'X';
 }
 
 #endif // BAR_H
