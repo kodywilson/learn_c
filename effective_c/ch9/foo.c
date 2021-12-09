@@ -21,6 +21,7 @@ int main(void) {
 
   srand(time(NULL));
   int r = rand() % ALF;
+  int s = (rand() % ALF) + 65; // another way to create a capital letter
 
   printf("i = %d  and  j = %d  and  k = %d\n", i, j, k);
   printf("The value of func is %d\n", func());
@@ -58,6 +59,8 @@ int main(void) {
   printf("Ok, now I am going to summon a random letter. It is %c this time!\n", a[r]);
 
   printf("Let's see what our letter function returns: %c\n", letter2());
+
+  printf("Another random letter, %c, this one created with rand() %% 26 + 65\n", s);
 
   return 1;
 }
