@@ -22,6 +22,7 @@ int main(void) {
   srand(time(NULL));
   int r = rand() % ALF;
   int s = (rand() % ALF) + 65; // another way to create a capital letter
+  int lowy = (rand() % ALF) + 97; // make a lowercase letter
 
   printf("i = %d  and  j = %d  and  k = %d\n", i, j, k);
   printf("The value of func is %d\n", func());
@@ -61,6 +62,10 @@ int main(void) {
   printf("Let's see what our letter function returns: %c\n", letter2());
 
   printf("Another random letter, %c, this one created with rand() %% 26 + 65\n", s);
+  printf("A random lowercase letter, %c, this one created with rand() %% 26 + 97\n", lowy);
+
+  printf("Interesting ascii characters, could be used to make a map: %c\n", 205);
+  printf("Hmmmm, doesn't print. How about %c\n", 126);
 
   return 1;
 }
