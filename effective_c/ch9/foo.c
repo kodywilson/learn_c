@@ -3,6 +3,8 @@
 #include <time.h>
 #include "bar.h"
 #include "bar.h" // normally duplicate inclusion is not so obvious
+#include <wchar.h>
+#include <locale.h>
 #define FOO (19 + 39)
 #define ALF 26
 
@@ -16,6 +18,9 @@ int main(void) {
   char zee = 'Z';
   char tiny_zee = zee + 32;
   char tiny_ay = ay + 32;
+  unsigned char ch = 205;
+  setlocale(LC_CTYPE, "");
+  wchar_t star = 0x2605;
 
   char c;
 
@@ -64,8 +69,9 @@ int main(void) {
   printf("Another random letter, %c, this one created with rand() %% 26 + 65\n", s);
   printf("A random lowercase letter, %c, this one created with rand() %% 26 + 97\n", lowy);
 
-  printf("Interesting ascii characters, could be used to make a map: %c\n", 205);
+  printf("Interesting ascii characters, could be used to make a map: %c\n", ch);
   printf("Hmmmm, doesn't print. How about %c\n", 126);
+  wprintf(L"%lc\n", star);
 
   return 1;
 }
