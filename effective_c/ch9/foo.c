@@ -19,8 +19,6 @@ int main(void) {
   char tiny_zee = zee + 32;
   char tiny_ay = ay + 32;
   unsigned char ch = 205;
-  setlocale(LC_CTYPE, "");
-  wchar_t star = 0x2605;
 
   char c;
 
@@ -71,6 +69,9 @@ int main(void) {
 
   printf("Interesting ascii characters, could be used to make a map: %c\n", ch);
   printf("Hmmmm, doesn't print. How about %c\n", 126);
+  printf("\n");
+  setlocale(LC_CTYPE, "");
+  wchar_t star = 0x2605;
   wprintf(L"%lc\n", star);
 
   return 1;
