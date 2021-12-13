@@ -3,8 +3,6 @@
 #include <time.h>
 #include "bar.h"
 #include "bar.h" // normally duplicate inclusion is not so obvious
-#include <wchar.h>
-#include <locale.h>
 #define FOO (19 + 39)
 #define ALF 26
 
@@ -70,9 +68,6 @@ int main(void) {
   printf("Interesting ascii characters, could be used to make a map: %c\n", ch);
   printf("Hmmmm, doesn't print. How about %c\n", 126);
   printf("\n");
-  setlocale(LC_CTYPE, "");
-  wchar_t star = 0x2605;
-  wprintf(L"%lc\n", star);
 
   return 1;
 }
