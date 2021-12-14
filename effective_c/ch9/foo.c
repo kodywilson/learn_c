@@ -68,6 +68,7 @@ int main(void) {
   printf("Interesting ascii characters, could be used to make a map: %c\n", ch);
   printf("Hmmmm, doesn't print. How about %c\n", 126);
   printf("\n");
+  printf("Hello world!\n");
 
   return 1;
 }
