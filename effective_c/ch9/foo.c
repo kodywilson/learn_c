@@ -18,6 +18,7 @@ int main(void) {
   char tiny_ay = ay + 32;
   unsigned char ch = 205;
   char word[] = {'H', 'i'};
+  char word2[] = {'Y', 'o', 'u'};
 
   char c;
 
@@ -72,6 +73,9 @@ int main(void) {
   printf("Hello world!\n");
   for (int i = 0; i < 2; i++)
     printf("%c", word[i]);
+  printf("\n");
+  for (int i = 0; i < 3; i++)
+    printf("%c", word2[i]);
   printf("\n");
 
   return 1;
