@@ -19,6 +19,7 @@ int main(void) {
   unsigned char ch = 205;
   char word[] = {'H', 'i'};
   char word2[] = {'Y', 'o', 'u'};
+  char sentence[7];
 
   char c;
 
@@ -71,12 +72,19 @@ int main(void) {
   printf("Hmmmm, doesn't print. How about %c\n", 126);
   printf("\n");
   printf("Hello world!\n");
-  for (int i = 0; i < 2; i++)
+  for (int i = 0; i < 2; i++) {
     printf("%c", word[i]);
+    sentence[i] = word[i];
+  }
+  sentence[2] = ' ';
   printf("\n");
-  for (int i = 0; i < 3; i++)
+  for (int i = 0; i < 3; i++) {
     printf("%c", word2[i]);
+    sentence[i + 3] = word2[i];
+  }
+  sentence[6] = '\0';
   printf("\n");
+  puts(sentence);
 
   return 1;
 }
