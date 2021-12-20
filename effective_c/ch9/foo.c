@@ -5,6 +5,7 @@
 #include "bar.h" // normally duplicate inclusion is not so obvious
 #define FOO (19 + 39)
 #define ALF 26
+#define SENT 11
 
 int main(void) {
   int i = FOO;
@@ -20,7 +21,7 @@ int main(void) {
   char word[] = {'H', 'i'};
   char word2[] = {'Y', 'o', 'u'};
   char word3[] = {'C', 'a', 't'};
-  char sentence[11];
+  char sentence[SENT];
 
   char c;
 
