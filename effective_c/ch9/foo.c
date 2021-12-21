@@ -20,7 +20,7 @@ int main(void) {
   unsigned char ch = 205;
   char word[] = {'H', 'i'};
   char word2[] = {'Y', 'o', 'u'};
-  char word3[] = {'C', 'a', 't'};
+  char word3[] = {'C', 'a', 't', 's'};
   char sentence[SENT];
 
   char c;
@@ -85,9 +85,9 @@ int main(void) {
     sentence[i + 3] = word2[i];
   }
   sentence[6] = ' ';
-  for (int i = 7; i < 10; i++)
+  for (int i = 7; i < SENT; i++)
     sentence[i] = word3[i - 7];
-  sentence[10] = '\0';
+  sentence[SENT] = '\0';
   printf("\n");
   puts(sentence);
 
