@@ -91,6 +91,7 @@ int main(void) {
   printf("\n");
   puts(sentence);
   puts("Amazing!");
+  puts("Grace");
 
   return 1;
 }
