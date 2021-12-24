@@ -92,6 +92,7 @@ int main(void) {
   puts(sentence);
   puts("Amazing!");
   puts("Grace");
+  puts("How sweet the sound");
 
   return 1;
 }
