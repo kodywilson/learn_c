@@ -90,7 +90,7 @@ int main(void) {
   sentence[SENT] = '\0';
   printf("\n");
   puts(sentence);
-  puts("Amazing!");
+  puts("Amazing");
   puts("Grace");
   puts("How sweet the sound");
 
