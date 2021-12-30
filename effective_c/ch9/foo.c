@@ -96,6 +96,7 @@ int main(void) {
   puts("that saved a wretch like me.");
   puts("I once was lost,");
   puts("but now am found.");
+  puts("Was blind,");
 
   return 1;
 }
