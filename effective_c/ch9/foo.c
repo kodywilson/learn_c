@@ -95,9 +95,10 @@ int main(void) {
   puts("How sweet the sound");
   puts("that saved a wretch like me.");
   puts("I once was lost,");
-  puts("but now am found.");
+  puts("but now I'm found.");
   puts("Was blind,");
   puts("but now I see.");
+  puts("Twas grace that taught my heart to fear");
 
   return 1;
 }
