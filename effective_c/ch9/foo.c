@@ -99,6 +99,7 @@ int main(void) {
   puts("Was blind,");
   puts("but now I see.");
   puts("Twas grace that taught my heart to fear");
+  puts("And grace my fears relieved.");
 
   return 1;
 }
