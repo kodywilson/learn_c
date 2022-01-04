@@ -100,6 +100,7 @@ int main(void) {
   puts("Twas grace that taught my heart to fear");
   puts("And grace my fears relieved.");
   puts("How precious did that grace appear");
+  puts("the hour I first believed");
 
   return 1;
 }
