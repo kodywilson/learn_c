@@ -102,6 +102,7 @@ int main(void) {
   puts("How precious did that grace appear");
   puts("the hour I first believed");
   puts("My chains are gone");
+  puts("I've been set free");
 
   return 1;
 }
