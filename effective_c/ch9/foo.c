@@ -105,6 +105,7 @@ int main(void) {
   puts("I've been set free");
   puts("My God, my Savior has ransomed me");
   puts("And like a flood, his mercy rains");
+  puts("Unending love, Amazing grace");
 
   return 1;
 }
