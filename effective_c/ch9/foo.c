@@ -107,6 +107,7 @@ int main(void) {
   puts("And like a flood, his mercy rains");
   puts("Unending love, Amazing grace");
   puts("The Lord has promised good to me");
+  puts("His word my hope secures");
 
   return 1;
 }
