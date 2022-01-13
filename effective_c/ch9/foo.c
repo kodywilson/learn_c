@@ -109,6 +109,7 @@ int main(void) {
   puts("The Lord has promised good to me");
   puts("His word my hope secures");
   puts("He will my shield and portion be");
+  puts("As long as life endures");
 
   return 1;
 }
