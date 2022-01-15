@@ -110,6 +110,7 @@ int main(void) {
   puts("His word my hope secures");
   puts("He will my shield and portion be");
   puts("As long as life endures");
+  puts("My chains are gone");
 
   return 1;
 }
