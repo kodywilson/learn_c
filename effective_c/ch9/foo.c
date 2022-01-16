@@ -111,6 +111,7 @@ int main(void) {
   puts("He will my shield and portion be");
   puts("As long as life endures");
   puts("My chains are gone");
+  puts("I've been set free (been set free)");
 
   return 1;
 }
