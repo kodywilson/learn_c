@@ -112,6 +112,7 @@ int main(void) {
   puts("As long as life endures");
   puts("My chains are gone");
   puts("I've been set free (been set free)");
+  puts("My God, my Savior has ransomed me (ransomed me)");
 
   return 1;
 }
