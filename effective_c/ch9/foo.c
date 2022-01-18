@@ -114,6 +114,7 @@ int main(void) {
   puts("I've been set free (been set free)");
   puts("My God, my Savior has ransomed me (ransomed me)");
   puts("And like a flood (like a flood) His mercy rains (mercy rains)");
+  puts("Unending love, oh, Amazing grace");
 
   return 1;
 }
