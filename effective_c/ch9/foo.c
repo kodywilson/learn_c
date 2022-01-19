@@ -115,6 +115,7 @@ int main(void) {
   puts("My God, my Savior has ransomed me (ransomed me)");
   puts("And like a flood (like a flood) His mercy rains (mercy rains)");
   puts("Unending love, oh, Amazing grace");
+  puts("The Earth shall soon dissolve like snow");
 
   return 1;
 }
