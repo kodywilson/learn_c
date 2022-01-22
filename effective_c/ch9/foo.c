@@ -118,6 +118,7 @@ int main(void) {
   puts("The Earth shall soon dissolve like snow");
   puts("The sun forbear to shine");
   puts("But God, Who called me here below");
+  puts("Will be forever mine");
 
   return 1;
 }
