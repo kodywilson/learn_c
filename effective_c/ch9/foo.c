@@ -119,6 +119,7 @@ int main(void) {
   puts("The sun forbear to shine");
   puts("But God, Who called me here below");
   puts("Will be forever mine");
+  puts("My chains are gone");
 
   return 1;
 }
