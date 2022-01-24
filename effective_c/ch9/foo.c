@@ -120,6 +120,7 @@ int main(void) {
   puts("But God, Who called me here below");
   puts("Will be forever mine");
   puts("My chains are gone");
+  puts("I've been set free");
 
   return 1;
 }
