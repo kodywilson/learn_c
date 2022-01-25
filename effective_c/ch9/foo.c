@@ -121,6 +121,7 @@ int main(void) {
   puts("Will be forever mine");
   puts("My chains are gone");
   puts("I've been set free");
+  puts("My God, my Savior has ransomed me");
 
   return 1;
 }
