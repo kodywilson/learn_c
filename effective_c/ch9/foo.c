@@ -122,6 +122,7 @@ int main(void) {
   puts("My chains are gone");
   puts("I've been set free");
   puts("My God, my Savior has ransomed me");
+  printf("\n");
   puts("And like a flood, His mercy rains");
   puts("Unending love, Amazing grace (grace)");
   puts("I once was lost, but now I'm found");
