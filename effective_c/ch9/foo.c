@@ -106,6 +106,7 @@ int main(void) {
   puts("My God, my Savior has ransomed me");
   puts("And like a flood, his mercy rains");
   puts("Unending love, Amazing grace");
+  printf("\n");
   puts("The Lord has promised good to me");
   puts("His word my hope secures");
   puts("He will my shield and portion be");
