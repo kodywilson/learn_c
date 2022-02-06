@@ -93,6 +93,7 @@ int main(void) {
   puts("Amazing grace");
   puts("How sweet the sound");
   puts("that saved a wretch like me.");
+  printf("\n");
   puts("I once was lost,");
   puts("but now I'm found.");
   puts("Was blind,");
