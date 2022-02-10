@@ -133,6 +133,7 @@ int main(void) {
   puts("And like a flood, His mercy rains");
   puts("Unending love, Amazing grace (grace)");
   printf("\n");
+  printf("\n");
   puts("I once was lost, but now I'm found");
   puts("Was blind (was blind), but now (but now) I see");
   printf("\n");
