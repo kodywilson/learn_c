@@ -100,6 +100,7 @@ int main(void) {
   puts("Was blind,");
   puts("but now I see.");
   printf("\n");
+  printf("\n");
   puts("Twas grace that taught my heart to fear");
   puts("And grace my fears relieved.");
   puts("How precious did that grace appear");
