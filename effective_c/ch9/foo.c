@@ -101,6 +101,7 @@ int main(void) {
   puts("but now I see.");
   printf("\n");
   printf("\n");
+  printf("\n");
   puts("Twas grace that taught my heart to fear");
   puts("And grace my fears relieved.");
   puts("How precious did that grace appear");
