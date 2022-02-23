@@ -143,6 +143,7 @@ int main(void) {
   printf("\n");
   printf("\n");
   printf("\n");
+  printf("\n");
   puts("I once was lost, but now I'm found");
   puts("Was blind (was blind), but now (but now) I see");
   printf("\n");
