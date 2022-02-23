@@ -135,6 +135,7 @@ int main(void) {
   puts("Will be forever mine");
   printf("\n");
   printf("\n");
+  printf("\n");
   puts("My chains are gone");
   puts("I've been set free");
   puts("My God, my Savior has ransomed me");
