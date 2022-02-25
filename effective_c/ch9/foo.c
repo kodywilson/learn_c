@@ -129,6 +129,7 @@ int main(void) {
   puts("Unending love, oh, Amazing grace");
   printf("\n");
   printf("\n");
+  printf("\n");
   puts("The Earth shall soon dissolve like snow");
   puts("The sun forbear to shine");
   puts("But God, Who called me here below");
