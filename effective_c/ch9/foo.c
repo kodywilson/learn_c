@@ -89,6 +89,7 @@ int main(void) {
     sentence[i] = word3[i - 7];
   sentence[SENT] = '\0';
   printf("\n");
+  printf("\n");
   puts(sentence);
   puts("Amazing grace");
   puts("How sweet the sound");
