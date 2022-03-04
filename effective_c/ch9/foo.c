@@ -96,6 +96,7 @@ int main(void) {
   puts("that saved a wretch like me.");
   printf("\n");
   printf("\n");
+  printf("\n");
   puts("I once was lost,");
   puts("but now I'm found.");
   puts("Was blind,");
