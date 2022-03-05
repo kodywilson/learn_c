@@ -97,6 +97,7 @@ int main(void) {
   printf("\n");
   printf("\n");
   printf("\n");
+  printf("\n");
   puts("I once was lost,");
   puts("but now I'm found.");
   puts("Was blind,");
