@@ -5,6 +5,7 @@ int main() {
   int a = 2;
 
   if (i == 1) puts("i is equal to one");
+  if ((i == 1) && (a == 2)) puts("i is equal to 1 and a is equal to 2");
   if (i == a) puts("i is equal to a");
   else if (a == 2) puts("a = 2"); 
   else puts("i is not equal to a");
