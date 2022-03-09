@@ -1,10 +1,15 @@
 #include <stdio.h>
 
-int main() {
-  float radius = 16.0, perim, area;
+#define PI 3.141592
 
-  perim = 2 * 3.141 * radius;
-  area = 3.141 * radius * radius;
+int main() {
+  float radius, perim, area;
+
+  puts("Enter the radius: ");
+  scanf("%f", &radius);
+
+  perim = 2 * PI * radius;
+  area = PI * radius * radius;
 
   printf("Perimeter of circle (r=%f) is %f\n", radius, perim);
   printf("Area of a circle (r=%f) is %f\n", radius, area);
