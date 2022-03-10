@@ -11,7 +11,7 @@ int main() {
     ch = getchar();
 
     // debugging
-    printf("DEBUG: (%c)\n", ch);
+    //printf("DEBUG: (%c)\n", ch);
 
   } while (ch != '\n');
 
