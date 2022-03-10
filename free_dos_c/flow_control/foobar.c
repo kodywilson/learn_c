@@ -22,6 +22,7 @@ int main() {
     printf("%d ", iter);
     if ( iter % 3 == 0 ) printf("foo");
     if ( iter % 5 == 0 ) printf("bar");
+    printf("\n");
   }
 
   return 0;
