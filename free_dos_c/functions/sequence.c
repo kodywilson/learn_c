@@ -10,7 +10,7 @@ int sequence(int start, int stop) {
 
 int main() {
 
-  for (int i = 1; i <= 5; i++) sequence(i, i + 10);
+  for (int i = 1; i <= 6; i++) sequence(i, i + 10);
 
   return 0;
 }
