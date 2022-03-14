@@ -9,6 +9,8 @@ int main() {
 
   for (int i = 0; i < 5; i++) printf("Random number is %d\n", rand());
 
+  printf("The square root of %d is %lf\n", 49, sqrt(49));
+
   return 0;
 }
 
