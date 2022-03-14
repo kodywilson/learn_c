@@ -14,13 +14,13 @@ int main() {
 
   srand(time(0));
 
-  for (iter = 0; iter < 20; iter++) {
-    randomvalue = (rand() % 20) + 1;
-    hist[iter] = randomvalue;
+  for (iter = 0; iter < 5000; iter++) {
+    randomvalue = rand() % 20;
+    hist[randomvalue] = hist[randomvalue] + 1;
     //printf("%d\n", randomvalue);
   }
 
-  for (iter = 0; iter < 20; iter++) printf("[%d]: %d ", iter, hist[iter]);
+  for (iter = 0; iter < 20; iter++) printf("[%d]: %d\n", iter, hist[iter]);
   printf("\n");
 
   return 0;
