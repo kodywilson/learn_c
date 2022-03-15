@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int string_copy(char *dest, char *source, int maxsize) {
+/*int string_copy(char *dest, char *source, int maxsize) {
 
   int i;
   // fill dest array with nulls
@@ -17,7 +17,7 @@ int string_copy(char *dest, char *source, int maxsize) {
 
   return i;
 
-}
+}*/
 
 int main() {
   char *string;
@@ -32,7 +32,8 @@ int main() {
     return 1;
   }
 
-  string_copy(string, "Hello world", string_size);
+  // string_copy(string, "Hello world", string_size);
+  strncpy(string, "Hello world", string_size);
 
   puts(string);
 
