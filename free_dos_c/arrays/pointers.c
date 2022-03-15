@@ -3,7 +3,7 @@
 
 int main() {
   int *numlist;
-  int numlist_len = 10;
+  int numlist_len = 20;
   int i;
 
   // allocate memory
