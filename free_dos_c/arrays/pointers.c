@@ -3,8 +3,11 @@
 
 int main() {
   int *numlist;
-  int numlist_len = 20;
+  int numlist_len;
   int i;
+
+  puts("Enter a number from 1 - 9:");
+  scanf("%d", &numlist_len);
 
   // allocate memory
   numlist = (int *) malloc(numlist_len * sizeof(int));
