@@ -11,9 +11,10 @@ int is_charstring(char *bigstring, char c) {
 }
 
 int main(int argc, char **argv) {
-  char c = argv[1][0];
+  //char string[] = argv[1];
+  char c = argv[2][0];
 
-  if ( is_charstring("This is a test", c)) puts("Found it!");
+  if ( is_charstring(argv[1], c)) puts("Found it!");
 
   return 0;
 }
