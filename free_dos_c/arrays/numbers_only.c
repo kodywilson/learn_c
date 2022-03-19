@@ -12,18 +12,24 @@ int is_charstring(char *bigstring, char c) {
 }
 
 int is_number(char *string) {
-  for (int i = 0; string[i] != '\0'; i++) {
-    printf("%c ", string[i]);
-    if ((((int) string[i] < 0) || ((int) string[i] > 9)) && (string[i+1] != '\0')) return 1;
+
+  int i = 0;
+  char nums[] = "1234567890";
+
+  while (string[i] != '\0') {
+    if (!is_charstring(nums, string[i])) return 0;
+    i++;
   }
 
-  return 0;
+  return 1;
 }
 
 int main() {
   // test if string contains only numbers
   if (is_number("123456789")) puts("String 123456789 contains only numbers");
-  if (is_number("1234567d89") > 0) puts("String 1234567d89 does not contain only numbers");
+  if (!is_number("1234567d89")) puts("String 1234567d89 does not contain only numbers");
+  // this next one should not show up when you run the program
+  if (!is_number("123456789")) puts("String 1234567d89 does not contain only numbers");
 
   return 0;
 }
