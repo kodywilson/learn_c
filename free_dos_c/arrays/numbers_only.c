@@ -1,9 +1,20 @@
 #include <stdio.h>
 
+int is_charstring(char *bigstring, char c) {
+  int i = 0;
+
+  while (bigstring[i] != '\0') {
+    if (bigstring[i] == c) return 1;
+    i++;
+  }
+
+  return 0;
+}
+
 int is_number(char *string) {
   for (int i = 0; string[i] != '\0'; i++) {
     printf("%c ", string[i]);
-    if ((((int) string[i] < 0) || ((int) string[i] > 9)) && (string[i+1] == '\0')) return 1;
+    if ((((int) string[i] < 0) || ((int) string[i] > 9)) && (string[i+1] != '\0')) return 1;
   }
 
   return 0;
