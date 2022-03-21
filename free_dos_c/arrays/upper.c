@@ -9,7 +9,7 @@ void uppercase(char *string) {
 }
 
 int main() {
-  char stringy[] = "Test experiment ! []9878974r7<F5><F4>xczv";
+  char stringy[] = "Test experiment ! []9878974r7<F5><F4>xczv /.,;'[]|";
 
   uppercase(stringy);
 
