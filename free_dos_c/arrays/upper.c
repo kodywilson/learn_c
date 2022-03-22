@@ -10,10 +10,13 @@ void uppercase(char *string) {
 
 int main() {
   char stringy[] = "Test experiment ! []9878974r7<F5><F4>xczv /.,;'[]|";
+  char tst_str[] = "weird characters []][]l;'.'|~`12awdfw43e545";
 
   uppercase(stringy);
+  uppercase(tst_str);
 
   puts(stringy);
+  puts(tst_str);
 
   return 0;
 }
