@@ -10,7 +10,9 @@ void showfile(FILE *pfile) {
   while (!feof(pfile)) {
     len = fread(buf, sizeof(char), BUFSIZE, pfile);
 
+    // putchar('['); DEBUG to show contents of buffer
     fwrite(buf, sizeof(char), len, stdout);
+    // putchar(']');
   }
 }
 
