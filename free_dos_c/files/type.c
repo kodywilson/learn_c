@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void showfile(FILE *pfile) {
-  int ch;
+#define BUFSIZE 8
 
-  while ( (ch = fgetc(pfile)) != EOF ) {
-    putchar(ch);
+void showfile(FILE *pfile) {
+  char buf[BUFSIZE];
+  int len;
+
+  while (!feof(pfile)) {
+    len = fread(buf, sizeof(char), BUFSIZE, pfile);
+
+    fwrite(buf, sizeof(char), len, stdout);
   }
 }
 
