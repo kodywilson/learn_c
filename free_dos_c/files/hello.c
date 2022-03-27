@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
       case 'H': puts("You chose help"); break;
       case 'q':
       case 'Q': puts("You chose to quit"); break;
-      default: puts("Unknown option");
+      default: puts("Unknown option: valid options are help (hH) and quit (qQ)");
     }
   }
 
