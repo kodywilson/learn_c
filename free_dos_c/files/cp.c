@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-void showfile(FILE *from) {
+void copyfile(FILE *from, FILE *to) {
   int ch;
 
   while ( (ch = fgetc(from)) != EOF  ) {
-    putchar(ch);
+    fputc(ch, to);
   }
 }
 
@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 
     if (fileptr == NULL) fprintf(stderr, "Cannot open file %s\n", argv[i]);
     else {
-      showfile(fileptr);
+      copyfile(fileptr, stdout);
       fclose(fileptr);
       printf("\n");
     }
