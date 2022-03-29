@@ -12,10 +12,10 @@ int main(int argc, char **argv) {
   int i, count = 0;
   FILE *fileptr;
 
-  // check that arguments were passed
-  if (argc < 2) {
-    puts("Pass files you wish to line count");
-    return 1;
+  // scan stdin if no files passed
+  if (argc == 1) {
+    count = countlines(stdin);
+    printf("stdin: %d lines\n", count);
   }
 
   // loop through argv
