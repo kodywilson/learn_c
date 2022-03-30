@@ -1,6 +1,8 @@
 // simple more program
 #include <stdio.h>
 
+# define BUFF_SIZE 100
+
 void getenter(void) {
   int ch;
 
@@ -9,18 +11,26 @@ void getenter(void) {
 }
 
 int more(FILE *file, int maxlines) {
-  int ch, count = 0;
+  int buff_length, ch, count = 0;
+  char buffer[BUFF_SIZE];
 
-  while ((ch = fgetc(file)) != EOF) {
-    putchar(ch);
-    if (ch == '\n') {
-      count++;
-      //printf("%d ", count); // DEBUG
-      if (count == maxlines) {
-        fprintf(stderr, "<Press Enter for more>");
-        getenter();
+  // read bufferfuls until end of file
+  while (!feof(file)) {
+    buff_length = fread(buffer, sizeof(char), BUFF_SIZE, file);
 
-        count = 0;
+    // loop through buffer
+    for (ch = 0; ch < buff_length; ch++) {
+      putchar(buffer[ch]);
+
+      if (buffer[ch] == '\n') {
+        count++;
+        //printf("%d ", count); // DEBUG
+        if (count == maxlines) {
+          fprintf(stderr, "<Press Enter for more>");
+          getenter();
+
+          count = 0;
+        }
       }
     }
   }
