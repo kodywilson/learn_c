@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <getopt.h>
 
+void print_usage() {
+  printf("Usage: temp.out -c <temp> | temp.out -f <temp> \n");
+  exit(2);
+}
+
 int main(int argc, char **argv) {
   int option;
   int cflag = 0, fflag = 0;
@@ -9,19 +14,15 @@ int main(int argc, char **argv) {
   while ((option = getopt(argc, argv, "cf")) != -1) {
     switch (option) {
       case 'c': 
-        if (cflag) {
-          printf("Only one option\n");
-          exit(1);
-        } else {
+        if (cflag) print_usage();
+        else {
           cflag++;
           fflag++;
         }
         printf("You want centigrade\n"); break;
       case 'f': 
-        if (fflag) {
-          printf("Only one option\n");
-          exit(1);
-        } else {
+        if (fflag) print_usage();
+        else {
           fflag++;
           cflag++;
         }
