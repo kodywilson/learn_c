@@ -25,5 +25,15 @@ int main() {
   printf("a&c is %d\n", a & c);
   printf("a|c is %d\n", a | c);
 
+  printf("a<<1 is %d\n", a<<1); // a is 2
+  printf("c<<1 is %d\n", c<<1); // c is 10
+
+  printf("a>>1 is %d\n", a>>1); // 0
+  printf("c>>1 is %d\n", c>>1); // 2
+
+  printf("a is %d\n", a);
+  printf("b is %d\n", b);
+  printf("c is %d\n", c);
+
   return 0;
 }
