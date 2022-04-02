@@ -1,10 +1,12 @@
 #include <stdio.h>
 
+typedef struct {
+  float x;
+  float y;
+} coord_t;
+
 int main() {
-  struct {
-    float x;
-    float y;
-  } coord;
+  coord_t coord;
 
   coord.x = 10.0;
   coord.y = 1.5;
