@@ -1,16 +1,16 @@
 #include <stdio.h>
 
 int isodd(int a) {
-  if (a % 2 != 0) return 1;
-  return 0;
+  return (a & 1);
 }
 
 int main() {
-  int a = 3, b = 16, c = 33, d = 44;
+  int numbers[] = {3,16,33,448762};
 
-  puts("1 = true, 0 = false");
-
-  printf("%d is odd?  %d\n", a, isodd(a));
+  for (int i = 0; i < 4; i++) {
+    if (isodd(numbers[i])) printf("%d is odd!\n", numbers[i]);
+    else printf("%d is even!\n", numbers[i]);
+  }
 
   return 0;
 }
