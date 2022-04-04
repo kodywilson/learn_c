@@ -1,8 +1,7 @@
 #include <stdio.h>
 
 int minimum(int a, int b) {
-  if (a > b) return b;
-  return a;
+  return (a < b ? a : b);
 }
 
 int main() {
