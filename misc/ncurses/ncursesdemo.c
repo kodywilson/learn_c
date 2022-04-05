@@ -69,23 +69,23 @@ void moving_and_sleeping() {
 }
 
 void colouring() {
-  if(has_colors()) {
-    if(start_color() == OK) {
-      init_pair(1, COLOR_YELLOW, COLOR_RED);
+  if(has_colors()) {  // check that terminal has color capability
+    if(start_color() == OK) { // start color if possible
+      init_pair(1, COLOR_YELLOW, COLOR_RED); // create foreground, background color pairs
       init_pair(2, COLOR_GREEN, COLOR_GREEN);
       init_pair(3, COLOR_MAGENTA, COLOR_CYAN);
 
-      attrset(COLOR_PAIR(1));
+      attrset(COLOR_PAIR(1)); // set color
       addstr("Yellow and red\n\n");
       refresh();
-      attroff(COLOR_PAIR(1));
+      attroff(COLOR_PAIR(1)); // remove color
 
       attrset(COLOR_PAIR(2));
-      attrset(A_BOLD);
+      attrset(A_BOLD); // set bold
       addstr("Green and green A_BOLD\n\n");
       refresh();
       attroff(COLOR_PAIR(2));
-      attroff(A_BOLD);
+      attroff(A_BOLD); // remove bold
 
       attrset(COLOR_PAIR(3));
       addstr("Magenta and cyan\n");
