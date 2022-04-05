@@ -2,7 +2,9 @@
 #include "conio.h"
 
 int main() {
-  printf("Press and key to continue...");
+  puts("Press and key to continue...");
+  fflush(stdout);
+
   getch();
 
   return 0;
