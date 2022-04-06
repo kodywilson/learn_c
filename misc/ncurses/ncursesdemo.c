@@ -14,9 +14,9 @@ int main(void) {
 
   //printing();
 
-  //moving_and_sleeping();
+  moving_and_sleeping();
 
-  colouring();
+  //colouring();
 
   addstr("\nPress any key to exit...");
   refresh();
