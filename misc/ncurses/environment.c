@@ -12,15 +12,19 @@ int main() {
 
   int y, x, yBeg, xBeg, yMax, xMax;
 
-  WINDOW *win = newwin(10, 20, 10, 10);
+  getyx(stdscr, y, x); // start position 0, 0
+  getbegyx(stdscr, yBeg, xBeg); 
+  getmaxyx(stdscr, yMax, xMax); // get terminal size
 
-  getyx(stdscr, y, x);
-  getbegyx(win, yBeg, xBeg);
-  getmaxyx(stdscr, yMax, xMax);
+  // Create window for input
+  WINDOW *inputwin = newwin(3, xMax-12, yMax-5, 5);
+  box(inputwin, 0, 0);
+  refresh();
+  wrefresh(inputwin);
 
   // mvprintw(yMax/2, xMax/2, "Hello");
 
-  mvprintw(yMax/2, xMax/2, "%d %d %d %d %d %d", y, x, yBeg, xBeg, yMax, xMax); // DEBUG
+  //mvprintw(yMax/2, xMax/2, "%d %d %d %d %d %d", y, x, yBeg, xBeg, yMax, xMax); // DEBUG
 
   getch();
   endwin();
