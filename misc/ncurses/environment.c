@@ -22,6 +22,13 @@ int main() {
   refresh();
   wrefresh(inputwin);
 
+  // get user input
+  int c = wgetch(inputwin);
+  if (c == 'j') {
+    mvwprintw(inputwin, 1, 1, "You pressed j!");
+    wrefresh(inputwin);
+  }
+
   // mvprintw(yMax/2, xMax/2, "Hello");
 
   //mvprintw(yMax/2, xMax/2, "%d %d %d %d %d %d", y, x, yBeg, xBeg, yMax, xMax); // DEBUG
