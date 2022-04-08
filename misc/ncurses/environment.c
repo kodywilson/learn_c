@@ -10,10 +10,11 @@ int main() {
   noecho();
   cbreak();
 
-  int y, x, yBeg, xBeg, yMax, xMax;
+  //int y, x, yBeg, xBeg, yMax, xMax;
+  int yMax, xMax;
 
-  getyx(stdscr, y, x); // start position 0, 0
-  getbegyx(stdscr, yBeg, xBeg); 
+  //getyx(stdscr, y, x); // start position 0, 0
+  //getbegyx(stdscr, yBeg, xBeg); 
   getmaxyx(stdscr, yMax, xMax); // get terminal size
 
   // Create window for input
@@ -22,10 +23,13 @@ int main() {
   refresh();
   wrefresh(inputwin);
 
+  keypad(inputwin, true);
+
   // get user input
   int c = wgetch(inputwin);
-  if (c == 'j') {
-    mvwprintw(inputwin, 1, 1, "You pressed j!");
+  // KEY_UP KEY_LEFT KEY_F(function key) KEY_DOWN KEY_RIGHT
+  if (c == KEY_UP) {
+    mvwprintw(inputwin, 1, 1, "You pressed the up key!");
     wrefresh(inputwin);
   }
 
