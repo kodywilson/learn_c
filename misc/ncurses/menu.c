@@ -35,7 +35,7 @@ int main() {
         if (highlight > 0) highlight--;
         break;
       case KEY_DOWN:
-        if (highlight < 2) highlight++;
+        if (highlight < 3) highlight++;
         break;
       default:
         break;
