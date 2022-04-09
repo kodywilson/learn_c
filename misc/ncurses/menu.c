@@ -18,12 +18,12 @@ int main() {
   wrefresh(menuwin);  // refresh window with updates
   keypad(menuwin, true); // enables arrow keys
 
-  char *choices[3] = {"Walk", "Jog", "Run"};
+  char *choices[4] = {"Walk", "Jog", "Run", "Yoga"};
   int choice;
   int highlight = 0;
 
   while(1) {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       if (i == highlight) wattron(menuwin, A_REVERSE);
       mvwprintw(menuwin, i+1, 1, choices[i]);
       wattroff(menuwin, A_REVERSE);
