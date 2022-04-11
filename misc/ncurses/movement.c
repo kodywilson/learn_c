@@ -16,8 +16,9 @@ int main() {
   initscr();
   noecho();
   // get terminal stats
-  int choice;//, yMax, xMax;
-  //getmaxyx(stdscr, yMax, xMax);
+  int choice, yMax, xMax;
+  getmaxyx(stdscr, yMax, xMax);
+  printw("yMax: %d, xMax: %d", yMax, xMax);
   keypad(stdscr, true);
 
   // draw player on the screen
@@ -29,10 +30,10 @@ int main() {
     mvprintw(bob.y, bob.x, bob.rep);
     choice = getch();
     switch (choice) {
-      case KEY_UP: bob.y--; break;
-      case KEY_DOWN: bob.y++; break;
-      case KEY_RIGHT: bob.x++; break;
-      case KEY_LEFT: bob.x--; break;
+      case KEY_UP: if (bob.y > 0) bob.y--; break;
+      case KEY_DOWN: if (bob.y < yMax) bob.y++; break;
+      case KEY_RIGHT: if (bob.x < xMax) bob.x++; break;
+      case KEY_LEFT: if (bob.x > 0) bob.x--; break;
       default: break;
     }
     if (choice == 113) break;
