@@ -1,3 +1,4 @@
+// Create a simple menu using ncurses
 #include <ncurses.h>
 //#include <string.h>
 
