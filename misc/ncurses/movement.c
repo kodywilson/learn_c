@@ -4,21 +4,20 @@
 
 struct Player {
   char rep[2];
-  int y;
-  int x;
+  int y, x, old_y, old_x;
 };
 
 int main() {
 
   struct Player bob;
-  
 
   initscr();
   noecho();
+  curs_set(0); // set cursor to invisible
+
   // get terminal stats
   int choice, yMax, xMax;
   getmaxyx(stdscr, yMax, xMax);
-  printw("yMax: %d, xMax: %d", yMax, xMax);
   keypad(stdscr, true);
 
   // draw player on the screen
@@ -28,6 +27,8 @@ int main() {
 
   while (1) {
     mvprintw(bob.y, bob.x, bob.rep);
+    bob.old_y = bob.y; // track previous position so we can clear it
+    bob.old_x = bob.x;
     choice = getch();
     switch (choice) {
       case KEY_UP: if (bob.y > 0) bob.y--; break;
@@ -37,9 +38,10 @@ int main() {
       default: break;
     }
     if (choice == 113) break;
+    mvaddch(bob.old_y, bob.old_x, ' ');
   }
   
-  getch();
+  // getch(); // maybe add game over screen?
 
   endwin();
 
