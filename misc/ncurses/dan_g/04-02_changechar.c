@@ -17,7 +17,7 @@ int main() {
 
   //replace the r with a b
   move(0,2);
-  addch(A_REVERSE | 'b');
+  addch(A_UNDERLINE | 'b');
   refresh();
   getch();
 
