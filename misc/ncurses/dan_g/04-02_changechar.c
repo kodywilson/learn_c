@@ -15,6 +15,12 @@ int main() {
   refresh();
   getch();
 
+  //replace the r with a b
+  move(0,2);
+  addch(A_UNDERLINE | 'b');
+  refresh();
+  getch();
+
   endwin();
   return 0;
 }
