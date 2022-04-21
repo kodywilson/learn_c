@@ -9,10 +9,9 @@ int main() {
   noecho(); // do not repeat key strokes
   curs_set(FALSE); // do not show cursor
 
-  getmaxyx(stdscr, max_y, max_x);
-
   // move ball across the screen
   while(1) {
+    getmaxyx(stdscr, max_y, max_x);
     //clear();  // clear the whole screen - seems expensive when you could hide the previous ball
     mvprintw(y, x, "o"); // print ball
     if ( direction == 1 ) mvprintw(y, x - 1, " ");  // remove old ball
