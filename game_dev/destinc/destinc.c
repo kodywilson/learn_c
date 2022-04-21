@@ -7,7 +7,7 @@ int main() {
   int min = 24, max = 0, roll;
 
   for(int i = 0; i < ROLLS; i++) {
-    roll = d6(4);
+    roll = dice(4, 6);
     if ( roll > max ) max = roll;
     if ( roll < min ) min = roll;
   }

@@ -10,8 +10,8 @@ int die(int sides) {
   return roll;;
 }
 
-int d6(int how_many) {
+int dice(int how_many, int sides) {
   int roll = 0;
-  for (int i = 0; i < how_many; i++) roll = roll + die(6);
+  for (int i = 0; i < how_many; i++) roll = roll + die(sides);
   return roll;
 }
