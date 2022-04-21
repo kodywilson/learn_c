@@ -1,21 +1,27 @@
 #include <ncurses.h>
 
 int main() {
-  int x = 0, y = 0;
+  int y = 0, x = 0, max_y, max_x;
+  int next_x = 0;
+  int direction = 1;
 
   initscr(); // initialize screen
   noecho(); // do not repeat key strokes
   curs_set(FALSE); // do not show cursor
 
+  getmaxyx(stdscr, max_y, max_x);
+
   // move ball across the screen
   while(1) {
     //clear();  // clear the whole screen - seems expensive when you could hide the previous ball
     mvprintw(y, x, "o"); // print ball
-    mvprintw(y, x - 1, " ");  // remove old ball
+    if ( direction == 1 ) mvprintw(y, x - 1, " ");  // remove old ball
+    if ( direction == -1 ) mvprintw(y, x + 1, " ");  // remove old ball
     refresh();
     napms(50);  // pause between bounces
-    x++;
-    if (x > 120) break;
+    next_x = x + direction;
+    if (next_x >= max_x || next_x < 0) direction*=-1;
+    else x+= direction;
   }
 
   getch();
