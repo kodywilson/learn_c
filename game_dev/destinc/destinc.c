@@ -1,4 +1,5 @@
 #include "dice.h"
+#include "text.h"
 
 #define ROLLS 1000
 
@@ -13,6 +14,8 @@ int main() {
   }
   printf("We rolled four d6 a %d times and got the following\n", ROLLS);
   printf("Min: %d\t\tMax: %d\n", min, max);
+
+  printf("Test text is %s \n", rand_move_text[dice(1, 4) - 1]);
 
   return 0;
 }
