@@ -1,3 +1,4 @@
+// this program creates a simple box
 #include <ncurses.h>
 
 int main() {
