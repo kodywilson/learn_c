@@ -1,3 +1,4 @@
+// attributes
 #include <ncurses.h>
 
 int main() {
