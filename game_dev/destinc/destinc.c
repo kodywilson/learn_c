@@ -25,18 +25,32 @@ int main() {
     napms(dice(1, 100));
   }
 
-  napms(3000);
+  napms(2000);
 
+  // stars go up
   for (int a = 1; a < 4; a++) {
+    for (int i = 0; i < STARS; i++) {
+      mvaddch(starsY[i], starsX[i], ' ');
+      starsY[i] = starsY[i] - a;
+      mvaddch(starsY[i], starsX[i], '*');
+    }
+    refresh();
+    napms(150);
+  }
+
+  // stars fall away
+  for (int a = 1; a < maxY + 1; a++) {
     for (int i = 0; i < STARS; i++) {
       mvaddch(starsY[i], starsX[i], ' ');
       starsY[i] = starsY[i] + a;
       mvaddch(starsY[i], starsX[i], '*');
-      refresh();
-      napms(500);
     }
+    refresh();
+    napms(100);
   }
 
+  attron(A_UNDERLINE);
+  mvaddstr(maxY/2, maxX/3, "Press any key to begin...");
   getch();
 
   // display stars
