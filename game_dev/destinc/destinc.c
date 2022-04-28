@@ -50,7 +50,7 @@ int main() {
   }
 
   attron(A_UNDERLINE);
-  mvaddstr(maxY/2, maxX/3, "Press any key to begin...");
+  mvaddstr(maxY/2, (maxX * 2)/5, "Press any key to begin...");
   getch();
 
   // display stars
