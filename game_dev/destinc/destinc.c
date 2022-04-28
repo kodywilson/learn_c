@@ -10,9 +10,18 @@
 int main() {
   srand(time(0));
   //int min = 24, max = 0, roll;
-  int maxY, maxX, starsY[STARS], starsX[STARS];
+  int maxY, maxX, starsY[STARS], starsX[STARS], starsColor[STARS];
 
   initscr();
+  start_color();
+  // set up some colors
+  init_pair(1, COLOR_RED, COLOR_BLACK);
+  init_pair(2, COLOR_BLUE, COLOR_BLACK);
+  init_pair(3, COLOR_MAGENTA, COLOR_BLACK);
+  init_pair(4, COLOR_CYAN, COLOR_BLACK);
+  init_pair(5, COLOR_WHITE, COLOR_BLACK);
+  init_pair(6, COLOR_YELLOW, COLOR_BLACK);
+
   getmaxyx(stdscr, maxY, maxX);
   curs_set(0);
 
@@ -20,6 +29,8 @@ int main() {
   for (int i = 0; i < STARS; i++) {
     starsY[i] = dice(1, maxY);
     starsX[i] = dice(1, maxX);
+    starsColor[i] = dice(1, 6);
+    attrset(COLOR_PAIR(starsColor[i]));
     mvaddch(starsY[i], starsX[i], '*');
     refresh();
     napms(dice(1, 100));
@@ -32,6 +43,7 @@ int main() {
     for (int i = 0; i < STARS; i++) {
       mvaddch(starsY[i], starsX[i], ' ');
       starsY[i] = starsY[i] - a;
+      attrset(COLOR_PAIR(starsColor[i]));
       mvaddch(starsY[i], starsX[i], '*');
     }
     refresh();
@@ -39,17 +51,19 @@ int main() {
   }
 
   // stars fall away
+  int drop_speed = 100;
   for (int a = 1; a < maxY + 1; a++) {
     for (int i = 0; i < STARS; i++) {
       mvaddch(starsY[i], starsX[i], ' ');
       starsY[i] = starsY[i] + a;
+      attrset(COLOR_PAIR(starsColor[i]));
       mvaddch(starsY[i], starsX[i], '*');
     }
     refresh();
-    napms(100);
+    napms(drop_speed-=5);
   }
 
-  attron(A_UNDERLINE);
+  attrset(A_UNDERLINE | COLOR_PAIR(1));
   mvaddstr(maxY/2, (maxX * 2)/5, "Press any key to begin...");
   getch();
 
