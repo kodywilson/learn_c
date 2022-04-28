@@ -2,10 +2,14 @@
 #define MOVE_TEXT 6
 #include "text.h"
 #include <ncurses.h>
+#include <string.h>
 
 //#define MOVE_TEXT 4
 #define ROLLS 1000
 #define STARS 100
+
+// function prototypes
+void center(char *title);
 
 int main() {
   srand(time(0));
@@ -64,7 +68,7 @@ int main() {
   }
 
   attrset(A_UNDERLINE | COLOR_PAIR(1));
-  mvaddstr(maxY/2, (maxX * 2)/5, "Press any key to begin...");
+  center("Press any key to begin...");
   getch();
 
   // display stars
@@ -83,4 +87,13 @@ int main() {
 */
   endwin();
   return 0;
+}
+
+void center(char *title) {
+  int len, indent, y, width;
+  getmaxyx(stdscr, y, width);
+  len = strlen(title);
+  indent = (width - len) / 2;
+  mvaddstr(y / 2, indent, title);
+  refresh();
 }
