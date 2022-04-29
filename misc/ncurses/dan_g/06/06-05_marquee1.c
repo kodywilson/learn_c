@@ -11,10 +11,13 @@ int main() {
 
   len = strlen(text);
   t = text; // initialize pointer
+  mvprintw(4, 5, "The length of string is %d", len);
 
   while(len) {
     move(5, 5);  // insert at same spot
     insch(*(t+len-1)); // work backwards
+    move(6, 5);  // insert at same spot
+    insch(text[len-1]); // work backwards
     refresh();
     napms(100);
     len--;
