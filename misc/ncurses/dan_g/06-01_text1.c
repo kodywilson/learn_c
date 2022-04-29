@@ -11,5 +11,11 @@ int main() {
 
   addstr(text1);
   addstr(text3);
+  addstr(text5);
+  refresh();
+  getch();
+
+  endwin();
+  return 0;
 
 }
