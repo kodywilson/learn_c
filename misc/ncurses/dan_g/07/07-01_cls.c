@@ -1,3 +1,4 @@
+// prints blah across the screen and then clears it
 #include <ncurses.h>
 
 int main() {
