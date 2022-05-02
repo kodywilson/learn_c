@@ -13,7 +13,7 @@ int main() {
   getch();
 
   move(5, 20);
-  clrtoeol();
+  clrtobot();
   refresh();
   getch();
 
