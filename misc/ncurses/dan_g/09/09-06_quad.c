@@ -18,14 +18,18 @@ int main() {
   lower_left  = newwin(max_y / 2, max_x / 2, max_y / 2, 0);
   lower_right = newwin(max_y / 2, max_x / 2, max_y / 2, max_x / 2);
 
+  box(upper_left, 0, 0);
   wbkgd(upper_left, COLOR_PAIR(1));
-  waddstr(upper_left, "This is a quarter window");
+  mvwaddstr(upper_left, 1, 1, "This is a quarter window");
+  box(upper_right, 0, 0);
   wbkgd(upper_right, COLOR_PAIR(2));
-  waddstr(upper_right, "This is a quarter window");
+  mvwaddstr(upper_right, 1, 1, "This is a quarter window");
+  box(lower_left, 0, 0);
   wbkgd(lower_left, COLOR_PAIR(3));
-  waddstr(lower_left, "This is a quarter window");
+  mvwaddstr(lower_left, 1, 1, "This is a quarter window");
+  box(lower_right, 0, 0);
   wbkgd(lower_right, COLOR_PAIR(4));
-  waddstr(lower_right, "This is a quarter window");
+  mvwaddstr(lower_right, 1, 1, "This is a quarter window");
 
   refresh();
   getch();
