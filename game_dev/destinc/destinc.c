@@ -37,10 +37,10 @@ int main() {
     attrset(COLOR_PAIR(starsColor[i]));
     mvaddch(starsY[i], starsX[i], '*');
     refresh();
-    napms(dice(1, 100));
+    napms(dice(1, 80));
   }
 
-  napms(2000);
+  napms(1000);
 
   // stars go up
   for (int a = 1; a < 4; a++) {
@@ -51,7 +51,7 @@ int main() {
       mvaddch(starsY[i], starsX[i], '*');
     }
     refresh();
-    napms(150);
+    napms(100);
   }
 
   // stars fall away
