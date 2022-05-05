@@ -3,27 +3,27 @@
 #include "text.h"
 #include <ncurses.h>
 #include <string.h>
+#define ROLLS 1000
+#define STARS 100
+#include "graphics.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 
 //#define MOVE_TEXT 4
-#define ROLLS 1000
-#define STARS 100
+//#define ROLLS 1000
+//#define STARS 100
 #define GAME_DIR ".destiny"
 #define SAVE_FILE "saves.txt"
 #define INPUT_MAX 33
 #define PATH_MAX 256
 
 // function prototypes
-void center(char *title);
-void stars(WINDOW *win);
 
 int main() {
   srand(time(0)); // seed rand using time
   FILE *fp;       // file pointer for save
   //int min = 24, max = 0, roll;
   int choice, highlight, max_y, max_x, stats_y, stats_x;
-  int starsY[STARS], starsX[STARS], starsColor[STARS];
   char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
   WINDOW *game_text, *select, *input, *stats;
 
@@ -45,48 +45,6 @@ int main() {
   curs_set(0); // turn off visible cursor
 
   stars(stdscr);  // draw stars on the whole screen
-
-  // generate randomly located stars
-  for (int i = 0; i < STARS; i++) {
-    starsY[i] = dice(1, max_y);
-    starsX[i] = dice(1, max_x);
-    starsColor[i] = dice(1, 6);
-    attrset(COLOR_PAIR(starsColor[i]));
-    mvaddch(starsY[i], starsX[i], '*');
-    refresh();
-    napms(dice(1, 80));
-  }
-
-  napms(1500);
-
-  // stars go up
-  for (int a = 1; a < 4; a++) {
-    for (int i = 0; i < STARS; i++) {
-      mvaddch(starsY[i], starsX[i], ' ');
-      starsY[i] = starsY[i] - a;
-      attrset(COLOR_PAIR(starsColor[i]));
-      mvaddch(starsY[i], starsX[i], '*');
-    }
-    refresh();
-    napms(120);
-  }
-
-  // stars fall away
-  int drop_speed = 100;
-  for (int a = 1; a < max_y + 1; a++) {
-    for (int i = 0; i < STARS; i++) {
-      mvaddch(starsY[i], starsX[i], ' ');
-      starsY[i] = starsY[i] + a;
-      attrset(COLOR_PAIR(starsColor[i]));
-      mvaddch(starsY[i], starsX[i], '*');
-    }
-    refresh();
-    napms(drop_speed-=5);
-  }
-
-  attrset(A_UNDERLINE | COLOR_PAIR(1));
-  center("Press any key to begin...");
-  getch();
 
   clear();
   refresh();
@@ -182,65 +140,3 @@ int main() {
   return 0;
 }
 
-// center text to the window
-void center(char *title) {
-  int len, indent, y, width;
-  getmaxyx(stdscr, y, width);
-  len = strlen(title);
-  indent = (width - len) / 2;
-  mvaddstr(y / 2, indent, title);
-  refresh();
-}
-
-// print stars in the window
-void stars(WINDOW *win) {
-  int win_y, win_x;
-  int starsY[STARS], starsX[STARS], starsColor[STARS];
-
-  getmaxyx(win, win_y, win_x);
-  //curs_set(0); // turn off visible cursor
-
-  // generate randomly located stars
-  for (int i = 0; i < STARS; i++) {
-    starsY[i] = dice(1, win_y);
-    starsX[i] = dice(1, win_x);
-    starsColor[i] = dice(1, 6);
-    attrset(COLOR_PAIR(starsColor[i]));
-    mvaddch(starsY[i], starsX[i], '*');
-    refresh();
-    napms(dice(1, 80));
-  }
-
-  napms(1500);
-
-  // stars go up
-  for (int a = 1; a < 4; a++) {
-    for (int i = 0; i < STARS; i++) {
-      mvaddch(starsY[i], starsX[i], ' ');
-      starsY[i] = starsY[i] - a;
-      attrset(COLOR_PAIR(starsColor[i]));
-      mvaddch(starsY[i], starsX[i], '*');
-    }
-    refresh();
-    napms(120);
-  }
-
-  // stars fall away
-  int drop_speed = 100;
-  for (int a = 1; a < win_y + 1; a++) {
-    for (int i = 0; i < STARS; i++) {
-      mvaddch(starsY[i], starsX[i], ' ');
-      starsY[i] = starsY[i] + a;
-      attrset(COLOR_PAIR(starsColor[i]));
-      mvaddch(starsY[i], starsX[i], '*');
-    }
-    refresh();
-    napms(drop_speed-=5);
-  }
-
-  attrset(A_UNDERLINE | COLOR_PAIR(1));
-  center("Press any key to begin...");
-  getch();
-
-  clear();
-}
