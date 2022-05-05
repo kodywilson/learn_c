@@ -1,3 +1,7 @@
+//      ---||  Destiny  ||---
+// C port of original game written in Ruby
+// by Kody Wilson
+
 #include "dice.h"
 #define MOVE_TEXT 6
 #include "text.h"
@@ -6,12 +10,10 @@
 #define ROLLS 1000
 #define STARS 100
 #include "graphics.h"
+#include "choices.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 
-//#define MOVE_TEXT 4
-//#define ROLLS 1000
-//#define STARS 100
 #define GAME_DIR ".destiny"
 #define SAVE_FILE "saves.txt"
 #define INPUT_MAX 33
@@ -50,8 +52,8 @@ int main() {
   refresh();
 
   // after intro, set up interface
-  stats    = newwin(3, (max_x * 2) / 3, 0, max_x / 6);
-  game_text = newwin(max_y * 2 / 3, max_x, max_y / 10, 0);
+  stats     = newwin(3, (max_x * 2) / 3, 0, max_x / 6);
+  game_text = newwin(max_y * 2 / 3, max_x, max_y / 12, 0);
   select    = newwin(max_y / 4, max_x, (max_y * 3) / 4, 0);
   input     = newwin(2, max_x / 3, max_y / 2, max_x / 3);
 
@@ -116,6 +118,7 @@ int main() {
   mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
   wrefresh(stats);
   wrefresh(game_text);
+  choice = choose(select, yes_no, 2);
   wrefresh(select);
   //wrefresh(input);
 
