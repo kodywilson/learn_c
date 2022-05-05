@@ -7,16 +7,22 @@
 //#define MOVE_TEXT 4
 #define ROLLS 1000
 #define STARS 100
+#define GAME_DIR ".destiny"
+#define SAVE_FILE "saves.txt"
+#define INPUT_MAX 33
+#define PATH_MAX 256
 
 // function prototypes
 void center(char *title);
 
 int main() {
-  srand(time(0));
+  srand(time(0)); // seed rand using time
+  FILE *fp;       // file pointer for save
   //int min = 24, max = 0, roll;
-  int max_y, max_x, stats_y, stats_x;
+  int choice, max_y, max_x, stats_y, stats_x;
   int starsY[STARS], starsX[STARS], starsColor[STARS];
-  WINDOW *game_txt, *select, *input, *stats;
+  char name[INPUT_MAX], filepath[PATH_MAX];
+  WINDOW *game_text, *select, *input, *stats;
 
   initscr();
   start_color();
@@ -78,24 +84,49 @@ int main() {
 
   // after intro, set up interface
   stats    = newwin(3, (max_x * 2) / 3, 0, max_x / 6);
-  game_txt = newwin(max_y * 2 / 3, max_x, max_y / 10, 0);
+  game_text = newwin(max_y * 2 / 3, max_x, max_y / 10, 0);
   select    = newwin(max_y / 4, max_x, (max_y * 3) / 4, 0);
   input     = newwin(2, max_x / 3, max_y / 2, max_x / 3);
 
   getmaxyx(stats, stats_y, stats_x);
 
   box(stats, 0, 0);
-  box(game_txt, 0, 0);
+  box(game_text, 0, 0);
   box(select, 0, 0);
   box(input, 0, 0);
+
+  // first check for existing save file and then a valid save
+  snprintf(filepath, PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
+  if ((fp = fopen(filepath, "r")) != NULL) fclose(fp);
+  else {
+    mvwaddstr(game_text, 3, 3, "Hi and welcome to Destiny. To create a character and start playing");
+    mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");
+    mvwaddstr(select, 1, 1, "[1] for yes\n[2] for no");
+    wrefresh(game_text);
+    wrefresh(select);
+    do {
+      choice = getch();
+    } while (choice < 49 || choice > 50 );
+    wclear(game_text);
+    if (choice == 49) {
+      mvwaddstr(game_text, 3, 3, "Excellent choice. Creating save file...");
+    } else { 
+      mvwaddstr(game_text, 3, 3, "OK, maybe next time, eh?");
+      mvwaddstr(game_text, 4, 3, "Press any key to exit...");
+      wrefresh(game_text);
+      getch();
+      endwin();
+      return 0;
+    }
+    wrefresh(game_text);
+  }
 
   // add some placeholder text to boxes
   attrset(COLOR_PAIR(1));
   mvaddstr(0, (max_x / 2) - 5, " Stats ");
   mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
-
   wrefresh(stats);
-  wrefresh(game_txt);
+  wrefresh(game_text);
   wrefresh(select);
   //wrefresh(input);
 
