@@ -29,7 +29,7 @@ void stars(WINDOW *win, int num_stars) {
     napms(dice(1, 80));
   }
 
-  napms(2000);
+  napms(1500);
 
   // I really like the idea of making the various star actions, ie.
   // falling away, shaking, into selectable options...
@@ -44,6 +44,8 @@ void stars(WINDOW *win, int num_stars) {
     refresh();
     napms(120);
   }
+
+  napms(500);
 
   // stars fall away
   int drop_speed = 100;

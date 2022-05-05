@@ -11,8 +11,7 @@
 #define STARS 100
 #include "graphics.h"
 #include "choices.h"
-#include <sys/stat.h>
-#include <sys/types.h>
+#include "file.h"
 
 #define GAME_DIR ".destiny"
 #define SAVE_FILE "saves.txt"
@@ -23,10 +22,11 @@
 
 int main() {
   srand(time(0)); // seed rand using time
-  FILE *fp;       // file pointer for save
+  //FILE *fp;       // file pointer for save
   //int min = 24, max = 0, roll;
-  int choice, highlight, max_y, max_x, stats_y, stats_x;
-  char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
+  int choice, max_y, max_x, stats_y, stats_x;
+  //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
+  char *yes_no[2] = {"Yes", "No"};
   WINDOW *game_text, *select, *input, *stats;
 
   // setup up initial ncurses parameters
@@ -68,49 +68,8 @@ int main() {
 
   wattrset(game_text, COLOR_PAIR(4));
 
-  // first check for existing save file and then a valid save
-  snprintf(filepath, PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
-  if ((fp = fopen(filepath, "r")) != NULL) {
-    fclose(fp);
-    mvwprintw(game_text, 3, 3, "Found directory at %s", filepath);
-  }
-  else {
-    mvwaddstr(game_text, 3, 3, "Hi and welcome to Destiny. To create a character and start playing");
-    mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");
-    mvwaddstr(select, 1, 1, "[1] for yes\n[2] for no");
-    wrefresh(game_text);
-    wrefresh(select);
-    do {
-      choice = getch();
-    } while (choice < 49 || choice > 50 );
-    wclear(game_text);
-    if (choice == 49) {
-      mvwaddstr(game_text, 3, 3, "Excellent choice. Creating save file...");
-      wrefresh(game_text);
-      if (mkdir(filepath, 0777) == -1) {
-        endwin();
-        printf("Unable to create %s\n", filepath);
-        return 1;
-      }
-      mvwaddstr(game_text, 4, 3, "Game directory created...");
-      wrefresh(game_text);
-      /*fp = fopen(filepath, "w");
-      if (fp == NULL) {
-        endwin();
-        puts("Unable to create file");
-        return 1;
-      }*/
-
-    } else { 
-      mvwaddstr(game_text, 3, 3, "OK, maybe next time, eh?");
-      mvwaddstr(game_text, 4, 3, "Press any key to exit...");
-      wrefresh(game_text);
-      getch();
-      endwin();
-      return 0;
-    }
-    wrefresh(game_text);
-  }
+  // setup game directory and save file if needed
+  setup_file(game_text, select);
 
   // add some placeholder text to boxes
   attrset(COLOR_PAIR(6) | A_BOLD);
