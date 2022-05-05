@@ -11,15 +11,15 @@ void center(WINDOW *win, char *text) {
 }
 
 // print stars in the window
-void stars(WINDOW *win) {
+void stars(WINDOW *win, int num_stars) {
   int win_y, win_x;
-  int starsY[STARS], starsX[STARS], starsColor[STARS];
+  int starsY[num_stars], starsX[num_stars], starsColor[num_stars];
 
   getmaxyx(win, win_y, win_x);
   //curs_set(0); // turn off visible cursor
 
   // generate randomly located stars
-  for (int i = 0; i < STARS; i++) {
+  for (int i = 0; i < num_stars; i++) {
     starsY[i] = dice(1, win_y);
     starsX[i] = dice(1, win_x);
     starsColor[i] = dice(1, 6);
@@ -31,9 +31,11 @@ void stars(WINDOW *win) {
 
   napms(2000);
 
+  // I really like the idea of making the various star actions, ie.
+  // falling away, shaking, into selectable options...
   // stars go up
   for (int a = 1; a < 4; a++) {
-    for (int i = 0; i < STARS; i++) {
+    for (int i = 0; i < num_stars; i++) {
       mvaddch(starsY[i], starsX[i], ' ');
       starsY[i] = starsY[i] - a;
       attrset(COLOR_PAIR(starsColor[i]));
@@ -46,7 +48,7 @@ void stars(WINDOW *win) {
   // stars fall away
   int drop_speed = 100;
   for (int a = 1; a < win_y + 1; a++) {
-    for (int i = 0; i < STARS; i++) {
+    for (int i = 0; i < num_stars; i++) {
       mvaddch(starsY[i], starsX[i], ' ');
       starsY[i] = starsY[i] + a;
       attrset(COLOR_PAIR(starsColor[i]));
