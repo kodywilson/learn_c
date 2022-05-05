@@ -16,18 +16,23 @@
 
 // function prototypes
 void center(char *title);
+void stars(WINDOW *win);
 
 int main() {
   srand(time(0)); // seed rand using time
   FILE *fp;       // file pointer for save
   //int min = 24, max = 0, roll;
-  int choice, max_y, max_x, stats_y, stats_x;
+  int choice, highlight, max_y, max_x, stats_y, stats_x;
   int starsY[STARS], starsX[STARS], starsColor[STARS];
-  char name[INPUT_MAX], filepath[PATH_MAX];
+  char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
   WINDOW *game_text, *select, *input, *stats;
 
+  // setup up initial ncurses parameters
   initscr();
-  start_color();
+  noecho();
+  cbreak();
+  start_color(); // update this to check for success!
+
   // set up some colors
   init_pair(1, COLOR_RED, COLOR_BLACK);
   init_pair(2, COLOR_BLUE, COLOR_BLACK);
@@ -37,7 +42,7 @@ int main() {
   init_pair(6, COLOR_YELLOW, COLOR_BLACK);
 
   getmaxyx(stdscr, max_y, max_x);
-  curs_set(0);
+  curs_set(0); // turn off visible cursor
 
   // generate randomly located stars
   for (int i = 0; i < STARS; i++) {
@@ -97,6 +102,10 @@ int main() {
   box(select, 0, 0);
   box(input, 0, 0);
 
+  keypad(select, true); // enable the keypad on the select window
+
+  wattrset(game_text, COLOR_PAIR(4));
+
   // first check for existing save file and then a valid save
   snprintf(filepath, PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
   if ((fp = fopen(filepath, "r")) != NULL) {
@@ -142,7 +151,7 @@ int main() {
   }
 
   // add some placeholder text to boxes
-  attrset(COLOR_PAIR(1));
+  attrset(COLOR_PAIR(6) | A_BOLD);
   mvaddstr(0, (max_x / 2) - 5, " Stats ");
   mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
   wrefresh(stats);
@@ -171,6 +180,7 @@ int main() {
   return 0;
 }
 
+// center text to the window
 void center(char *title) {
   int len, indent, y, width;
   getmaxyx(stdscr, y, width);
@@ -178,4 +188,57 @@ void center(char *title) {
   indent = (width - len) / 2;
   mvaddstr(y / 2, indent, title);
   refresh();
+}
+
+// print stars in the window
+void stars(WINDOW *win) {
+  int win_y, win_x;
+  int starsY[STARS], starsX[STARS], starsColor[STARS];
+
+  getmaxyx(win, win_y, win_x);
+  //curs_set(0); // turn off visible cursor
+
+  // generate randomly located stars
+  for (int i = 0; i < STARS; i++) {
+    starsY[i] = dice(1, win_y);
+    starsX[i] = dice(1, win_x);
+    starsColor[i] = dice(1, 6);
+    attrset(COLOR_PAIR(starsColor[i]));
+    mvaddch(starsY[i], starsX[i], '*');
+    refresh();
+    napms(dice(1, 80));
+  }
+
+  napms(1500);
+
+  // stars go up
+  for (int a = 1; a < 4; a++) {
+    for (int i = 0; i < STARS; i++) {
+      mvaddch(starsY[i], starsX[i], ' ');
+      starsY[i] = starsY[i] - a;
+      attrset(COLOR_PAIR(starsColor[i]));
+      mvaddch(starsY[i], starsX[i], '*');
+    }
+    refresh();
+    napms(120);
+  }
+
+  // stars fall away
+  int drop_speed = 100;
+  for (int a = 1; a < win_y + 1; a++) {
+    for (int i = 0; i < STARS; i++) {
+      mvaddch(starsY[i], starsX[i], ' ');
+      starsY[i] = starsY[i] + a;
+      attrset(COLOR_PAIR(starsColor[i]));
+      mvaddch(starsY[i], starsX[i], '*');
+    }
+    refresh();
+    napms(drop_speed-=5);
+  }
+
+  attrset(A_UNDERLINE | COLOR_PAIR(1));
+  center("Press any key to begin...");
+  getch();
+
+  clear();
 }
