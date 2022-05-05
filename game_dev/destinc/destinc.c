@@ -3,6 +3,8 @@
 #include "text.h"
 #include <ncurses.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 //#define MOVE_TEXT 4
 #define ROLLS 1000
@@ -97,7 +99,10 @@ int main() {
 
   // first check for existing save file and then a valid save
   snprintf(filepath, PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
-  if ((fp = fopen(filepath, "r")) != NULL) fclose(fp);
+  if ((fp = fopen(filepath, "r")) != NULL) {
+    fclose(fp);
+    mvwprintw(game_text, 3, 3, "Found directory at %s", filepath);
+  }
   else {
     mvwaddstr(game_text, 3, 3, "Hi and welcome to Destiny. To create a character and start playing");
     mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");
@@ -110,6 +115,21 @@ int main() {
     wclear(game_text);
     if (choice == 49) {
       mvwaddstr(game_text, 3, 3, "Excellent choice. Creating save file...");
+      wrefresh(game_text);
+      if (mkdir(filepath, 0777) == -1) {
+        endwin();
+        printf("Unable to create %s\n", filepath);
+        return 1;
+      }
+      mvwaddstr(game_text, 4, 3, "Game directory created...");
+      wrefresh(game_text);
+      /*fp = fopen(filepath, "w");
+      if (fp == NULL) {
+        endwin();
+        puts("Unable to create file");
+        return 1;
+      }*/
+
     } else { 
       mvwaddstr(game_text, 3, 3, "OK, maybe next time, eh?");
       mvwaddstr(game_text, 4, 3, "Press any key to exit...");
