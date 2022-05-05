@@ -44,6 +44,8 @@ int main() {
   getmaxyx(stdscr, max_y, max_x);
   curs_set(0); // turn off visible cursor
 
+  stars(stdscr);  // draw stars on the whole screen
+
   // generate randomly located stars
   for (int i = 0; i < STARS; i++) {
     starsY[i] = dice(1, max_y);
