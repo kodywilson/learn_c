@@ -14,7 +14,9 @@ void center(char *title);
 int main() {
   srand(time(0));
   //int min = 24, max = 0, roll;
-  int maxY, maxX, starsY[STARS], starsX[STARS], starsColor[STARS];
+  int max_y, max_x, stats_y, stats_x;
+  int starsY[STARS], starsX[STARS], starsColor[STARS];
+  WINDOW *game_txt, *select, *input, *stats;
 
   initscr();
   start_color();
@@ -26,13 +28,13 @@ int main() {
   init_pair(5, COLOR_WHITE, COLOR_BLACK);
   init_pair(6, COLOR_YELLOW, COLOR_BLACK);
 
-  getmaxyx(stdscr, maxY, maxX);
+  getmaxyx(stdscr, max_y, max_x);
   curs_set(0);
 
   // generate randomly located stars
   for (int i = 0; i < STARS; i++) {
-    starsY[i] = dice(1, maxY);
-    starsX[i] = dice(1, maxX);
+    starsY[i] = dice(1, max_y);
+    starsX[i] = dice(1, max_x);
     starsColor[i] = dice(1, 6);
     attrset(COLOR_PAIR(starsColor[i]));
     mvaddch(starsY[i], starsX[i], '*');
@@ -40,7 +42,7 @@ int main() {
     napms(dice(1, 80));
   }
 
-  napms(1000);
+  napms(1500);
 
   // stars go up
   for (int a = 1; a < 4; a++) {
@@ -51,12 +53,12 @@ int main() {
       mvaddch(starsY[i], starsX[i], '*');
     }
     refresh();
-    napms(100);
+    napms(120);
   }
 
   // stars fall away
   int drop_speed = 100;
-  for (int a = 1; a < maxY + 1; a++) {
+  for (int a = 1; a < max_y + 1; a++) {
     for (int i = 0; i < STARS; i++) {
       mvaddch(starsY[i], starsX[i], ' ');
       starsY[i] = starsY[i] + a;
@@ -70,6 +72,35 @@ int main() {
   attrset(A_UNDERLINE | COLOR_PAIR(1));
   center("Press any key to begin...");
   getch();
+
+  clear();
+  refresh();
+
+  // after intro, set up interface
+  stats    = newwin(3, (max_x * 2) / 3, 0, max_x / 6);
+  game_txt = newwin(max_y * 2 / 3, max_x, max_y / 10, 0);
+  select    = newwin(max_y / 4, max_x, (max_y * 3) / 4, 0);
+  input     = newwin(2, max_x / 3, max_y / 2, max_x / 3);
+
+  getmaxyx(stats, stats_y, stats_x);
+
+  box(stats, 0, 0);
+  box(game_txt, 0, 0);
+  box(select, 0, 0);
+  box(input, 0, 0);
+
+  // add some placeholder text to boxes
+  attrset(COLOR_PAIR(1));
+  mvaddstr(0, (max_x / 2) - 5, " Stats ");
+  mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
+
+  wrefresh(stats);
+  wrefresh(game_txt);
+  wrefresh(select);
+  //wrefresh(input);
+
+  getch();
+
 
   // display stars
   //for (int i = 0; i < STARS; i++) {
