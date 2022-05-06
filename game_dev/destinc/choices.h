@@ -1,5 +1,8 @@
 // functions for handling player selections
 
+// globals
+char *yes_no[2] = {"Yes", "No"};
+
 // choose from num (number of) choices
 // choose(select, yes_no, 2);
 // Send window for menu, char** of choices, and number of choices
@@ -30,7 +33,7 @@ int choose(WINDOW *win, char **choices, int num) {
   }
 
   wclear(win);
-  mvwprintw(win, 4, 4, "Your choice was: #%d - %s", highlight, choices[highlight]);
+  //mvwprintw(win, 4, 4, "Your choice was: #%d - %s", highlight, choices[highlight]); // DEBUG
   wrefresh(win);
 
   //getch(); // DEBUG

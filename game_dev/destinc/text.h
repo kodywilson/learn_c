@@ -1,4 +1,6 @@
-//#define MOVE_TEXT 4 // from destinc.c
+#include <string.h>
+
+#define MOVE_TEXT 6
 
 char *rand_move_text[MOVE_TEXT] = 
   {"A skeleton shuffles forward", "Eeek!", "You smell something terrible", "Huh?",

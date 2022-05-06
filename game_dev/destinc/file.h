@@ -6,6 +6,17 @@
 #define SAVE_FILE "/saves.txt"
 #define PATH_MAX 256
 
+// globals for game directory and save file
+char game_dir[PATH_MAX];
+char save_file[PATH_MAX];
+
+void file_init() {
+  snprintf(game_dir, PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
+  strncpy(save_file, game_dir, PATH_MAX);
+  strncat(save_file, SAVE_FILE, 16);
+}
+
+// check if passed file exists and can be opened for reading
 int file_there(char filepath[PATH_MAX]) {
   FILE *fp;
   if ((fp = fopen(filepath, "r")) != NULL) {
@@ -14,17 +25,29 @@ int file_there(char filepath[PATH_MAX]) {
   } else return 0;
 }
 
+int check_saves() {
+  char linefromfile[512];
+  FILE *fp;
+  int numfound = 0;
+
+  // loop through the file and look for Name 
+  if ((fp = fopen(save_file, "r")) != NULL) {
+    while ((fgets(linefromfile, 512, fp)) != NULL )
+      if ((strstr(linefromfile, "Name:")) != NULL) numfound++;
+    fclose(fp);
+  }
+
+  return numfound;
+}
+
 // creates game directory and save file
 void setup_file(WINDOW *game_text, WINDOW *select) {
   FILE *fp;
-  char filepath[PATH_MAX];
-  char *yes_no[2] = {"Yes", "No"};
   int choice;
 
   // build game directory path
-  snprintf(filepath, PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
-  if (file_there(filepath)) { // check if directory already exists
-    mvwprintw(game_text, 3, 3, "Found directory at %s", filepath);
+  if (file_there(game_dir)) { // check if directory already exists
+    mvwprintw(game_text, 3, 3, "Found game directory at %s", game_dir);
   } else {
     mvwaddstr(game_text, 3, 3, "Hi and welcome to Destiny. To make a character and start playing");
     mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");
@@ -34,18 +57,17 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
     if (choice == 1) {
       mvwaddstr(game_text, 3, 3, "Excellent choice. Creating game directory and save file...");
       wrefresh(game_text);
-      if (mkdir(filepath, 0777) == -1) {  // if directory creation fails, bail out
+      if (mkdir(game_dir, 0777) == -1) {  // if directory creation fails, bail out
         endwin();
-        printf("Unable to create directory %s\n", filepath);
+        printf("Unable to create directory %s\n", game_dir);
         exit(1);
       }
       // now create save file if game directory was successfully created
-      strcat(filepath, SAVE_FILE);
-      //mvwprintw(game_text, 6, 3, "strcat gave us %s", filepath); // DEBUG
-      fp = fopen(filepath, "w");
+      //mvwprintw(game_text, 6, 3, "strcat gave us %s", save_file); // DEBUG
+      fp = fopen(save_file, "w");
       if (fp == NULL) {
         endwin();
-        printf("Unable to create file %s", filepath);
+        printf("Unable to create file %s", save_file);
         exit(1);
       }
       fputs("--Destiny save file--\n", fp);

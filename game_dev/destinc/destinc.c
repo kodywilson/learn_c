@@ -3,31 +3,29 @@
 // by Kody Wilson
 
 #include "dice.h"
-#define MOVE_TEXT 6
 #include "text.h"
 #include <ncurses.h>
-#include <string.h>
-#define ROLLS 1000
-#define STARS 100
 #include "graphics.h"
 #include "choices.h"
 #include "file.h"
+#include "entities/pc.h"
+#include "game_mechanics/character.h"
 
-//#define GAME_DIR ".destiny"
-//#define SAVE_FILE "saves.txt"
 #define INPUT_MAX 33
-#define PATH_MAX 256
 
 // function prototypes
 
 int main() {
   srand(time(0)); // seed rand using time
-  //FILE *fp;       // file pointer for save
   //int min = 24, max = 0, roll;
   int choice, max_y, max_x, stats_y, stats_x;
+  pc player; // create player struct
+
   //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
-  char *yes_no[2] = {"Yes", "No"};
   WINDOW *game_text, *select, *input, *stats;
+
+  // initialize global variables
+  file_init();
 
   // setup up initial ncurses parameters
   initscr();
@@ -46,7 +44,7 @@ int main() {
   getmaxyx(stdscr, max_y, max_x);
   curs_set(0); // turn off visible cursor
 
-  stars(stdscr, STARS);  // draw stars on the whole screen
+  stars(stdscr, 100);  // draw stars on the whole screen
 
   clear();
   refresh();
@@ -72,24 +70,38 @@ int main() {
   setup_file(game_text, select);
 
   // check for existing save
-  //if (
+  if (file_there(save_file)) {
+    if (check_saves()) {
+      mvwaddstr(game_text, 5, 3, "Saved games found. Would you like to load one or start a new game?");
+      wrefresh(game_text);
+      //if (choose(yes_no) == 1)  
+    } else {
+      mvwaddstr(game_text, 5, 3, "No saved games found. Let's create a character!");
+      wrefresh(game_text);
+      getch();
+      create_character(&player);
+      mvwprintw(game_text, 6, 3, "Hi %s, you are a %s with %d hit points (life).", player.name, player.role, player.hp);
+      save_game(player);
+      wrefresh(game_text);
+      getch();
+    }
+  } else {
+    mvwaddstr(game_text, 5, 3, "There is no save game file!");
+    wrefresh(game_text);
+    getch();
+  }
 
   // add some placeholder text to boxes
-  attrset(COLOR_PAIR(6) | A_BOLD);
-  mvaddstr(0, (max_x / 2) - 5, " Stats ");
+  wattron(stats, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(stats, 0, (stats_x / 2) - 3, " Stats ");
+  wattroff(stats, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
   wrefresh(stats);
   wrefresh(game_text);
-  choice = choose(select, yes_no, 2);
   wrefresh(select);
   //wrefresh(input);
 
   getch();
-
-
-  // display stars
-  //for (int i = 0; i < STARS; i++) {
-  //}
 
   /*for(int i = 0; i < ROLLS; i++) {
     roll = dice(4, 6);
