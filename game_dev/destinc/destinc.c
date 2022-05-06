@@ -8,26 +8,23 @@
 #include <ncurses.h>
 #include <string.h>
 #define ROLLS 1000
-#define STARS 100
 #include "graphics.h"
 #include "choices.h"
 #include "file.h"
 
-//#define GAME_DIR ".destiny"
-//#define SAVE_FILE "saves.txt"
 #define INPUT_MAX 33
-#define PATH_MAX 256
 
 // function prototypes
 
 int main() {
   srand(time(0)); // seed rand using time
-  //FILE *fp;       // file pointer for save
   //int min = 24, max = 0, roll;
-  int choice, max_y, max_x, stats_y, stats_x;
+  int max_y, max_x, stats_y, stats_x;
   //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
-  char *yes_no[2] = {"Yes", "No"};
   WINDOW *game_text, *select, *input, *stats;
+
+  // initialize global variables
+  file_init();
 
   // setup up initial ncurses parameters
   initscr();
@@ -46,7 +43,7 @@ int main() {
   getmaxyx(stdscr, max_y, max_x);
   curs_set(0); // turn off visible cursor
 
-  stars(stdscr, STARS);  // draw stars on the whole screen
+  stars(stdscr, 100);  // draw stars on the whole screen
 
   clear();
   refresh();
@@ -80,7 +77,6 @@ int main() {
   mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
   wrefresh(stats);
   wrefresh(game_text);
-  choice = choose(select, yes_no, 2);
   wrefresh(select);
   //wrefresh(input);
 

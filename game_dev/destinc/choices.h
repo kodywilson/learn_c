@@ -1,5 +1,8 @@
 // functions for handling player selections
 
+// globals
+char *yes_no[2] = {"Yes", "No"};
+
 // choose from num (number of) choices
 // choose(select, yes_no, 2);
 // Send window for menu, char** of choices, and number of choices
