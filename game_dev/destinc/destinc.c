@@ -1,23 +1,40 @@
+//      ---||  Destiny  ||---
+// C port of original game written in Ruby
+// by Kody Wilson
+
 #include "dice.h"
 #define MOVE_TEXT 6
 #include "text.h"
 #include <ncurses.h>
 #include <string.h>
-
-//#define MOVE_TEXT 4
 #define ROLLS 1000
 #define STARS 100
+#include "graphics.h"
+#include "choices.h"
+#include "file.h"
+
+//#define GAME_DIR ".destiny"
+//#define SAVE_FILE "saves.txt"
+#define INPUT_MAX 33
+#define PATH_MAX 256
 
 // function prototypes
-void center(char *title);
 
 int main() {
-  srand(time(0));
+  srand(time(0)); // seed rand using time
+  //FILE *fp;       // file pointer for save
   //int min = 24, max = 0, roll;
-  int maxY, maxX, starsY[STARS], starsX[STARS], starsColor[STARS];
+  int choice, max_y, max_x, stats_y, stats_x;
+  //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
+  char *yes_no[2] = {"Yes", "No"};
+  WINDOW *game_text, *select, *input, *stats;
 
+  // setup up initial ncurses parameters
   initscr();
-  start_color();
+  noecho();
+  cbreak();
+  start_color(); // update this to check for success!
+
   // set up some colors
   init_pair(1, COLOR_RED, COLOR_BLACK);
   init_pair(2, COLOR_BLUE, COLOR_BLACK);
@@ -26,50 +43,49 @@ int main() {
   init_pair(5, COLOR_WHITE, COLOR_BLACK);
   init_pair(6, COLOR_YELLOW, COLOR_BLACK);
 
-  getmaxyx(stdscr, maxY, maxX);
-  curs_set(0);
+  getmaxyx(stdscr, max_y, max_x);
+  curs_set(0); // turn off visible cursor
 
-  // generate randomly located stars
-  for (int i = 0; i < STARS; i++) {
-    starsY[i] = dice(1, maxY);
-    starsX[i] = dice(1, maxX);
-    starsColor[i] = dice(1, 6);
-    attrset(COLOR_PAIR(starsColor[i]));
-    mvaddch(starsY[i], starsX[i], '*');
-    refresh();
-    napms(dice(1, 100));
-  }
+  stars(stdscr, STARS);  // draw stars on the whole screen
 
-  napms(2000);
+  clear();
+  refresh();
 
-  // stars go up
-  for (int a = 1; a < 4; a++) {
-    for (int i = 0; i < STARS; i++) {
-      mvaddch(starsY[i], starsX[i], ' ');
-      starsY[i] = starsY[i] - a;
-      attrset(COLOR_PAIR(starsColor[i]));
-      mvaddch(starsY[i], starsX[i], '*');
-    }
-    refresh();
-    napms(150);
-  }
+  // after intro, set up interface
+  stats     = newwin(3, (max_x * 2) / 3, 0, max_x / 6);
+  game_text = newwin(max_y * 2 / 3, max_x, max_y / 12, 0);
+  select    = newwin(max_y / 4, max_x, (max_y * 3) / 4, 0);
+  input     = newwin(2, max_x / 3, max_y / 2, max_x / 3);
 
-  // stars fall away
-  int drop_speed = 100;
-  for (int a = 1; a < maxY + 1; a++) {
-    for (int i = 0; i < STARS; i++) {
-      mvaddch(starsY[i], starsX[i], ' ');
-      starsY[i] = starsY[i] + a;
-      attrset(COLOR_PAIR(starsColor[i]));
-      mvaddch(starsY[i], starsX[i], '*');
-    }
-    refresh();
-    napms(drop_speed-=5);
-  }
+  getmaxyx(stats, stats_y, stats_x);
 
-  attrset(A_UNDERLINE | COLOR_PAIR(1));
-  center("Press any key to begin...");
+  box(stats, 0, 0);
+  box(game_text, 0, 0);
+  box(select, 0, 0);
+  box(input, 0, 0);
+
+  keypad(select, true); // enable the keypad on the select window
+
+  wattrset(game_text, COLOR_PAIR(4));
+
+  // setup game directory and save file if needed
+  setup_file(game_text, select);
+
+  // check for existing save
+  //if (
+
+  // add some placeholder text to boxes
+  attrset(COLOR_PAIR(6) | A_BOLD);
+  mvaddstr(0, (max_x / 2) - 5, " Stats ");
+  mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
+  wrefresh(stats);
+  wrefresh(game_text);
+  choice = choose(select, yes_no, 2);
+  wrefresh(select);
+  //wrefresh(input);
+
   getch();
+
 
   // display stars
   //for (int i = 0; i < STARS; i++) {
@@ -89,11 +105,3 @@ int main() {
   return 0;
 }
 
-void center(char *title) {
-  int len, indent, y, width;
-  getmaxyx(stdscr, y, width);
-  len = strlen(title);
-  indent = (width - len) / 2;
-  mvaddstr(y / 2, indent, title);
-  refresh();
-}
