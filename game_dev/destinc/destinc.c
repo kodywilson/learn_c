@@ -8,6 +8,8 @@
 #include "graphics.h"
 #include "choices.h"
 #include "file.h"
+#include "entities/pc.h"
+#include "game_mechanics/character.h"
 
 #define INPUT_MAX 33
 
@@ -16,7 +18,9 @@
 int main() {
   srand(time(0)); // seed rand using time
   //int min = 24, max = 0, roll;
-  int max_y, max_x, stats_y, stats_x;
+  int choice, max_y, max_x, stats_y, stats_x;
+  pc player; // create player struct
+
   //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
   WINDOW *game_text, *select, *input, *stats;
 
@@ -70,9 +74,13 @@ int main() {
     if (check_saves()) {
       mvwaddstr(game_text, 5, 3, "Saved games found. Would you like to load one or start a new game?");
       wrefresh(game_text);
-      getch();
+      //if (choose(yes_no) == 1)  
     } else {
-      mvwaddstr(game_text, 5, 3, "No saved games found.");
+      mvwaddstr(game_text, 5, 3, "No saved games found. Let's create a character!");
+      wrefresh(game_text);
+      getch();
+      create_character(&player);
+      mvwprintw(game_text, 6, 3, "Hi %s, you are a %s with %d hit points (life).", player.name, player.role, player.hp);
       wrefresh(game_text);
       getch();
     }
@@ -93,11 +101,6 @@ int main() {
   //wrefresh(input);
 
   getch();
-
-
-  // display stars
-  //for (int i = 0; i < STARS; i++) {
-  //}
 
   /*for(int i = 0; i < ROLLS; i++) {
     roll = dice(4, 6);
