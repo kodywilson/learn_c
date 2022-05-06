@@ -81,6 +81,7 @@ int main() {
       getch();
       create_character(&player);
       mvwprintw(game_text, 6, 3, "Hi %s, you are a %s with %d hit points (life).", player.name, player.role, player.hp);
+      save_game(player);
       wrefresh(game_text);
       getch();
     }
