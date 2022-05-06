@@ -13,8 +13,8 @@
 #include "choices.h"
 #include "file.h"
 
-#define GAME_DIR ".destiny"
-#define SAVE_FILE "saves.txt"
+//#define GAME_DIR ".destiny"
+//#define SAVE_FILE "saves.txt"
 #define INPUT_MAX 33
 #define PATH_MAX 256
 
