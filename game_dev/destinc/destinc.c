@@ -71,6 +71,9 @@ int main() {
   // setup game directory and save file if needed
   setup_file(game_text, select);
 
+  // check for existing save
+  //if (
+
   // add some placeholder text to boxes
   attrset(COLOR_PAIR(6) | A_BOLD);
   mvaddstr(0, (max_x / 2) - 5, " Stats ");
