@@ -33,7 +33,7 @@ int choose(WINDOW *win, char **choices, int num) {
   }
 
   wclear(win);
-  mvwprintw(win, 4, 4, "Your choice was: #%d - %s", highlight, choices[highlight]);
+  //mvwprintw(win, 4, 4, "Your choice was: #%d - %s", highlight, choices[highlight]); // DEBUG
   wrefresh(win);
 
   //getch(); // DEBUG

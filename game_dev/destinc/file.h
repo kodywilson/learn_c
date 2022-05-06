@@ -32,7 +32,7 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
 
   // build game directory path
   if (file_there(game_dir)) { // check if directory already exists
-    mvwprintw(game_text, 3, 3, "Found directory at %s", game_dir);
+    mvwprintw(game_text, 3, 3, "Found game directory at %s", game_dir);
   } else {
     mvwaddstr(game_text, 3, 3, "Hi and welcome to Destiny. To make a character and start playing");
     mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");

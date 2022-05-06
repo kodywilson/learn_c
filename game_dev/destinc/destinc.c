@@ -3,11 +3,8 @@
 // by Kody Wilson
 
 #include "dice.h"
-#define MOVE_TEXT 6
 #include "text.h"
 #include <ncurses.h>
-#include <string.h>
-#define ROLLS 1000
 #include "graphics.h"
 #include "choices.h"
 #include "file.h"
