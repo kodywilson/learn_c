@@ -25,6 +25,21 @@ int file_there(char filepath[PATH_MAX]) {
   } else return 0;
 }
 
+int check_saves() {
+  char linefromfile[512];
+  FILE *fp;
+  int numfound = 0;
+
+  // loop through the file and look for Name 
+  if ((fp = fopen(save_file, "r")) != NULL) {
+    while ((fgets(linefromfile, 512, fp)) != NULL )
+      if ((strstr(linefromfile, "Name:")) != NULL) numfound++;
+    fclose(fp);
+  }
+
+  return numfound;
+}
+
 // creates game directory and save file
 void setup_file(WINDOW *game_text, WINDOW *select) {
   FILE *fp;

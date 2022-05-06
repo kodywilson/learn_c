@@ -66,11 +66,26 @@ int main() {
   setup_file(game_text, select);
 
   // check for existing save
-  //if (
+  if (file_there(save_file)) {
+    if (check_saves()) {
+      mvwaddstr(game_text, 5, 3, "Saved games found. Would you like to load one or start a new game?");
+      wrefresh(game_text);
+      getch();
+    } else {
+      mvwaddstr(game_text, 5, 3, "No saved games found.");
+      wrefresh(game_text);
+      getch();
+    }
+  } else {
+    mvwaddstr(game_text, 5, 3, "There is no save game file!");
+    wrefresh(game_text);
+    getch();
+  }
 
   // add some placeholder text to boxes
-  attrset(COLOR_PAIR(6) | A_BOLD);
-  mvaddstr(0, (max_x / 2) - 5, " Stats ");
+  wattron(stats, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(stats, 0, (stats_x / 2) - 3, " Stats ");
+  wattroff(stats, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
   wrefresh(stats);
   wrefresh(game_text);
