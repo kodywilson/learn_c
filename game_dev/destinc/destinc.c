@@ -72,7 +72,7 @@ int main() {
   // check for existing save
   if (file_there(save_file)) {
     if (check_saves()) {
-      mvwaddstr(game_text, 5, 3, "Saved games found. Would you like to load one or start a new game?");
+      mvwaddstr(game_text, 5, 3, "Saved games found. (Yes) to load last save. (No) to create new game.");
       wrefresh(game_text);
       choice = choose(select, yes_no, 2) + 1;
       if (choice == 1) load_game(&player);
@@ -86,7 +86,7 @@ int main() {
           wclear(game_text);
           mvwaddstr(game_text, 3, 3, "Now let's create a new character.");
           wrefresh(game_text);
-          create_character(&player);
+          create_character(game_text, select, &player);
           save_game(player);
         } else {
           mvwaddstr(game_text, 3, 3, "Ok, fair enough. Let's load the last saved game.");
@@ -99,7 +99,7 @@ int main() {
       mvwaddstr(game_text, 5, 3, "No saved games found. Let's create a character!");
       wrefresh(game_text);
       napms(2000);
-      create_character(&player);
+      create_character(game_text, select, &player);
       save_game(player);
     }
   } else {
