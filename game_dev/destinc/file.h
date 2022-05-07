@@ -40,6 +40,12 @@ int check_saves() {
   return numfound;
 }
 
+void trunc_file(char filepath[PATH_MAX]) {
+  FILE *fp;
+
+  if ((fp = fopen(save_file, "w")) != NULL) fclose(fp);
+}
+
 // creates game directory and save file
 void setup_file(WINDOW *game_text, WINDOW *select) {
   FILE *fp;
