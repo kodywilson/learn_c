@@ -74,7 +74,11 @@ int main() {
     if (check_saves()) {
       mvwaddstr(game_text, 5, 3, "Saved games found. Would you like to load one or start a new game?");
       wrefresh(game_text);
-      //if (choose(yes_no) == 1)  
+      choice = choose(select, yes_no, 2) + 1;
+      if (choice == 1) load_game(&player);
+      else {
+        mvwaddstr(game_text, 6, 3, "Ok, you chose to create a new game.");
+      }
     } else {
       mvwaddstr(game_text, 5, 3, "No saved games found. Let's create a character!");
       wrefresh(game_text);
@@ -95,8 +99,11 @@ int main() {
   wattron(stats, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats, 0, (stats_x / 2) - 3, " Stats ");
   wattroff(stats, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
+  //mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
+  mvwprintw(stats, stats_y / 2, stats_x / 6, "Name: %s  |  HP: %d  |  Mana: 50  |  XP: 10", player.name, player.hp);
   wrefresh(stats);
+  wclear(game_text);
+  mvwprintw(game_text, 3, 3, "Greetings brave %s! Welcome to your Destiny...", player.role);
   wrefresh(game_text);
   wrefresh(select);
   //wrefresh(input);
