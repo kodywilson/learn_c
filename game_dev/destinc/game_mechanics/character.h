@@ -1,7 +1,7 @@
 // Functions for creating and working with players
 
 // character selection
-void create_character(WINDOW game_text, WINDOW select, pc *player) {
+void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
   int class_choice, y_n;;
   wclear(game_text);
   mvwaddstr(game_text, 3, 3, "Select your player's class or role. This will determine");
@@ -9,13 +9,13 @@ void create_character(WINDOW game_text, WINDOW select, pc *player) {
   wrefresh(game_text);
   // create loop so player can check out each class if they want
   class_choice = choose(select, player_classes, 2);
-  mvwprintw(game_text, 7, 3, "%s", class_descriptions[choice]);
-  mvwprintw(game_text, 8, 3, "Would you like to play as a %s?", player_classes[choice]);
+  mvwprintw(game_text, 7, 3, "%s", class_descriptions[class_choice]);
+  mvwprintw(game_text, 8, 3, "Would you like to play as a %s?", player_classes[class_choice]);
   wrefresh(game_text);
   y_n = (select, yes_no, 2);
   if (y_n == 0) {
     strncpy(player->name, "Bob", 32);
-    strncpy(player->role, "Knight", 16);
+    strncpy(player->role, player_classes[class_choice], 16);
     player->hp = 8;
   }
 }
