@@ -77,8 +77,8 @@ int main() {
       choice = choose(select, yes_no, 2) + 1;
       if (choice == 1) load_game(&player);
       else {
-        mvwaddstr(game_text, 6, 3, "Ok, you chose to create a new game.");
-        mvwaddstr(game_text, 7, 3, "This will remove the current save game. Are you sure?");
+        mvwaddstr(game_text, 7, 3, "Ok, you chose to create a new game.");
+        mvwaddstr(game_text, 8, 3, "This will remove the current save game. Are you sure?");
         wrefresh(game_text);
         choice = choose(select, yes_no, 2) + 1;
         if (choice == 1) {
@@ -119,6 +119,7 @@ int main() {
   mvwprintw(game_text, 3, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
   mvwprintw(game_text, 4, 3, "You are a %s with %d hit points (life).", player.role, player.hp);
   wrefresh(game_text);
+  wclear(select);
   wrefresh(select);
   //wrefresh(input);
 
