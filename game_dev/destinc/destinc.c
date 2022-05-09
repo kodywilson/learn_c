@@ -72,18 +72,35 @@ int main() {
   // check for existing save
   if (file_there(save_file)) {
     if (check_saves()) {
-      mvwaddstr(game_text, 5, 3, "Saved games found. Would you like to load one or start a new game?");
+      mvwaddstr(game_text, 5, 3, "Saved games found. (Yes) to load last save. (No) to create new game.");
       wrefresh(game_text);
-      //if (choose(yes_no) == 1)  
+      choice = choose(select, yes_no, 2) + 1;
+      if (choice == 1) load_game(&player);
+      else {
+        mvwaddstr(game_text, 6, 3, "Ok, you chose to create a new game.");
+        mvwaddstr(game_text, 7, 3, "This will remove the current save game. Are you sure?");
+        wrefresh(game_text);
+        choice = choose(select, yes_no, 2) + 1;
+        if (choice == 1) {
+          trunc_file(save_file);
+          wclear(game_text);
+          mvwaddstr(game_text, 3, 3, "Now let's create a new character.");
+          wrefresh(game_text);
+          create_character(game_text, select, &player);
+          save_game(player);
+        } else {
+          mvwaddstr(game_text, 3, 3, "Ok, fair enough. Let's load the last saved game.");
+          wrefresh(game_text);
+          napms(2000);
+          load_game(&player);
+        }
+      }
     } else {
       mvwaddstr(game_text, 5, 3, "No saved games found. Let's create a character!");
       wrefresh(game_text);
-      getch();
-      create_character(&player);
-      mvwprintw(game_text, 6, 3, "Hi %s, you are a %s with %d hit points (life).", player.name, player.role, player.hp);
+      napms(2000);
+      create_character(game_text, select, &player);
       save_game(player);
-      wrefresh(game_text);
-      getch();
     }
   } else {
     mvwaddstr(game_text, 5, 3, "There is no save game file!");
@@ -95,8 +112,12 @@ int main() {
   wattron(stats, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats, 0, (stats_x / 2) - 3, " Stats ");
   wattroff(stats, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
+  //mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
+  mvwprintw(stats, stats_y / 2, stats_x / 6, "Name: %s  |  HP: %d  |  Mana: 50  |  XP: 10", player.name, player.hp);
   wrefresh(stats);
+  wclear(game_text);
+  mvwprintw(game_text, 3, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
+  mvwprintw(game_text, 4, 3, "You are a %s with %d hit points (life).", player.role, player.hp);
   wrefresh(game_text);
   wrefresh(select);
   //wrefresh(input);
