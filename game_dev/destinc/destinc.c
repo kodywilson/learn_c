@@ -50,21 +50,22 @@ int main() {
   refresh();
 
   // after intro, set up interface
-  stats     = newwin(3, (max_x * 2) / 3, 0, max_x / 6);
-  game_text = newwin(max_y * 2 / 3, max_x, max_y / 12, 0);
+  stats     = newwin(3, (max_x * 7) / 8, 0, max_x / 16);
+  //game_text = newwin(max_y * 2 / 3, max_x, max_y / 12, 0);
+  game_text = newwin(max_y * 2 / 3, max_x, 3, 0);
   select    = newwin(max_y / 4, max_x, (max_y * 3) / 4, 0);
   input     = newwin(2, max_x / 3, max_y / 2, max_x / 3);
 
-  getmaxyx(stats, stats_y, stats_x);
+  getmaxyx(stats, stats_y, stats_x); // dimensions of stats window
 
-  box(stats, 0, 0);
-  box(game_text, 0, 0);
-  box(select, 0, 0);
-  box(input, 0, 0);
+  clear_box(stats);
+  clear_box(game_text);
+  clear_box(select);
+  clear_box(input);
 
   keypad(select, true); // enable the keypad on the select window
 
-  wattrset(game_text, COLOR_PAIR(4));
+  wattron(game_text, COLOR_PAIR(4));
 
   // setup game directory and save file if needed
   setup_file(game_text, select);
@@ -83,7 +84,7 @@ int main() {
         choice = choose(select, yes_no, 2) + 1;
         if (choice == 1) {
           trunc_file(save_file);
-          wclear(game_text);
+          clear_box(game_text);
           mvwaddstr(game_text, 3, 3, "Now let's create a new character.");
           wrefresh(game_text);
           create_character(game_text, select, &player);
@@ -102,25 +103,24 @@ int main() {
       create_character(game_text, select, &player);
       save_game(player);
     }
-  } else {
+  } else {   // this needs to be updated to create file if missing
     mvwaddstr(game_text, 5, 3, "There is no save game file!");
     wrefresh(game_text);
     getch();
   }
 
-  // add some placeholder text to boxes
+  // Main game loop
+  clear_box(select);
+  wrefresh(select);
   wattron(stats, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats, 0, (stats_x / 2) - 3, " Stats ");
   wattroff(stats, COLOR_PAIR(6) | A_BOLD);
-  //mvwaddstr(stats, stats_y / 2, stats_x / 6, "Name: Bob  |  HP: 100  |  Mana: 50  |  XP: 10");
   mvwprintw(stats, stats_y / 2, stats_x / 6, "Name: %s  |  HP: %d  |  Mana: 50  |  XP: 10", player.name, player.hp);
   wrefresh(stats);
-  wclear(game_text);
+  clear_box(game_text);
   mvwprintw(game_text, 3, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
   mvwprintw(game_text, 4, 3, "You are a %s with %d hit points (life).", player.role, player.hp);
   wrefresh(game_text);
-  wclear(select);
-  wrefresh(select);
   //wrefresh(input);
 
   getch();

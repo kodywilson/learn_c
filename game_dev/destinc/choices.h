@@ -12,9 +12,9 @@ int choose(WINDOW *win, char **choices, int num) {
 
   while(1) {
     for (int i = 0; i < num; i++) {
-      if (i == highlight) wattron(win, A_REVERSE);
+      if (i == highlight) wattron(win, A_BOLD | COLOR_PAIR(6));
       mvwaddstr(win, i+1, 1, choices[i]);
-      wattroff(win, A_REVERSE);
+      wattroff(win, A_BOLD | COLOR_PAIR(6));
     }
     choice = wgetch(win);
 
@@ -28,15 +28,9 @@ int choose(WINDOW *win, char **choices, int num) {
       default:
         break;
     }
-    if(choice == 10)
+    if(choice == 10) // might need to change this in the future to handle more than line feed
       break;
   }
-
-  wclear(win);
-  //mvwprintw(win, 4, 4, "Your choice was: #%d - %s", highlight, choices[highlight]); // DEBUG
-  wrefresh(win);
-
-  //getch(); // DEBUG
 
   return highlight;
 

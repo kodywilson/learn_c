@@ -59,7 +59,7 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
     mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");
     wrefresh(game_text);
     choice = choose(select, yes_no, 2) + 1;
-    wclear(game_text);
+    clear_box(game_text);
     if (choice == 1) {
       mvwaddstr(game_text, 3, 3, "Excellent choice. Creating game directory and save file...");
       wrefresh(game_text);
@@ -91,7 +91,3 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
     wrefresh(game_text);
   }
 }
-
-//int check_save() {
-//
-//}

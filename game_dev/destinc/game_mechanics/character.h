@@ -4,7 +4,7 @@
 void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
   int class_choice, y_n;
   char name[32];
-  wclear(game_text);
+  clear_box(game_text);
   mvwaddstr(game_text, 3, 3, "Select your player's class or role. This will determine");
   mvwaddstr(game_text, 4, 3, "your unique skills and abilities.");
   wrefresh(game_text);
@@ -15,10 +15,12 @@ void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
   wrefresh(game_text);
   y_n = choose(select, yes_no, 2);
   if (y_n == 0) {
-    wclear(select);
+    clear_box(select);
     mvwprintw(select, 1, 1, "Please enter your character's name: ");
+    echo();    // allow player to see name they are entering
     wrefresh(select);
     wgetnstr(select, name, 31);
+    noecho();  // turn off key entry echo to terminal
     strncpy(player->name, name, 32);
     strncpy(player->role, player_classes[class_choice], 16);
     player->hp = 8;
@@ -68,13 +70,7 @@ void load_game(pc *player) {
         }
         buffer[counter] = '\0';
         update_character(token, buffer, player);
-        /*
-        switch (token) {
-          case 1: strncpy(player->name, buffer, 32); break;
-          case 2: strncpy(player->role, buffer, 16); break;
-          case 3: player->hp = atoi(buffer); break;
-          default: break;
-        }*/
+        // send save info to struct
         for (int i = 0; i < 64; i++) buffer[i] = '\0'; // clear buffer for next token
         counter = 0; // reset counter for next buffer fill
       }
