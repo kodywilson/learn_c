@@ -63,8 +63,8 @@ pc player_classes[PCS] = {
     8,            // max_hp    - max hp earned per level
     8,            // cur_hp    - current hp
     1,            // dodge     - innate bonus to dodge
-    8,           // max_mana  - max mana per level
-    8,           // cur_mana  - current mana
+    8,            // max_mana  - max mana per level
+    8,            // cur_mana  - current mana
     0,            // xp        - experience points
     1,            // level     - current level
     3,            // coin      - money
@@ -72,6 +72,7 @@ pc player_classes[PCS] = {
 }
 
 //char *player_classes[PCS] = {"Cleric", "Knight", "Monk", "Rogue", "Wizard"};
+char *player_classes[PCS] = {"Cleric", "Knight"};
 
 char *class_descriptions[PCS] = {"Clerics are healers, able to restore health, even during combat. They are capable fighters as well.",
                                "Knights are noble warriors with the best armor and can periodically smite their foes."};

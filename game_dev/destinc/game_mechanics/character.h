@@ -1,5 +1,29 @@
 // Functions for creating and working with players
 
+// fill out character stats, name, source (chosen) class, target player
+void build_character(char name[32], pc chosen_class, pc *player) {
+  player->name      = name;
+  player->role      = chosen_class.role;
+  player->desc      = chosen_class.desc;
+  player->str       = chosen_class.str;
+  player->dex       = chosen_class.dex;
+  player->con       = chosen_class.con;
+  player->intel     = chosen_class.intel;
+  player->wis       = chosen_class.wis;
+  player->cha       = chosen_class.cha;
+  player->dmg       = chosen_class.dmg;
+  player->armor     = chosen_class.armor;
+  player->max_hp    = chosen_class.max_hp;
+  player->cur_hp    = chosen_class.cur_hp;
+  player->dodge     = chosen_class.dodge;
+  player->max_hp    = chosen_class.max_hp;
+  player->max_mana  = chosen_class.max_mana;
+  player->cur_mana  = chosen_class.cur_mana;
+  player->xp        = chosen_class.xp;
+  player->lvl       = chosen_class.lvl;
+  player->coin      = chosen_class.coin;
+}
+
 // character selection
 void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *player) {
   int class_choice, y_n;
@@ -9,9 +33,9 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *play
   mvwaddstr(game_text, 4, 3, "your unique skills and abilities.");
   wrefresh(game_text);
   // create loop so player can check out each class if they want
-  class_choice = choose(select, player_classes, 5);
-  mvwprintw(game_text, 6, 3, "%s", class_descriptions[class_choice]);
-  mvwprintw(game_text, 9, 3, "Would you like to play as a %s?", player_classes[class_choice]);
+  class_choice = choose(select, player_classes, PCS);
+  mvwprintw(game_text, 6, 3, "%s", player_classes[class_choice].desc);
+  mvwprintw(game_text, 9, 3, "Would you like to play as a %s?", player_classes[class_choice].name);
   wrefresh(game_text);
   y_n = choose(select, yes_no, 2);
   if (y_n == 0) {
@@ -24,9 +48,8 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *play
     wgetnstr(input, name, 31);
     noecho();  // turn off key entry echo to terminal
     clear_box(input);
-    strncpy(player->name, name, 32);
-    strncpy(player->role, player_classes[class_choice], 16);
-    player->hp = 8;
+    // generate starting stats for the player
+    build_character(name, player_classes[class_choice], &player);
   }
 }
 
