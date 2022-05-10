@@ -64,18 +64,6 @@ void update_character(int token, char val[64], pc *player) {
   }
 }
 
-/*
-// update character - attributes and stats
-// tokens indicate what is being updated
-void update_character(int token, int val, pc *player) {
-  switch (token) {
-    case 1: strncpy(player->name, buffer, 32); break;
-    case 2: strncpy(player->role, buffer, 16); break;
-    case 3: player->hp = atoi(buffer); break;
-    default: break;
-  }
-}*/
-
 // load character data into player struct
 // future: send name and load that particular character
 void load_game(pc *player) {
@@ -118,7 +106,11 @@ void save_game(pc player) {
       if (ch == '+' || ch == '\n') break;
     }
     fseek(fp, pos, SEEK_SET);*/
-    fprintf(fp, "\n=Name:%s,Role:%s,HP:%d,_", player.name, player.role, player.hp);
+    fprintf(fp,
+    "\n=name:%s,role:%s,desc:%s,str:%d,dex:%d,con:%d,intel:%d,wis:%d,cha:%d,
+    dmg:%d,armor:%d,max_hp:%d,cur_hp:%d,dodge:%d,max_mana:%d,cur_mana:%d,xp:%d,lvl:%d,coin:%d,_",
+    player.name, player.role, player.desc, player.str, player.dex, player.con, player.intel, player.wis, player.cha,
+    player.dmg, player.armor, player.max_hp, player.cur_hp, player.dodge, player.max_mana, player.cur_mana, player.xp, player.lvl, player.coin);
     fclose(fp);
   }
 }

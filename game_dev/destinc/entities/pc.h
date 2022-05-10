@@ -6,7 +6,7 @@ typedef struct Player {
   char name[32];  // player name
   char role[16];  // player class choice
   char desc[256]; // class description
-  int  str;       // --= Begin basic stat block 
+  int  str;       // --= Begin basic stat block
   int  dex;
   int  con;
   int  intel;
