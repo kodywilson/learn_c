@@ -1,7 +1,7 @@
 // Functions for creating and working with players
 
 // character selection
-void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
+void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *player) {
   int class_choice, y_n;
   char name[32];
   wclear(game_text);
@@ -16,11 +16,14 @@ void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
   y_n = choose(select, yes_no, 2);
   if (y_n == 0) {
     wclear(select);
-    mvwprintw(select, 1, 1, "Please enter your character's name: ");
+    mvwprintw(select, 1, 1, "Please enter your character's name to get adventuring!");
     echo();    // allow player to see name they are entering
     wrefresh(select);
-    wgetnstr(select, name, 31);
+    napms(1000);
+    mvwprintw(input, 1, 1, "Name: ");
+    wgetnstr(input, name, 31);
     noecho();  // turn off key entry echo to terminal
+    clear_box(input);
     strncpy(player->name, name, 32);
     strncpy(player->role, player_classes[class_choice], 16);
     player->hp = 8;

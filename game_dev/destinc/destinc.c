@@ -2,14 +2,7 @@
 // C port of original game written in Ruby
 // by Kody Wilson
 
-#include "dice.h"
-#include "text.h"
-#include <ncurses.h>
-#include "graphics.h"
-#include "choices.h"
-#include "file.h"
-#include "entities/pc.h"
-#include "game_mechanics/character.h"
+#include "includes.h"
 
 #define INPUT_MAX 33
 
@@ -59,7 +52,7 @@ int main() {
   game_text        = newwin((max_y * 9 / 15) - 2, max_x - 2, 4, 1);
   select_border    = newwin(max_y * 5 / 16, max_x, (max_y * 23) / 32, 0);
   select           = newwin((max_y * 5 / 16) - 2, max_x - 2, ((max_y * 23) / 32) + 1, 1);
-  input            = newwin(2, max_x / 3, max_y / 2, max_x / 3);
+  input            = newwin(3, max_x / 2, max_y / 2, max_x / 4);
 
   getmaxyx(stats, stats_y_border, stats_x_border); // dimensions of stats border window
   getmaxyx(stats, stats_y, stats_x);  // dimensions of stats window
@@ -67,9 +60,9 @@ int main() {
   clear_box(stats_border);
   clear_box(game_text_border);
   clear_box(select_border);
+  clear_box(input);
   wrefresh(game_text_border);
   wrefresh(select_border);
-  //clear_box(input);
 
   keypad(select, true); // enable the keypad on the select window
 
@@ -95,7 +88,7 @@ int main() {
           wclear(game_text);
           mvwaddstr(game_text, 2, 3, "Now let's create a new character.");
           wrefresh(game_text);
-          create_character(game_text, select, &player);
+          create_character(game_text, select, input, &player);
           save_game(player);
         } else {
           mvwaddstr(game_text, 2, 3, "Ok, fair enough. Let's load the last saved game.");
@@ -108,7 +101,7 @@ int main() {
       mvwaddstr(game_text, 2, 3, "No saved games found. Let's create a character!");
       wrefresh(game_text);
       napms(2000);
-      create_character(game_text, select, &player);
+      create_character(game_text, select, input, &player);
       save_game(player);
     }
   } else {   // this needs to be updated to create file if missing
