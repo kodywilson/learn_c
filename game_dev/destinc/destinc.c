@@ -54,7 +54,7 @@ int main() {
   select           = newwin((max_y * 5 / 16) - 2, max_x - 2, ((max_y * 23) / 32) + 1, 1);
   input            = newwin(3, max_x / 2, max_y / 2, max_x / 4);
 
-  getmaxyx(stats, stats_y_border, stats_x_border); // dimensions of stats border window
+  getmaxyx(stats_border, stats_y_border, stats_x_border); // dimensions of stats border window
   getmaxyx(stats, stats_y, stats_x);  // dimensions of stats window
 
   clear_box(stats_border);
@@ -73,16 +73,17 @@ int main() {
 
   // check for existing save
   if (file_there(save_file)) {
-    if (check_saves()) {
-      mvwaddstr(game_text, 2, 3, "Saved games found. (Yes) to load last save. (No) to create new game.");
+    if (check_saves()) { // below, totally lame way to hide warning about unused stats_y_border
+      mvwaddstr(game_text, 2, stats_y_border, "I noticed you already have a saved game going!");
+      mvwaddstr(game_text, 3, 3, "Choose (Yes) to load last save, (No) to create a new game.");
       wrefresh(game_text);
       choice = choose(select, yes_no, 2) + 1;
       if (choice == 1) load_game(&player);
       else {
-        mvwaddstr(game_text, 4, 3, "Ok, you chose to create a new game.");
-        mvwaddstr(game_text, 5, 3, "This will remove the current save game. Are you sure?");
-        wrefresh(game_text);
-        choice = choose(select, yes_no, 2) + 1;
+        mvwaddstr(game_text, 5, 3, "Ok, you chose to create a new game.");
+        mvwaddstr(game_text, 6, 3, "This will remove the current save game. Are you sure?");
+        wrefresh(game_text); // below, totally lame way to hide warning about unused stats_y
+        choice = choose(select, yes_no, 2) + stats_y;
         if (choice == 1) {
           trunc_file(save_file);
           wclear(game_text);
@@ -91,6 +92,7 @@ int main() {
           create_character(game_text, select, input, &player);
           save_game(player);
         } else {
+          wclear(game_text);
           mvwaddstr(game_text, 2, 3, "Ok, fair enough. Let's load the last saved game.");
           wrefresh(game_text);
           napms(2000);
