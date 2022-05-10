@@ -7,15 +7,23 @@ char *yes_no[2] = {"Yes", "No"};
 // choose(select, yes_no, 2);
 // Send window for menu, char** of choices, and number of choices
 int choose(WINDOW *win, char **choices, int num) {
-  int choice;
+  int choice, x, y;
   int highlight = 0;
 
   wclear(win);
 
   while(1) {
     for (int i = 0; i < num; i++) {
+      if (i < 6) {
+        y = i;
+        x = 1;
+      }
+      if (i > 5) {
+        y = i - 4;
+        x = 16;
+      }
       if (i == highlight) wattron(win, A_BOLD | COLOR_PAIR(6));
-      mvwaddstr(win, i+1, 1, choices[i]);
+      mvwaddstr(win, y, x, choices[i]);
       wattroff(win, A_BOLD | COLOR_PAIR(6));
     }
     choice = wgetch(win);
