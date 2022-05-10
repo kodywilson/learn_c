@@ -4,7 +4,7 @@
 void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
   int class_choice, y_n;
   char name[32];
-  clear_box(game_text);
+  wclear(game_text);
   mvwaddstr(game_text, 3, 3, "Select your player's class or role. This will determine");
   mvwaddstr(game_text, 4, 3, "your unique skills and abilities.");
   wrefresh(game_text);
@@ -15,7 +15,7 @@ void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
   wrefresh(game_text);
   y_n = choose(select, yes_no, 2);
   if (y_n == 0) {
-    clear_box(select);
+    wclear(select);
     mvwprintw(select, 1, 1, "Please enter your character's name: ");
     echo();    // allow player to see name they are entering
     wrefresh(select);

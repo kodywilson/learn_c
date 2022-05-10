@@ -18,10 +18,11 @@
 int main() {
   srand(time(0)); // seed rand using time
   //int min = 24, max = 0, roll;
-  int choice, max_y, max_x, stats_y, stats_x;
+  int choice, max_y, max_x, stats_y_border, stats_y, stats_x_border, stats_x;
   pc player; // create player struct
 
   //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
+  WINDOW *game_text_border, *select_border, *stats_border;
   WINDOW *game_text, *select, *input, *stats;
 
   // initialize global variables
@@ -50,18 +51,25 @@ int main() {
   refresh();
 
   // after intro, set up interface
-  stats     = newwin(3, (max_x * 7) / 8, 0, max_x / 16);
-  //game_text = newwin(max_y * 2 / 3, max_x, max_y / 12, 0);
-  game_text = newwin(max_y * 9 / 15, max_x, 3, 0);
-  select    = newwin(max_y / 4, max_x, (max_y * 3) / 4, 0);
-  input     = newwin(2, max_x / 3, max_y / 2, max_x / 3);
+  // borders are set and rarely updated. Information is displayed
+  // in window nested in the border so it can be cleared easily
+  stats_border     = newwin(3, (max_x * 7) / 8, 0, max_x / 16);
+  stats            = newwin(1, ((max_x * 7) / 8) - 2, 1, (max_x / 16) + 1);
+  game_text_border = newwin(max_y * 9 / 15, max_x, 3, 0);
+  game_text        = newwin((max_y * 9 / 15) - 2, max_x - 2, 4, 1);
+  select_border    = newwin(max_y * 5 / 16, max_x, (max_y * 23) / 32, 0);
+  select           = newwin((max_y * 5 / 16) - 2, max_x - 2, ((max_y * 23) / 32) + 1, 1);
+  input            = newwin(2, max_x / 3, max_y / 2, max_x / 3);
 
-  getmaxyx(stats, stats_y, stats_x); // dimensions of stats window
+  getmaxyx(stats, stats_y_border, stats_x_border); // dimensions of stats border window
+  getmaxyx(stats, stats_y, stats_x);  // dimensions of stats window
 
-  clear_box(stats);
-  clear_box(game_text);
-  clear_box(select);
-  clear_box(input);
+  clear_box(stats_border);
+  clear_box(game_text_border);
+  clear_box(select_border);
+  wrefresh(game_text_border);
+  wrefresh(select_border);
+  //clear_box(input);
 
   keypad(select, true); // enable the keypad on the select window
 
@@ -84,7 +92,7 @@ int main() {
         choice = choose(select, yes_no, 2) + 1;
         if (choice == 1) {
           trunc_file(save_file);
-          clear_box(game_text);
+          wclear(game_text);
           mvwaddstr(game_text, 2, 3, "Now let's create a new character.");
           wrefresh(game_text);
           create_character(game_text, select, &player);
@@ -110,14 +118,17 @@ int main() {
   }
 
   // Main game loop
-  clear_box(select);
+  wclear(select);
   wrefresh(select);
-  wattron(stats, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(stats, 0, (stats_x / 2) - 3, " Stats ");
-  wattroff(stats, COLOR_PAIR(6) | A_BOLD);
-  mvwprintw(stats, stats_y / 2, stats_x / 6, "Name: %s  |  HP: %d  |  Mana: 50  |  XP: 10", player.name, player.hp);
+  // set up stats window
+  wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(stats_border, 0, (stats_x_border / 2) - 3, " Stats ");
+  wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
+  mvwprintw(stats, 0, stats_x / 12, "Name: %s  |  HP: %d  |  Mana: 50  |  XP: 10", player.name, player.hp);
+  wrefresh(stats_border);
   wrefresh(stats);
-  clear_box(game_text);
+  // Start main part of game
+  wclear(game_text);
   mvwprintw(game_text, 1, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
   mvwprintw(game_text, 2, 3, "You are a %s with %d hit points (life).", player.role, player.hp);
   wrefresh(game_text);
