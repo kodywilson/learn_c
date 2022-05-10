@@ -52,7 +52,7 @@ int main() {
   // after intro, set up interface
   stats     = newwin(3, (max_x * 7) / 8, 0, max_x / 16);
   //game_text = newwin(max_y * 2 / 3, max_x, max_y / 12, 0);
-  game_text = newwin(max_y * 2 / 3, max_x, 3, 0);
+  game_text = newwin(max_y * 9 / 15, max_x, 3, 0);
   select    = newwin(max_y / 4, max_x, (max_y * 3) / 4, 0);
   input     = newwin(2, max_x / 3, max_y / 2, max_x / 3);
 
@@ -73,38 +73,38 @@ int main() {
   // check for existing save
   if (file_there(save_file)) {
     if (check_saves()) {
-      mvwaddstr(game_text, 5, 3, "Saved games found. (Yes) to load last save. (No) to create new game.");
+      mvwaddstr(game_text, 2, 3, "Saved games found. (Yes) to load last save. (No) to create new game.");
       wrefresh(game_text);
       choice = choose(select, yes_no, 2) + 1;
       if (choice == 1) load_game(&player);
       else {
-        mvwaddstr(game_text, 7, 3, "Ok, you chose to create a new game.");
-        mvwaddstr(game_text, 8, 3, "This will remove the current save game. Are you sure?");
+        mvwaddstr(game_text, 4, 3, "Ok, you chose to create a new game.");
+        mvwaddstr(game_text, 5, 3, "This will remove the current save game. Are you sure?");
         wrefresh(game_text);
         choice = choose(select, yes_no, 2) + 1;
         if (choice == 1) {
           trunc_file(save_file);
           clear_box(game_text);
-          mvwaddstr(game_text, 3, 3, "Now let's create a new character.");
+          mvwaddstr(game_text, 2, 3, "Now let's create a new character.");
           wrefresh(game_text);
           create_character(game_text, select, &player);
           save_game(player);
         } else {
-          mvwaddstr(game_text, 3, 3, "Ok, fair enough. Let's load the last saved game.");
+          mvwaddstr(game_text, 2, 3, "Ok, fair enough. Let's load the last saved game.");
           wrefresh(game_text);
           napms(2000);
           load_game(&player);
         }
       }
     } else {
-      mvwaddstr(game_text, 5, 3, "No saved games found. Let's create a character!");
+      mvwaddstr(game_text, 2, 3, "No saved games found. Let's create a character!");
       wrefresh(game_text);
       napms(2000);
       create_character(game_text, select, &player);
       save_game(player);
     }
   } else {   // this needs to be updated to create file if missing
-    mvwaddstr(game_text, 5, 3, "There is no save game file!");
+    mvwaddstr(game_text, 2, 3, "There is no save game file!");
     wrefresh(game_text);
     getch();
   }
@@ -118,8 +118,8 @@ int main() {
   mvwprintw(stats, stats_y / 2, stats_x / 6, "Name: %s  |  HP: %d  |  Mana: 50  |  XP: 10", player.name, player.hp);
   wrefresh(stats);
   clear_box(game_text);
-  mvwprintw(game_text, 3, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
-  mvwprintw(game_text, 4, 3, "You are a %s with %d hit points (life).", player.role, player.hp);
+  mvwprintw(game_text, 1, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
+  mvwprintw(game_text, 2, 3, "You are a %s with %d hit points (life).", player.role, player.hp);
   wrefresh(game_text);
   //wrefresh(input);
 

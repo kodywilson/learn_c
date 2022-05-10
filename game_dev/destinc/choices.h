@@ -10,6 +10,8 @@ int choose(WINDOW *win, char **choices, int num) {
   int choice;
   int highlight = 0;
 
+  clear_box(win);
+
   while(1) {
     for (int i = 0; i < num; i++) {
       if (i == highlight) wattron(win, A_BOLD | COLOR_PAIR(6));

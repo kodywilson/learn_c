@@ -9,7 +9,7 @@ void create_character(WINDOW *game_text, WINDOW *select, pc *player) {
   mvwaddstr(game_text, 4, 3, "your unique skills and abilities.");
   wrefresh(game_text);
   // create loop so player can check out each class if they want
-  class_choice = choose(select, player_classes, 2);
+  class_choice = choose(select, player_classes, 5);
   mvwprintw(game_text, 6, 3, "%s", class_descriptions[class_choice]);
   mvwprintw(game_text, 7, 3, "Would you like to play as a %s?", player_classes[class_choice]);
   wrefresh(game_text);
