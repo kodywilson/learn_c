@@ -6,3 +6,4 @@
 #include "game_mechanics/file.h"
 #include "entities/pc.h"
 #include "game_mechanics/character.h"
+#include "entities/locations.h"
