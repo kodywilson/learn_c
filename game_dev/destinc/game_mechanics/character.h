@@ -46,7 +46,7 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *play
     mvwprintw(select, 1, 1, "Please enter your character's name to get adventuring!");
     echo();    // allow player to see name they are entering
     wrefresh(select);
-    napms(1000);
+    napms(500);
     mvwprintw(input, 1, 1, "Name: ");
     wgetnstr(input, name, 31);
     noecho();  // turn off key entry echo to terminal
@@ -58,6 +58,8 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *play
 
 // update character - name, role, stats, etc.
 // tokens indicate what is being updated
+// another valid approach would be to have two functions, one for
+// strings and one for ints
 void update_character(int token, char val[BUFF], pc *player) {
   switch (token) {
     case 0: strncpy(player->name, val, 32); break;
