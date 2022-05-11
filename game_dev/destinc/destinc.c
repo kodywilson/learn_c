@@ -92,7 +92,10 @@ int main() {
       else {
         wclear(game_text);
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
+        wattron(game_text, COLOR_PAIR(1) | A_BOLD);
         mvwaddstr(game_text, y_low, x_low, "This will remove the current save game. Are you sure?");
+        wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
+        wattron(game_text, COLOR_PAIR(4));
         wrefresh(game_text); // below, totally lame way to hide warning about unused stats_y
         choice = choose(select, yes_no, Y_N) + stats_y;
         if (choice == 1) {
