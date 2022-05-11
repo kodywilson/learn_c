@@ -55,13 +55,13 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
   if (file_there(game_dir)) { // check if directory already exists
     // mvwprintw(game_text, 3, 3, "Found game directory at %s", game_dir); DEBUG
   } else {
-    mvwaddstr(game_text, 3, 3, "Hi and welcome to Destiny. To make a character and start playing");
-    mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");
+    mvwaddstr(game_text, 1, 1, "Hi and welcome to Destiny. To make a character and start playing");
+    mvwaddstr(game_text, 2, 1, "we need to create a save file. Would you like to do that now?");
     wrefresh(game_text);
     choice = choose(select, yes_no, 2) + 1;
     clear_box(game_text);
     if (choice == 1) {
-      mvwaddstr(game_text, 3, 3, "Excellent choice. Creating game directory and save file...");
+      mvwaddstr(game_text, 4, 1, "Excellent choice. Creating game directory and save file...");
       wrefresh(game_text);
       if (mkdir(game_dir, 0777) == -1) {  // if directory creation fails, bail out
         endwin();
@@ -78,11 +78,11 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
       }
       fputs("--Destiny save file--\n", fp);
       fclose(fp);
-      mvwaddstr(game_text, 4, 3, "Game directory and save file created...");
+      mvwaddstr(game_text, 6, 1, "Game directory and save file created...");
       wrefresh(game_text);
     } else {
-      mvwaddstr(game_text, 3, 3, "OK, maybe next time, eh?");
-      mvwaddstr(game_text, 4, 3, "Press any key to exit...");
+      mvwaddstr(game_text, 4, 1, "OK, maybe next time, eh?");
+      mvwaddstr(game_text, 5, 1, "Press any key to exit...");
       wrefresh(game_text);
       getch();
       endwin();
