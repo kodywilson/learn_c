@@ -12,7 +12,8 @@ int main() {
   srand(time(0)); // seed rand using time
   //int min = 24, max = 0, roll;
   int choice, max_y, max_x, stats_y_border, stats_y, stats_x_border, stats_x;
-  int main_loop;
+  // last four of next line are oft used offsets
+  int game_text_y, game_text_x, main_loop, y_high, x_high, y_low, x_low;
   pc player; // create player struct
 
   //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
@@ -55,8 +56,16 @@ int main() {
   select           = newwin((max_y * 5 / 16) - 2, max_x - 2, ((max_y * 23) / 32) + 1, 1);
   input            = newwin(3, max_x / 2, max_y / 2, max_x / 4);
 
+  // calculate window sizes
   getmaxyx(stats_border, stats_y_border, stats_x_border); // dimensions of stats border window
   getmaxyx(stats, stats_y, stats_x);  // dimensions of stats window
+  getmaxyx(game_text, game_text_y, game_text_x);
+
+  // build offsets for text padding
+  y_high = 1;
+  x_high = 1;
+  y_low = game_text_y - 1;
+  x_low = game_text_x - game_text_x + 1; // LOL
 
   clear_box(stats_border);
   clear_box(game_text_border);
@@ -75,40 +84,41 @@ int main() {
   // check for existing save
   if (file_there(save_file)) {
     if (check_saves()) { // below, totally lame way to hide warning about unused stats_y_border
-      mvwaddstr(game_text, 2, stats_y_border, "I noticed you already have a saved game going!");
-      mvwaddstr(game_text, 4, 3, "Choose (Yes) to load last save, (No) to create a new game.");
+      mvwaddstr(game_text, y_high, stats_y_border, "I noticed you already have a saved game going!");
+      mvwaddstr(game_text, y_low, x_low, "Choose (Yes) to load last save, (No) to create a new game.");
       wrefresh(game_text);
       choice = choose(select, yes_no, Y_N) + 1;
       if (choice == 1) load_game(&player);
       else {
-        mvwaddstr(game_text, 6, 3, "Ok, you chose to create a new game.");
-        mvwaddstr(game_text, 7, 3, "This will remove the current save game. Are you sure?");
+        wclear(game_text);
+        mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
+        mvwaddstr(game_text, y_low, x_low, "This will remove the current save game. Are you sure?");
         wrefresh(game_text); // below, totally lame way to hide warning about unused stats_y
         choice = choose(select, yes_no, Y_N) + stats_y;
         if (choice == 1) {
           trunc_file(save_file);
           wclear(game_text);
-          mvwaddstr(game_text, 2, 3, "Now let's create a new character.");
+          mvwaddstr(game_text, y_high, x_high, "Now let's create a new character.");
           wrefresh(game_text);
           create_character(game_text, select, input, &player);
           save_game(player);
         } else {
           wclear(game_text);
-          mvwaddstr(game_text, 2, 3, "Ok, fair enough. Let's load the last saved game.");
+          mvwaddstr(game_text, y_high, x_high, "Ok, fair enough. Let's load the last saved game.");
           wrefresh(game_text);
           napms(2000);
           load_game(&player);
         }
       }
     } else {
-      mvwaddstr(game_text, 2, 3, "No saved games found. Let's create a character!");
+      mvwaddstr(game_text, y_high, x_high, "No saved games found. Let's create a character!");
       wrefresh(game_text);
       napms(2000);
       create_character(game_text, select, input, &player);
       save_game(player);
     }
   } else {   // this needs to be updated to create file if missing
-    mvwaddstr(game_text, 2, 3, "There is no save game file!");
+    mvwaddstr(game_text, y_high, x_high, "There is no save game file!");
     wrefresh(game_text);
     getch();
   }
@@ -128,9 +138,9 @@ int main() {
   wrefresh(stats);
   // Initial greeting
   wclear(game_text);
-  mvwprintw(game_text, 1, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
-  mvwprintw(game_text, 2, 3, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
-  mvwaddstr(game_text, 4, 3, "Press any key to begin...");
+  mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome to your Destiny...", player.name);
+  mvwprintw(game_text, y_high + 1, x_high, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
+  mvwaddstr(game_text, y_low, x_low, "Press any key to begin...");
   wrefresh(game_text);
   getch();
 
@@ -138,16 +148,16 @@ int main() {
   // Main game loop
   while(main_loop) {
     wclear(game_text);
-    mvwprintw(game_text, 1, 2, "You walk into town, looking here and there.");
-    mvwprintw(game_text, 3, 2, "Warmth and cheer emanate from an old tavern to the west.");
-    mvwprintw(game_text, 5, 2, "To the east, a sign says 'dungeon this way'.");
-    mvwprintw(game_text, 7, 2, "Please choose where you will head next:");
+    mvwaddstr(game_text, y_high, x_high, "You walk into town, looking here and there.");
+    mvwaddstr(game_text, y_high + 2, x_high, "Warmth and cheer emanate from an old tavern to the west.");
+    mvwaddstr(game_text, y_high + 3, x_high, "To the east, a sign says 'dungeon this way'.");
+    mvwaddstr(game_text, y_low, x_low, "Please choose where you will head next:");
     wrefresh(game_text);
     choice = choose(select, town_list, TOWN);
     switch (choice) {
-      case 0: mvwprintw(game_text, 9, 2, "You chose the dungeon."); break;
-      case 1: mvwprintw(game_text, 9, 2, "You chose the tavern."); break;
-      case 2: mvwprintw(game_text, 9, 2, "Thanks for playing, see you next time!");
+      case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon."); break;
+      case 1: mvwaddstr(game_text, y_low - 2, x_low, "You chose the tavern."); break;
+      case 2: mvwaddstr(game_text, y_low, x_low, "Thanks for playing, see you next time!");
               save_game(player); main_loop = 0; break;
       default: break;
     }
