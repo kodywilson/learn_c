@@ -33,7 +33,7 @@ int check_saves() {
   // loop through the file and look for Name 
   if ((fp = fopen(save_file, "r")) != NULL) {
     while ((fgets(linefromfile, 512, fp)) != NULL )
-      if ((strstr(linefromfile, "Name:")) != NULL) numfound++;
+      if ((strstr(linefromfile, "name:")) != NULL) numfound++;
     fclose(fp);
   }
 
@@ -53,13 +53,13 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
 
   // build game directory path
   if (file_there(game_dir)) { // check if directory already exists
-    mvwprintw(game_text, 3, 3, "Found game directory at %s", game_dir);
+    // mvwprintw(game_text, 3, 3, "Found game directory at %s", game_dir); DEBUG
   } else {
     mvwaddstr(game_text, 3, 3, "Hi and welcome to Destiny. To make a character and start playing");
     mvwaddstr(game_text, 4, 3, "we need to create a save file. Would you like to do that now?");
     wrefresh(game_text);
     choice = choose(select, yes_no, 2) + 1;
-    wclear(game_text);
+    clear_box(game_text);
     if (choice == 1) {
       mvwaddstr(game_text, 3, 3, "Excellent choice. Creating game directory and save file...");
       wrefresh(game_text);
@@ -91,7 +91,3 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
     wrefresh(game_text);
   }
 }
-
-//int check_save() {
-//
-//}

@@ -10,6 +10,11 @@ void center(WINDOW *win, char *text) {
   wrefresh(win);
 }
 
+void clear_box(WINDOW *win) {
+  wclear(win);
+  box(win, 0, 0);
+}
+
 // print stars in the window
 void stars(WINDOW *win, int num_stars) {
   int win_y, win_x;
