@@ -119,8 +119,10 @@ int main() {
   wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats_border, 0, (stats_x_border / 2) - 3, " Stats ");
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
-  mvwprintw(stats, 0, stats_x / 12, "Name: %s  |  HP: %d  |  Mana: %d  |  XP: %d",
-  player.name, player.cur_hp, player.cur_mana, player.xp);
+  // later we will color code the mana and hp depending on status (red green)
+  mvwprintw(stats, 0, stats_x / 24,
+  "Name: %s | XP: %d | Lvl: %d  -|-  Coin: %d | HP: %d | Mana: %d",
+  player.name, player.xp, player.lvl, player.coin, player.cur_hp, player.cur_mana);
   wrefresh(stats_border);
   wrefresh(stats);
   // Start main part of game
