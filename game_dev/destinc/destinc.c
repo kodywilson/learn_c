@@ -75,13 +75,13 @@ int main() {
   if (file_there(save_file)) {
     if (check_saves()) { // below, totally lame way to hide warning about unused stats_y_border
       mvwaddstr(game_text, 2, stats_y_border, "I noticed you already have a saved game going!");
-      mvwaddstr(game_text, 3, 3, "Choose (Yes) to load last save, (No) to create a new game.");
+      mvwaddstr(game_text, 4, 3, "Choose (Yes) to load last save, (No) to create a new game.");
       wrefresh(game_text);
       choice = choose(select, yes_no, 2) + 1;
       if (choice == 1) load_game(&player);
       else {
-        mvwaddstr(game_text, 5, 3, "Ok, you chose to create a new game.");
-        mvwaddstr(game_text, 6, 3, "This will remove the current save game. Are you sure?");
+        mvwaddstr(game_text, 6, 3, "Ok, you chose to create a new game.");
+        mvwaddstr(game_text, 7, 3, "This will remove the current save game. Are you sure?");
         wrefresh(game_text); // below, totally lame way to hide warning about unused stats_y
         choice = choose(select, yes_no, 2) + stats_y;
         if (choice == 1) {
@@ -119,13 +119,14 @@ int main() {
   wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats_border, 0, (stats_x_border / 2) - 3, " Stats ");
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
-  mvwprintw(stats, 0, stats_x / 12, "Name: %s  |  HP: %d  |  Mana: 50  |  XP: 10", player.name, player.hp);
+  mvwprintw(stats, 0, stats_x / 12, "Name: %s  |  HP: %d  |  Mana: %d  |  XP: %d",
+  player.name, player.cur_hp, player.cur_mana, player.xp);
   wrefresh(stats_border);
   wrefresh(stats);
   // Start main part of game
   wclear(game_text);
   mvwprintw(game_text, 1, 3, "Greetings brave %s! Welcome to your Destiny...", player.name);
-  mvwprintw(game_text, 2, 3, "You are a %s with %d hit points (life).", player.role, player.hp);
+  mvwprintw(game_text, 2, 3, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
   wrefresh(game_text);
   //wrefresh(input);
 

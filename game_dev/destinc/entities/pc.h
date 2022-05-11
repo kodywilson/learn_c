@@ -69,10 +69,10 @@ pc player_classes[PCS] = {
     1,            // level     - current level
     3,            // coin      - money
   }
-}
+};
 
 //char *player_classes[PCS] = {"Cleric", "Knight", "Monk", "Rogue", "Wizard"};
-char *player_classes[PCS] = {"Cleric", "Knight"};
+char *class_list[PCS] = {"Cleric", "Knight"};
 
 char *class_descriptions[PCS] = {"Clerics are healers, able to restore health, even during combat. They are capable fighters as well.",
                                "Knights are noble warriors with the best armor and can periodically smite their foes."};
