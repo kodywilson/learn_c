@@ -1,6 +1,6 @@
 // functions and data for playable character types
 
-#define PCS 2  // number of playable classes
+#define PCS 4  // number of playable classes
 
 typedef struct Player {
   char name[32];  // player name
@@ -68,11 +68,51 @@ pc player_classes[PCS] = {
     0,            // xp        - experience points
     1,            // level     - current level
     3,            // coin      - money
+  },
+  // Rogue
+  {
+    "Rogue",     // name
+    "Rogue",     // role
+    "Rogues are skilled combatants and have bonuses to coin, dodge, & evasion.",
+    14,           // str       - strength
+    16,           // dex       - dexterity
+    12,           // con       - constitution
+    14,           // intel     - intelligence
+    12,           // wis       - wisdom
+    14,           // cha       - charisma
+    3,            // dmg       - innate damage bonus
+    1,            // armor     - innate armor (defense) bonus
+    6,            // max_hp    - max hp earned per level
+    6,            // cur_hp    - current hp
+    3,            // dodge     - innate bonus to dodge
+    6,            // max_mana  - max mana per level
+    6,            // cur_mana  - current mana
+    0,            // xp        - experience points
+    1,            // level     - current level
+    5,            // coin      - money
+  },
+  // Wizard
+  {
+    "Wizard",     // name
+    "Wizard",     // role
+    "Wizards can cast damaging spells and have a pet familiar.",
+    8,            // str       - strength
+    12,           // dex       - dexterity
+    12,           // con       - constitution
+    16,           // intel     - intelligence
+    12,           // wis       - wisdom
+    12,           // cha       - charisma
+    0,            // dmg       - innate damage bonus
+    0,            // armor     - innate armor (defense) bonus
+    4,            // max_hp    - max hp earned per level
+    4,            // cur_hp    - current hp
+    0,            // dodge     - innate bonus to dodge
+    16,           // max_mana  - max mana per level
+    16,           // cur_mana  - current mana
+    0,            // xp        - experience points
+    1,            // level     - current level
+    3,            // coin      - money
   }
 };
 
-//char *player_classes[PCS] = {"Cleric", "Knight", "Monk", "Rogue", "Wizard"};
-char *class_list[PCS] = {"Cleric", "Knight"};
-
-char *class_descriptions[PCS] = {"Clerics are healers, able to restore health, even during combat. They are capable fighters as well.",
-                               "Knights are noble warriors with the best armor and can periodically smite their foes."};
+char *class_list[PCS] = {"Cleric", "Knight", "Rogue", "Wizard"};

@@ -32,32 +32,42 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *play
   int class_choice, y_n;
   char name[32];
   wclear(game_text);
-  mvwaddstr(game_text, 3, 3, "Select your player's class or role. This will determine");
-  mvwaddstr(game_text, 4, 3, "your unique skills and abilities.");
+  mvwaddstr(game_text, 1, 1, "Select your player's class or role. This will determine");
+  mvwaddstr(game_text, 2, 1, "your unique skills and abilities.");
   wrefresh(game_text);
   // create loop so player can check out each class if they want
-  class_choice = choose(select, class_list, PCS);
-  mvwprintw(game_text, 6, 3, "%s", player_classes[class_choice].desc);
-  mvwprintw(game_text, 9, 3, "Would you like to play as a %s?", player_classes[class_choice].name);
-  wrefresh(game_text);
-  y_n = choose(select, yes_no, 2);
-  if (y_n == 0) {
-    wclear(select);
-    mvwprintw(select, 1, 1, "Please enter your character's name to get adventuring!");
-    echo();    // allow player to see name they are entering
-    wrefresh(select);
-    napms(1000);
-    mvwprintw(input, 1, 1, "Name: ");
-    wgetnstr(input, name, 31);
-    noecho();  // turn off key entry echo to terminal
-    clear_box(input);
-    // generate starting stats for the player
-    build_character(name, player_classes[class_choice], player);
+  while(1) {
+    class_choice = choose(select, class_list, PCS);
+    wclear(game_text);
+    mvwprintw(game_text, 1, 1, "%s", player_classes[class_choice].desc);
+    mvwprintw(game_text, 3, 1, "Would you like to play as a %s?", player_classes[class_choice].name);
+    wrefresh(game_text);
+    y_n = choose(select, yes_no, 2);
+    if (y_n == 0) {
+      wclear(select);
+      mvwprintw(select, 1, 1, "Please enter your character's name to get adventuring!");
+      echo();    // allow player to see name they are entering
+      wrefresh(select);
+      napms(500);
+      mvwprintw(input, 1, 1, "Name: ");
+      wgetnstr(input, name, 31);
+      noecho();  // turn off key entry echo to terminal
+      clear_box(input);
+      // generate starting stats for the player
+      build_character(name, player_classes[class_choice], player);
+      break;
+    } else {
+      mvwaddstr(game_text, 5, 1, "Right on, please make another choice:");
+      wrefresh(game_text);
+    }
   }
+  
 }
 
 // update character - name, role, stats, etc.
 // tokens indicate what is being updated
+// another valid approach would be to have two functions, one for
+// strings and one for ints
 void update_character(int token, char val[BUFF], pc *player) {
   switch (token) {
     case 0: strncpy(player->name, val, 32); break;

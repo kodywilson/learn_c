@@ -1,7 +1,9 @@
 // functions for handling player selections
 
+#define Y_N 2
+
 // globals
-char *yes_no[2] = {"Yes", "No"};
+char *yes_no[Y_N] = {"Yes", "No"};
 
 // choose from num (number of) choices
 // choose(select, yes_no, 2);
