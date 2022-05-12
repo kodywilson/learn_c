@@ -68,15 +68,15 @@ void stars(WINDOW *win, int num_stars) {
 
   // Iterate over struct and print the letters
   destiny_y = (win_y / 2 - 5) / 2;
-  destiny_x = (win_x - (LETTERS * 10)) / 2;
+  destiny_x = (win_x - (LETTERS * 8)) / 2;
   for (int i = 0; i < LETTERS; i++) {
     //bigly(intro[i]);
     destiny_y = (win_y / 2 - 5) / 2;
-    for (int j = 0; j < 5; j++) {
+    for (int j = 0; j < 6; j++) { // have to pass the height of the character j < height
       destiny_y++;
-      mvaddstr(destiny_y, destiny_x, letters[i].let[j]);
+      mvaddstr(destiny_y, destiny_x, letters[i].doom_up[j]);
     }
-    destiny_x = destiny_x + 10;
+    destiny_x = destiny_x + 8;
     refresh();
     napms(100);
   }
