@@ -2,7 +2,7 @@
 
 typedef char letter_a[5][10];
 
-#define LETTERS 1  // number of big letters
+#define LETTERS 7  // number of big letters
 
 typedef struct Letter {
   letter_a let;       // will store the letter
@@ -38,7 +38,7 @@ letter_a t_up = {
     "    #    ",
     "    #    ",
     "    #    ",
-    "    #    ",
+    "    #    "
 };
 
 letter_a i_up = {
@@ -46,7 +46,7 @@ letter_a i_up = {
     "    #    ",
     "    #    ",
     "    #    ",
-    " ####### ",
+    " ####### "
 };
 
 letter_a n_up = {
@@ -54,7 +54,7 @@ letter_a n_up = {
     " # #   # ",
     " #  #  # ",
     " #   # # ",
-    " #    ## ",
+    " #    ## "
 };
 
 letter_a y_up = {
@@ -62,7 +62,7 @@ letter_a y_up = {
     "   # #   ",
     "    #    ",
     "    #    ",
-    "    #    ",
+    "    #    "
 };
 
 letter_s letters[LETTERS] = {
@@ -75,7 +75,73 @@ letter_s letters[LETTERS] = {
       "#      # ",
       "#######  "
     },
-    1          // capital, set to 1 for true
+    1                // capital, set to 1 for true
+  },
+  // E
+  {
+    {
+      "######## ",
+      "#        ",
+      "#####    ",
+      "#        ",
+      "######## "
+    },
+    1                // capital, set to 1 for true
+  },
+  // S
+  {
+    {
+      " ######  ",
+      "#        ",
+      " ######  ",
+      "       # ",
+      " ######  "
+    },
+    1                // capital, set to 1 for true
+  },
+  // T
+  {
+    {
+      " ####### ",
+      "    #    ",
+      "    #    ",
+      "    #    ",
+      "    #    "
+    },
+    1                // capital, set to 1 for true
+  },
+  // I
+  {
+    {
+      " ####### ",
+      "    #    ",
+      "    #    ",
+      "    #    ",
+      " ####### "
+    },
+    1                // capital, set to 1 for true
+  },
+  // N
+  {
+    {
+      " ##    # ",
+      " # #   # ",
+      " #  #  # ",
+      " #   # # ",
+      " #    ## "
+    },
+    1                // capital, set to 1 for true
+  },
+  // Y
+  {
+    {
+      " #     # ",
+      "   # #   ",
+      "    #    ",
+      "    #    ",
+      "    #    "
+    },
+    1                // capital, set to 1 for true
   }
 };
 
