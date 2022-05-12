@@ -17,8 +17,9 @@ void clear_box(WINDOW *win) {
 
 // print stars in the window
 void stars(WINDOW *win, int num_stars) {
-  int win_y, win_x;
+  int destiny_y, destiny_x, win_y, win_x;
   int starsY[num_stars], starsX[num_stars], starsColor[num_stars];
+  char intro[8] = "Destiny";
 
   getmaxyx(win, win_y, win_x);
   //curs_set(0); // turn off visible cursor
@@ -64,6 +65,17 @@ void stars(WINDOW *win, int num_stars) {
     refresh();
     napms(drop_speed-=5);
   }
+
+  // 
+  destiny_x = 10;
+  //for (int i = 0; i < 8; i++) {
+    //bigly(intro[i]);
+    for (int j = 0; j < 5; j++) {
+      destiny_y = 4 + j;
+      mvaddstr(destiny_y, destiny_x, letters[0].let[j]);
+    }
+    destiny_x = destiny_x + 11;
+  //}
 
   attrset(A_UNDERLINE | COLOR_PAIR(1));
   center(stdscr, "Press any key to begin...");

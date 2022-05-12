@@ -1,5 +1,6 @@
 #include "game_mechanics/dice.h"
 #include "art/text.h"
+#include "art/letters.h"
 #include <ncurses.h>
 #include "art/graphics.h"
 #include "game_mechanics/choices.h"
