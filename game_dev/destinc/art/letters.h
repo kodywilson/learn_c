@@ -1,19 +1,9 @@
 // Letters to print out
 
-// letter arrays - size according to font being used
-typedef char letter_a[5][10];  // fits custom destiny letters I created
-typedef char doom_a_up[6][8];   // Doom uppercase letter
-typedef char doom_a_low[8][8];  // Doom lowercase letter
-
-#define LETTERS 7  // number of big letters
-
-// each letter struct will contain capital and lowercase versions of each font
-typedef struct Letter {
-  doom_a_up  doom_up;        // Doom font uppercase
-  doom_a_low doom_low;       // Doom font lowercase
-} letter_s;
+#define LETTERS 9  // number of big letters
 
 // each font struct will contain capital and lowercase versions of each font
+// followed by height of the characters in uppercase, lowercase and then width for each character
 typedef struct Font {
   char up[9][356];      //  uppercase
   //char low[9][356]; ; //  lowercase
@@ -22,8 +12,9 @@ typedef struct Font {
   //int size[2][2];       //  size y by size x - [6, 7] = uppercase dimensions 
 } font;                 //                     [6, 7] = uppercase dimensions
 
+// see lower part of the file for font samples - they look weird in arrays because of the escape characters
 font doom = {
-  {
+  {  // make sure to escape characters that need it like back slashes
     "  ___   ______   _____  ______   _____  ______   _____   _   _   _____     ___   _   __  _      ___  ___  _   _   _____  ______   _____  ______   _____   _____   _   _   _   _   _    _  __   __ __   __  ______",
     " / _ \\  | ___ \\ /  __ \\ |  _  \\ |  ___| |  ___| |  __ \\ | | | | |_   _|   |_  | | | / / | |     |  \\/  | | \\ | | |  _  | | ___ \\ |  _  | | ___ \\ /  ___| |_   _| | | | | | | | | | |  | | \\ \\ / / \\ \\ / / |___  /",
     "/ /_\\ \\ | |_/ / | /  \\/ | | | | | |__   | |_    | |  \\/ | |_| |   | |       | | | |/ /  | |     | .  . | |  \\| | | | | | | |_/ / | | | | | |_/ / \\ `--.    | |   | | | | | | | | | |  | |  \\ V /   \\ V /     / / ",
@@ -31,11 +22,11 @@ font doom = {
     "| | | | | |_/ / | \\__/\\ | |/ /  | |___  | |     | |_\\ \\ | | | |  _| |_  /\\__/ / | |\\  \\ | |____ | |  | | | |\\  | \\ \\_/ / | |     \\ \\/' / | |\\ \\  /\\__/ /   | |   | |_| | \\ \\_/ / \\  /\\  / / /^\\ \\   | |   ./ /___",
     "\\_| |_/ \\____/   \\____/ |___/   \\____/  \\_|      \\____/ \\_| |_/  \\___/  \\____/  \\_| \\_/ \\_____/ \\_|  |_/ \\_| \\_/  \\___/  \\_|      \\_/\\_\\ \\_| \\_| \\____/    \\_/    \\___/   \\___/   \\/  \\/  \\/   \\/   \\_/   \\_____/"
   },
-  {6, 8}, // height [upper][lower] ie. [6][8]
-  {
-    {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}, // width uppercase
-    {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}  // width lowercase // set these
-  }
+  {6, 8}, // height [upper_case][lower_case] ie. [6][8]
+  {//A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z      // enter width for each uppercase character
+    {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7},    // width uppercase
+    {7, 7, 6, 7, 6, 5, 7, 7, 3, 5, 6, 3, 11, 7, 7, 7, 7, 6, 5, 5, 7, 7, 10, 6, 7, 5}   // width lowercase // set these
+  }//a, b, c, d, e, f, g, h, i, j, k, l,  m, n, o, p, q, r, s, t, u, v,  w, x, y, z    // enter width for each lowercase character
 };
 
 // functions for manipulating ascii characters
@@ -53,281 +44,9 @@ int letter_position(int letter, font font) {
   return position;
 }
 
-letter_a a_up = {
-    "    #    ",
-    "   # #   ",
-    "  #####  ",
-    " #     # ",
-    "#       #"
-};
-
-letter_a e_up = {
-    "######## ",
-    "#        ",
-    "#####    ",
-    "#        ",
-    "######## "
-};
-
-letter_a s_up = {
-    " ######  ",
-    "#        ",
-    " ######  ",
-    "       # ",
-    " ######  "
-};
-
-letter_a t_up = {
-    " ####### ",
-    "    #    ",
-    "    #    ",
-    "    #    ",
-    "    #    "
-};
-
-letter_a i_up = {
-    " ####### ",
-    "    #    ",
-    "    #    ",
-    "    #    ",
-    " ####### "
-};
-
-letter_a n_up = {
-    " ##    # ",
-    " # #   # ",
-    " #  #  # ",
-    " #   # # ",
-    " #    ## "
-};
-
-letter_a y_up = {
-    " #     # ",
-    "   # #   ",
-    "    #    ",
-    "    #    ",
-    "    #    "
-};
-
-/*** Doom
- *      ___   ______   _____  ______   _____  ______   _____   _   _   _____     ___   _   __  _      ___  ___  _   _   _____  ______   _____  ______   _____   _____   _   _   _   _   _    _  __   __ __   __  ______
- *     / _ \  | ___ \ /  __ \ |  _  \ |  ___| |  ___| |  __ \ | | | | |_   _|   |_  | | | / / | |     |  \/  | | \ | | |  _  | | ___ \ |  _  | | ___ \ /  ___| |_   _| | | | | | | | | | |  | | \ \ / / \ \ / / |___  /
- *    / /_\ \ | |_/ / | /  \/ | | | | | |__   | |_    | |  \/ | |_| |   | |       | | | |/ /  | |     | .  . | |  \| | | | | | | |_/ / | | | | | |_/ / \ `--.    | |   | | | | | | | | | |  | |  \ V /   \ V /     / / 
- *    |  _  | | ___ \ | |     | | | | |  __|  |  _|   | | __  |  _  |   | |       | | |    \  | |     | |\/| | | . ` | | | | | |  __/  | | | | |    /   `--. \   | |   | | | | | | | | | |/\| |  /   \    \ /     / /  
- *    | | | | | |_/ / | \__/\ | |/ /  | |___  | |     | |_\ \ | | | |  _| |_  /\__/ / | |\  \ | |____ | |  | | | |\  | \ \_/ / | |     \ \/' / | |\ \  /\__/ /   | |   | |_| | \ \_/ / \  /\  / / /^\ \   | |   ./ /___
- *    \_| |_/ \____/   \____/ |___/   \____/  \_|      \____/ \_| |_/  \___/  \____/  \_| \_/ \_____/ \_|  |_/ \_| \_/  \___/  \_|      \_/\_\ \_| \_| \____/    \_/    \___/   \___/   \/  \/  \/   \/   \_/   \_____/
- *                                                                                                                                                                                                                     
- *                                                                                                                                                                                                                     
- *             _                  _           __           _       _     _   _      _                                                            _                                                                     
- *            | |                | |         / _|         | |     (_)   (_) | |    | |                                                          | |                                                                    
- *      __ _  | |__     ___    __| |   ___  | |_    __ _  | |__    _     _  | | __ | |  _ __ ___    _ __     ___    _ __     __ _   _ __   ___  | |_   _   _  __   __ __      __ __  __  _   _   ____                  
- *     / _` | | '_ \   / __|  / _` |  / _ \ |  _|  / _` | | '_ \  | |   | | | |/ / | | | '_ ` _ \  | '_ \   / _ \  | '_ \   / _` | | '__| / __| | __| | | | | \ \ / / \ \ /\ / / \ \/ / | | | | |_  /                  
- *    | (_| | | |_) | | (__  | (_| | |  __/ | |   | (_| | | | | | | |   | | |   <  | | | | | | | | | | | | | (_) | | |_) | | (_| | | |    \__ \ | |_  | |_| |  \ V /   \ V  V /   >  <  | |_| |  / /                   
- *     \__,_| |_.__/   \___|  \__,_|  \___| |_|    \__, | |_| |_| |_|   | | |_|\_\ |_| |_| |_| |_| |_| |_|  \___/  | .__/   \__, | |_|    |___/  \__|  \__,_|   \_/     \_/\_/   /_/\_\  \__, | /___|                  
- *                                                  __/ |              _/ |                                        | |         | |                                                        __/ |                        
- *                                                 |___/              |__/                                         |_|         |_|                                                       |___/                         
- */
-
-
-letter_s letters[LETTERS] = {
-  // A
-  {
-    { // Doom upper A
-      "  ___  ",
-      " / _ \\ ",
-      "/ /_\\ \\",
-      "|  _  |",
-      "| | | |",
-      "\\_| |_/"
-    },
-    { // Doom lower a
-      "       ",
-      "       ",
-      "  __ _ ",
-      " / _` |",
-      "| | | |",
-      "\\_| |_/",
-      "       ",
-      "       "
-    }
-  },
-  // B
-  {
-    { // Doom upper B
-      "______ ",
-      "| ___ \\",
-      "| |_/ /",
-      "| ___ \\",
-      "| |_/ /",
-      "\\____/ "
-    },
-    { // Doom lower b
-      " _     ",
-      "| |    ",
-      "| |    ",
-      "| '_ \\ ",
-      "| | | |",
-      "|_.__/ ",
-      "       ",
-      "       "
-    }
-  }/*,
-  // S
-  {
-    {
-      " ######  ",
-      "#        ",
-      " ######  ",
-      "       # ",
-      " ######  "
-    },
-    1                // capital, set to 1 for true
-  },
-  // T
-  {
-    {
-      " ####### ",
-      "    #    ",
-      "    #    ",
-      "    #    ",
-      "    #    "
-    },
-    1                // capital, set to 1 for true
-  },
-  // I
-  {
-    {
-      " ####### ",
-      "    #    ",
-      "    #    ",
-      "    #    ",
-      " ####### "
-    },
-    1                // capital, set to 1 for true
-  },
-  // N
-  {
-    {
-      " ##    # ",
-      " # #   # ",
-      " #  #  # ",
-      " #   # # ",
-      " #    ## "
-    },
-    1                // capital, set to 1 for true
-  },
-  // Y
-  {
-    {
-      " #     # ",
-      "   # #   ",
-      "    #    ",
-      "    #    ",
-      "    #    "
-    },
-    1                // capital, set to 1 for true
-  }
-  // D
-  {
-    {
-      " ######  ",
-      "#      # ",
-      "#       #",
-      "#      # ",
-      "#######  "
-    },
-    1                // capital, set to 1 for true
-  },
-  // E
-  {
-    {
-      "######## ",
-      "#        ",
-      "#####    ",
-      "#        ",
-      "######## "
-    },
-    1                // capital, set to 1 for true
-  },
-  // S
-  {
-    {
-      " ######  ",
-      "#        ",
-      " ######  ",
-      "       # ",
-      " ######  "
-    },
-    1                // capital, set to 1 for true
-  },
-  // T
-  {
-    {
-      " ####### ",
-      "    #    ",
-      "    #    ",
-      "    #    ",
-      "    #    "
-    },
-    1                // capital, set to 1 for true
-  },
-  // I
-  {
-    {
-      " ####### ",
-      "    #    ",
-      "    #    ",
-      "    #    ",
-      " ####### "
-    },
-    1                // capital, set to 1 for true
-  },
-  // N
-  {
-    {
-      " ##    # ",
-      " # #   # ",
-      " #  #  # ",
-      " #   # # ",
-      " #    ## "
-    },
-    1                // capital, set to 1 for true
-  },
-  // A
-  {
-    {
-      " #     # ",
-      "   # #   ",
-      "    #    ",
-      "    #    ",
-      "    #    "
-    },
-    1                // capital, set to 1 for true
-  }*/
-};
-
-// letter letters[26];
-// letters[0] = d_up;
-
-// void bigly(char ch) {
-//     int destiny_y;
-//     int let;
-
-//     switch (ch) {
-//         case 'D': let = 0;
-//         case 'e': let = 1;
-//         case 's': let = 2;
-//         case 't': let = 3;
-//         case 'i': let = 4;
-//         case 'n': let = 5;
-//         case 'y': let = 6;
-//         //default: let = a_up; // no
-//     };
-//     for (int j = 0; j < 10; j++) {
-//       destiny_y = 4 + i;
-//       mvaddstr(destiny_y, 10, letters[let][j]);
-//     }
-// }
+//
+// FONT SAMPLES
+//
 
 /*** Doom
  *      ___   ______   _____  ______   _____  ______   _____   _   _   _____     ___   _   __  _      ___  ___  _   _   _____  ______   _____  ______   _____   _____   _   _   _   _   _    _  __   __ __   __  ______
@@ -383,3 +102,271 @@ letter_s letters[LETTERS] = {
  *                                                                                \_/__/                          \/___/                                                                     \/_/            \/_/                                                                                          \/__/                        
  */
 
+// old code
+
+// // letter arrays - size according to font being used
+// typedef char letter_a[5][10];  // fits custom destiny letters I created
+// typedef char doom_a_up[6][8];   // Doom uppercase letter
+// typedef char doom_a_low[8][8];  // Doom lowercase letter
+
+// // each letter struct will contain capital and lowercase versions of each font
+// typedef struct Letter {
+//   doom_a_up  doom_up;        // Doom font uppercase
+//   doom_a_low doom_low;       // Doom font lowercase
+// } letter_s;
+
+// letter_a a_up = {
+//     "    #    ",
+//     "   # #   ",
+//     "  #####  ",
+//     " #     # ",
+//     "#       #"
+// };
+
+// letter_a e_up = {
+//     "######## ",
+//     "#        ",
+//     "#####    ",
+//     "#        ",
+//     "######## "
+// };
+
+// letter_a s_up = {
+//     " ######  ",
+//     "#        ",
+//     " ######  ",
+//     "       # ",
+//     " ######  "
+// };
+
+// letter_a t_up = {
+//     " ####### ",
+//     "    #    ",
+//     "    #    ",
+//     "    #    ",
+//     "    #    "
+// };
+
+// letter_a i_up = {
+//     " ####### ",
+//     "    #    ",
+//     "    #    ",
+//     "    #    ",
+//     " ####### "
+// };
+
+// letter_a n_up = {
+//     " ##    # ",
+//     " # #   # ",
+//     " #  #  # ",
+//     " #   # # ",
+//     " #    ## "
+// };
+
+// letter_a y_up = {
+//     " #     # ",
+//     "   # #   ",
+//     "    #    ",
+//     "    #    ",
+//     "    #    "
+// };
+
+// letter_s letters[LETTERS] = {
+//   // A
+//   {
+//     { // Doom upper A
+//       "  ___  ",
+//       " / _ \\ ",
+//       "/ /_\\ \\",
+//       "|  _  |",
+//       "| | | |",
+//       "\\_| |_/"
+//     },
+//     { // Doom lower a
+//       "       ",
+//       "       ",
+//       "  __ _ ",
+//       " / _` |",
+//       "| | | |",
+//       "\\_| |_/",
+//       "       ",
+//       "       "
+//     }
+//   },
+//   // B
+//   {
+//     { // Doom upper B
+//       "______ ",
+//       "| ___ \\",
+//       "| |_/ /",
+//       "| ___ \\",
+//       "| |_/ /",
+//       "\\____/ "
+//     },
+//     { // Doom lower b
+//       " _     ",
+//       "| |    ",
+//       "| |    ",
+//       "| '_ \\ ",
+//       "| | | |",
+//       "|_.__/ ",
+//       "       ",
+//       "       "
+//     }
+//   }/*,
+//   // S
+//   {
+//     {
+//       " ######  ",
+//       "#        ",
+//       " ######  ",
+//       "       # ",
+//       " ######  "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // T
+//   {
+//     {
+//       " ####### ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // I
+//   {
+//     {
+//       " ####### ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    ",
+//       " ####### "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // N
+//   {
+//     {
+//       " ##    # ",
+//       " # #   # ",
+//       " #  #  # ",
+//       " #   # # ",
+//       " #    ## "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // Y
+//   {
+//     {
+//       " #     # ",
+//       "   # #   ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    "
+//     },
+//     1                // capital, set to 1 for true
+//   }
+//   // D
+//   {
+//     {
+//       " ######  ",
+//       "#      # ",
+//       "#       #",
+//       "#      # ",
+//       "#######  "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // E
+//   {
+//     {
+//       "######## ",
+//       "#        ",
+//       "#####    ",
+//       "#        ",
+//       "######## "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // S
+//   {
+//     {
+//       " ######  ",
+//       "#        ",
+//       " ######  ",
+//       "       # ",
+//       " ######  "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // T
+//   {
+//     {
+//       " ####### ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // I
+//   {
+//     {
+//       " ####### ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    ",
+//       " ####### "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // N
+//   {
+//     {
+//       " ##    # ",
+//       " # #   # ",
+//       " #  #  # ",
+//       " #   # # ",
+//       " #    ## "
+//     },
+//     1                // capital, set to 1 for true
+//   },
+//   // A
+//   {
+//     {
+//       " #     # ",
+//       "   # #   ",
+//       "    #    ",
+//       "    #    ",
+//       "    #    "
+//     },
+//     1                // capital, set to 1 for true
+//   }*/
+// };
+
+// // letter letters[26];
+// // letters[0] = d_up;
+
+// // void bigly(char ch) {
+// //     int destiny_y;
+// //     int let;
+
+// //     switch (ch) {
+// //         case 'D': let = 0;
+// //         case 'e': let = 1;
+// //         case 's': let = 2;
+// //         case 't': let = 3;
+// //         case 'i': let = 4;
+// //         case 'n': let = 5;
+// //         case 'y': let = 6;
+// //         //default: let = a_up; // no
+// //     };
+// //     for (int j = 0; j < 10; j++) {
+// //       destiny_y = 4 + i;
+// //       mvaddstr(destiny_y, 10, letters[let][j]);
+// //     }
+// // }
