@@ -5,13 +5,30 @@ typedef char letter_a[5][10];  // fits custom destiny letters I created
 typedef char doom_a_up[6][8];   // Doom uppercase letter
 typedef char doom_a_low[8][8];  // Doom lowercase letter
 
-#define LETTERS 2  // number of big letters
+#define LETTERS 7  // number of big letters
 
 // each letter struct will contain capital and lowercase versions of each font
 typedef struct Letter {
   doom_a_up  doom_up;        // Doom font uppercase
   doom_a_low doom_low;       // Doom font lowercase
 } letter_s;
+
+// each font struct will contain capital and lowercase versions of each font
+typedef struct Font {
+  char up[9][356];      //  uppercase
+  //char low[9][356]; ; //  lowercase
+} font;
+
+font doom = {
+  {
+    "  ___   ______   _____  ______   _____  ______   _____   _   _   _____     ___   _   __  _      ___  ___  _   _   _____  ______   _____  ______   _____   _____   _   _   _   _   _    _  __   __ __   __  ______",
+    " / _ \\  | ___ \\ /  __ \\ |  _  \\ |  ___| |  ___| |  __ \\ | | | | |_   _|   |_  | | | / / | |     |  \\/  | | \\ | | |  _  | | ___ \\ |  _  | | ___ \\ /  ___| |_   _| | | | | | | | | | |  | | \\ \\ / / \\ \\ / / |___  /",
+    "/ /_\\ \\ | |_/ / | /  \\/ | | | | | |__   | |_    | |  \\/ | |_| |   | |       | | | |/ /  | |     | .  . | |  \\| | | | | | | |_/ / | | | | | |_/ / \\ `--.    | |   | | | | | | | | | |  | |  \\ V /   \\ V /     / / ",
+    "|  _  | | ___ \\ | |     | | | | |  __|  |  _|   | | __  |  _  |   | |       | | |    \\  | |     | |\\/| | | . ` | | | | | |  __/  | | | | |    /   `--. \\   | |   | | | | | | | | | |/\\| |  /   \\    \\ /     / /  ",
+    "| | | | | |_/ / | \\__/\\ | |/ /  | |___  | |     | |_\\ \\ | | | |  _| |_  /\\__/ / | |\\  \\ | |____ | |  | | | |\\  | \\ \\_/ / | |     \\ \\/' / | |\\ \\  /\\__/ /   | |   | |_| | \\ \\_/ / \\  /\\  / / /^\\ \\   | |   ./ /___",
+    "\\_| |_/ \\____/   \\____/ |___/   \\____/  \\_|      \\____/ \\_| |_/  \\___/  \\____/  \\_| \\_/ \\_____/ \\_|  |_/ \\_| \\_/  \\___/  \\_|      \\_/\\_\\ \\_| \\_| \\____/    \\_/    \\___/   \\___/   \\/  \\/  \\/   \\/   \\_/   \\_____/"
+  }
+};
 
 letter_a a_up = {
     "    #    ",
