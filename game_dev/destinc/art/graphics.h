@@ -68,14 +68,14 @@ void stars(WINDOW *win, int num_stars) {
 
   // Iterate over struct and print the letters
   destiny_y = (win_y / 2 - 5) / 2;
-  destiny_x = (win_x - (LETTERS * doom.width[0][0])) / 2;
+  destiny_x = (win_x - (LETTERS * fonts[DOOM].width[0][0])) / 2;
   letter_width = 0; // initialize letter width
   for (int let = 0; let < LETTERS; let++) {
-    for (int i = 0; i < doom.width[0][0]; i++) {
+    for (int i = 0; i < fonts[DOOM].width[0][0]; i++) {
       destiny_y = (win_y / 2 - 5) / 2;
-      for (int j = 0; j < doom.height[0]; j++) { // have to pass the height of the character j < height
+      for (int j = 0; j < fonts[DOOM].height[0]; j++) { // have to pass the height of the character j < height
         //mvaddstr(destiny_y, destiny_x, letters[i].doom_up[j]);
-        mvaddch(destiny_y, destiny_x, doom.up[j][i + letter_width]);
+        mvaddch(destiny_y, destiny_x, fonts[DOOM].up[j][i + letter_width]);
         destiny_y++;
       }
       destiny_x++;
