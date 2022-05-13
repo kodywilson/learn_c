@@ -17,7 +17,10 @@ typedef struct Letter {
 typedef struct Font {
   char up[9][356];      //  uppercase
   //char low[9][356]; ; //  lowercase
-} font;
+  int height[2];        // varies between upper and lowercase - height [upper][lower] ie. [6][8]
+  int width[2][26];     // first array is width of uppercase, second is width of lowercase, each character
+  //int size[2][2];       //  size y by size x - [6, 7] = uppercase dimensions 
+} font;                 //                     [6, 7] = uppercase dimensions
 
 font doom = {
   {
@@ -27,8 +30,21 @@ font doom = {
     "|  _  | | ___ \\ | |     | | | | |  __|  |  _|   | | __  |  _  |   | |       | | |    \\  | |     | |\\/| | | . ` | | | | | |  __/  | | | | |    /   `--. \\   | |   | | | | | | | | | |/\\| |  /   \\    \\ /     / /  ",
     "| | | | | |_/ / | \\__/\\ | |/ /  | |___  | |     | |_\\ \\ | | | |  _| |_  /\\__/ / | |\\  \\ | |____ | |  | | | |\\  | \\ \\_/ / | |     \\ \\/' / | |\\ \\  /\\__/ /   | |   | |_| | \\ \\_/ / \\  /\\  / / /^\\ \\   | |   ./ /___",
     "\\_| |_/ \\____/   \\____/ |___/   \\____/  \\_|      \\____/ \\_| |_/  \\___/  \\____/  \\_| \\_/ \\_____/ \\_|  |_/ \\_| \\_/  \\___/  \\_|      \\_/\\_\\ \\_| \\_| \\____/    \\_/    \\___/   \\___/   \\/  \\/  \\/   \\/   \\_/   \\_____/"
+  },
+  {6, 8}, // height [upper][lower] ie. [6][8]
+  {
+    {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}, // width uppercase
+    {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}  // width lowercase // set these
   }
 };
+
+// functions for manipulating ascii characters
+
+// returns position in array where letter begins
+// send letter, font you want - letter_position('A', doom)
+// int letter_position(int letter, font *font) {
+
+// }
 
 letter_a a_up = {
     "    #    ",
