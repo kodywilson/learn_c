@@ -8,11 +8,12 @@ char *yes_no[Y_N] = {"Yes", "No"};
 // choose from num (number of) choices
 // choose(select, yes_no, 2);
 // Send window for menu, char** of choices, and number of choices
-int choose(WINDOW *win, char **choices, int num) {
+int choose(WINDOW *win, char **choices, int num, char *text) {
   int choice, x, y;
   int highlight = 0;
 
   wclear(win);
+  mvwaddstr(win, 0, 0, text);
 
   while(1) {
     for (int i = 0; i < num; i++) {

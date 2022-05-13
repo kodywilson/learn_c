@@ -30,19 +30,20 @@ void build_character(char name[32], pc chosen_class, pc *player) {
 // character selection
 void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *player) {
   int class_choice, y_n;
-  char name[32];
+  char name[32], class_prompt[64];
+
   wclear(game_text);
-  mvwaddstr(game_text, 1, 1, "Select your player's class or role. This will determine");
-  mvwaddstr(game_text, 2, 1, "your unique skills and abilities.");
+  mvwaddstr(game_text, 1, 1, "Your character's class (role or profession) will determine");
+  mvwaddstr(game_text, 2, 1, "the unique skills and abilities available to you.");
   wrefresh(game_text);
   // create loop so player can check out each class if they want
   while(1) {
-    class_choice = choose(select, class_list, PCS);
+    class_choice = choose(select, class_list, PCS, "Choose class:");
     wclear(game_text);
     mvwprintw(game_text, 1, 1, "%s", player_classes[class_choice].desc);
-    mvwprintw(game_text, 3, 1, "Would you like to play as a %s?", player_classes[class_choice].name);
+    snprintf(class_prompt, 63, "Would you like to play as a %s?", player_classes[class_choice].name);
     wrefresh(game_text);
-    y_n = choose(select, yes_no, 2);
+    y_n = choose(select, yes_no, Y_N, class_prompt);
     if (y_n == 0) {
       wclear(select);
       mvwprintw(select, 1, 1, "Please enter your character's name to get adventuring!");

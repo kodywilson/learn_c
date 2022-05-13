@@ -19,16 +19,16 @@ char *tavern_list[TAVERN] = {
 // you are visiting the tavern
 void tavern(WINDOW *game_text, WINDOW *select, pc *player) {
   int choice;
+  char tavern_prompt[96];
+
+  snprintf(tavern_prompt, 95, "What would you like to do in the tavern, %s?", player->name);
 
   wclear(game_text);
   mvwaddstr(game_text, 1, 1, "You enter the tavern. The air is thick with smoke, but the fire in the hearth is warm and inviting.");
   wrefresh(game_text);
   while(1) {
     //getch(); // DEBUG
-    wclear(select);
-    mvwprintw(select, 0, 0, "What would you like to do in the tavern, %s?", player->name);
-    wrefresh(select);
-    choice = choose(select, tavern_list, TAVERN);
+    choice = choose(select, tavern_list, TAVERN, tavern_prompt);
     wclear(game_text);
     switch (choice) {
       case 0: mvwaddstr(game_text, 1, 1, tavern_table); break;
