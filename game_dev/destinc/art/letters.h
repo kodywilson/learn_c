@@ -35,11 +35,12 @@ font doom = {
 // send letter and font you want - letter_position('A', doom)
 int letter_position(int letter, font font) {
   int position = 0;
+  int space= 1;       // later, change this to passed argument if there are fonts spaced differently
   if ( letter >= 65 && letter <= 91) {    // this is a capital letter
-    for (int i = 0; i < letter - 'A'; i++) position = position + font.width[0][i];
+    for (int i = 0; i < letter - 'A'; i++) position = position + font.width[0][i] + space;
   }
   if ( letter >= 121 && letter <= 147) {  // this is a lowercase letter
-    for (int i = 0; i < letter - 'a'; i++) position = position + font.width[1][i];
+    for (int i = 0; i < letter - 'a'; i++) position = position + font.width[1][i]  + space;
   }
   return position;
 }
@@ -103,6 +104,11 @@ int letter_position(int letter, font font) {
  */
 
 // old code
+// some notes on this old code :) So there are a number of ways to handle ascii art characters. I have now opted for the 
+// array slice method where I store each alphabet in large arrays and slice off the letters as needed.
+// Originally, I had an array of letter structs. The idea was to store uppercase, lowercase, and metadata from each font as letter
+// structs in an array of 26 characters (for US English). That approach has definite advantages, making it very easy to ask the array
+// for any particular letter [0] = a, [1] = b, and so on. However, the tedium of creating each letter drove me to try the array slice method...
 
 // // letter arrays - size according to font being used
 // typedef char letter_a[5][10];  // fits custom destiny letters I created
