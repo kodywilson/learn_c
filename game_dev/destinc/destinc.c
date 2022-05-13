@@ -159,7 +159,7 @@ int main() {
     choice = choose(select, town_list, TOWN);
     switch (choice) {
       case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon."); break;
-      case 1: mvwaddstr(game_text, y_low - 2, x_low, "You chose the tavern."); break;
+      case 1: tavern(game_text, select, &player); break;
       case 2: mvwaddstr(game_text, y_low, x_low, "Thanks for playing, see you next time!");
               save_game(player); main_loop = 0; break;
       default: break;
