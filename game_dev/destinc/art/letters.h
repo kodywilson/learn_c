@@ -1,19 +1,23 @@
-// Letters to print out
+// Special text handling and printing functions
+// NOTE: Currently, this only supports ASCII
 
-#define DOOM 0     // assign index to font name
-#define LETTERS 7  // number of big letters
+#define DOOM 0     // assign index to font name - still needs lowercase to be added
+//#define IVRIT 1  //  not set up yet
+//#define LARRY3D  //  not set up yet
 
-// each font struct will contain capital and lowercase versions of each font
-// followed by height of the characters in uppercase, lowercase and then width for each character
-typedef struct Font {
-  char up[9][356];      //  uppercase
-  //char low[9][356]; ; //  lowercase
-  int height[2];        // varies between upper and lowercase - height [upper][lower] ie. [6, 8]
-  int width[2][26];     // first array is width of uppercase, second is width of lowercase, each character
+// font struct contains:    2d arrays of both capital and lowercase letters
+// one array with heights:  height[upper, lower]
+// one 2d array of widths:  [6, 7, 6, 6, ...] width of each uppercase character
+typedef struct Font {   //  [5, 5, 6, 6, ...] width of each lowercase character
+  char up[9][356];      //  uppercase letters
+  //char low[9][356]; ; //  lowercase letters
+  int height[2];        //  varies between upper and lowercase: height[upper][lower] ie. [6, 8]
+  int width[2][26];     //  first array is width of uppercase, second is width of lowercase, each character
 } font_t;
 
 // see lower part of the file for font samples - they look weird in arrays because of the escape characters
 // make sure to escape characters that need it like back slashes
+// this font is not complete, needs lowercase letters added
 font_t fonts[1] = {
   {    // Doom font
     {  // uppercase
@@ -27,29 +31,17 @@ font_t fonts[1] = {
     {6, 8}, // height [upper_case][lower_case] ie. [6][8]
     {//A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z      // enter width for each uppercase character
       {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7},    // width uppercase
-      {7, 7, 6, 7, 6, 5, 7, 7, 3, 5, 6, 3, 11, 7, 7, 7, 7, 6, 5, 5, 7, 7, 10, 6, 7, 5}   // width lowercase // set these
+      {7, 7, 6, 7, 6, 5, 7, 7, 3, 5, 6, 3, 11, 7, 7, 7, 7, 6, 5, 5, 7, 7, 10, 6, 7, 5}   // width lowercase
     }//a, b, c, d, e, f, g, h, i, j, k, l,  m, n, o, p, q, r, s, t, u, v,  w, x, y, z    // enter width for each lowercase character
   }
 };
 
-font_t doom = {
-  {  // make sure to escape characters that need it like back slashes
-    "  ___   ______   _____  ______   _____  ______   _____   _   _   _____     ___   _   __  _      ___  ___  _   _   _____  ______   _____  ______   _____   _____   _   _   _   _   _    _  __   __ __   __  ______",
-    " / _ \\  | ___ \\ /  __ \\ |  _  \\ |  ___| |  ___| |  __ \\ | | | | |_   _|   |_  | | | / / | |     |  \\/  | | \\ | | |  _  | | ___ \\ |  _  | | ___ \\ /  ___| |_   _| | | | | | | | | | |  | | \\ \\ / / \\ \\ / / |___  /",
-    "/ /_\\ \\ | |_/ / | /  \\/ | | | | | |__   | |_    | |  \\/ | |_| |   | |       | | | |/ /  | |     | .  . | |  \\| | | | | | | |_/ / | | | | | |_/ / \\ `--.    | |   | | | | | | | | | |  | |  \\ V /   \\ V /     / / ",
-    "|  _  | | ___ \\ | |     | | | | |  __|  |  _|   | | __  |  _  |   | |       | | |    \\  | |     | |\\/| | | . ` | | | | | |  __/  | | | | |    /   `--. \\   | |   | | | | | | | | | |/\\| |  /   \\    \\ /     / /  ",
-    "| | | | | |_/ / | \\__/\\ | |/ /  | |___  | |     | |_\\ \\ | | | |  _| |_  /\\__/ / | |\\  \\ | |____ | |  | | | |\\  | \\ \\_/ / | |     \\ \\/' / | |\\ \\  /\\__/ /   | |   | |_| | \\ \\_/ / \\  /\\  / / /^\\ \\   | |   ./ /___",
-    "\\_| |_/ \\____/   \\____/ |___/   \\____/  \\_|      \\____/ \\_| |_/  \\___/  \\____/  \\_| \\_/ \\_____/ \\_|  |_/ \\_| \\_/  \\___/  \\_|      \\_/\\_\\ \\_| \\_| \\____/    \\_/    \\___/   \\___/   \\/  \\/  \\/   \\/   \\_/   \\_____/"
-  },
-  {6, 8}, // height [upper_case][lower_case] ie. [6][8]
-  {//A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z      // enter width for each uppercase character
-    {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7},    // width uppercase
-    {7, 7, 6, 7, 6, 5, 7, 7, 3, 5, 6, 3, 11, 7, 7, 7, 7, 6, 5, 5, 7, 7, 10, 6, 7, 5}   // width lowercase // set these
-  }//a, b, c, d, e, f, g, h, i, j, k, l,  m, n, o, p, q, r, s, t, u, v,  w, x, y, z    // enter width for each lowercase character
-};
+//
+// functions for manipulating ascii art characters
 
-// functions for manipulating ascii characters
-
+// pass letter to see if capital - is_capital('D')
+// Many of my arrays are indexed such that capital is indexed 0. Use !is_capital() when you
+// need to get back zero for capital.
 int is_capital(int letter) {
   int result;
   if ( letter >= 65 && letter <= 90) result = 1;
@@ -57,23 +49,23 @@ int is_capital(int letter) {
   return result;
 }
 
-// returns position in alphabet for letter
+// returns position in English alphabet for letter
 int letter_position(int letter) {
   int position;
-  if (is_capital(letter)) position = letter - 'A';  // ie. D is 68, return 68 - 65 = 3 (D is fourth letter in alphabet) 
-  if (!is_capital(letter)) position = letter - 'a';
-  return position;
+  if (is_capital(letter)) position = letter - 'A';  // ie. D is 68, 68 - 65 = 3  Array indexing starts at 0
+  if (!is_capital(letter)) position = letter - 'a'; // so 3 is returned which is the fourth array position
+  return position;                                  // mathing our expectation as D is the 4th letter of the alphabet
 }
 
 // returns position in array where letter starts
-// send letter and font you want - letter_position('A', doom)
+// send letter and font you want - letter_start('A', doom)
 int letter_start(int letter, font_t font) {
   int start = 0;
   int space= 1;       // later, change this to passed argument if there are fonts spaced differently
   if (is_capital(letter)) {    // this is a capital letter
-    for (int i = 0; i < letter - 'A'; i++) start = start + font.width[0][i] + space;
+    for (int i = 0; i < letter - 'A'; i++) start = start + font.width[0][i] + space;  // add up to target letter start
   } else {                     // this is a lowercase letter
-    for (int i = 0; i < letter - 'a'; i++) start = start + font.width[1][i]  + space;
+    for (int i = 0; i < letter - 'a'; i++) start = start + font.width[1][i]  + space; // add up to target letter start
   }
   return start;
 }
@@ -86,7 +78,7 @@ void bigly(WINDOW *win, int font, char *text) {
 
   // where to start printing the letters - later, make these arguments
   text_y = (win_y / 2 - 5) / 2;
-  text_x = (win_x - (LETTERS * fonts[font].width[0][0])) / 2; // estimate size using 1st character
+  text_x = (win_x - (strlen(text) * (fonts[font].width[0][0]) + 1)) / 2; // estimate size using 1st character
 
   // Iterate over text and print the letters
   for (int let = 0; text[let] != '\0'; let++) {
@@ -97,7 +89,7 @@ void bigly(WINDOW *win, int font, char *text) {
       text_y = (win_y / 2 - 5) / 2;
       for (int j = 0; j < fonts[font].height[!is_capital(ch)]; j++) { // j < height
         if (is_capital(ch)) mvaddch(text_y, text_x, fonts[font].up[j][i]);
-        //else mvaddch(text_y, text_x, fonts[font].low[j][i + letter_width]); // need to add lowercase to font
+        //else mvaddch(text_y, text_x, fonts[font].low[j][i + letter_width]); // need to add lowercase to font first
         text_y++;
       }
       text_x++;
