@@ -40,7 +40,7 @@ int main() {
   getmaxyx(stdscr, max_y, max_x);
   curs_set(0); // turn off visible cursor
 
-  stars(stdscr, 100);  // draw stars on the whole screen
+  intro(stdscr, 100);  // draw stars on the whole screen
 
   clear();
   refresh();

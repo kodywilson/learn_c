@@ -17,7 +17,7 @@ void clear_box(WINDOW *win) {
 
 // print stars in the window
 void stars(WINDOW *win, int num_stars) {
-  int destiny_y, destiny_x, letter_width, win_y, win_x;
+  int win_y, win_x;
   int starsY[num_stars], starsX[num_stars], starsColor[num_stars];
   //char intro[8] = "Destiny";
 
@@ -66,31 +66,15 @@ void stars(WINDOW *win, int num_stars) {
     napms(drop_speed-=5);
   }
 
-  // Iterate over struct and print the letters
-  destiny_y = (win_y / 2 - 5) / 2;
-  destiny_x = (win_x - (LETTERS * fonts[DOOM].width[0][0])) / 2;
-  letter_width = 0; // initialize letter width
-  for (int let = 0; let < LETTERS; let++) {
-    for (int i = 0; i < fonts[DOOM].width[0][0]; i++) {
-      destiny_y = (win_y / 2 - 5) / 2;
-      for (int j = 0; j < fonts[DOOM].height[0]; j++) { // have to pass the height of the character j < height
-        //mvaddstr(destiny_y, destiny_x, letters[i].doom_up[j]);
-        mvaddch(destiny_y, destiny_x, fonts[DOOM].up[j][i + letter_width]);
-        destiny_y++;
-      }
-      destiny_x++;
-    }
-    destiny_x++; // accounts for space between each character
-    letter_width+=8; // letter width plus the space
-    //bigly(intro[i]);
-    refresh();
-    napms(100);
-  }
+  clear();
+}
+
+void intro(WINDOW *win, int num_stars) {
+
+  stars(win, num_stars);
+  bigly(win, DOOM, "DESTINY");
 
   attrset(A_UNDERLINE | COLOR_PAIR(1));
   center(stdscr, "Press any key to begin...");
   getch();
-
-  clear();
 }
-

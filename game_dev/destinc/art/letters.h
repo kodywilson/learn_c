@@ -8,14 +8,13 @@
 typedef struct Font {
   char up[9][356];      //  uppercase
   //char low[9][356]; ; //  lowercase
-  int height[2];        // varies between upper and lowercase - height [upper][lower] ie. [6][8]
+  int height[2];        // varies between upper and lowercase - height [upper][lower] ie. [6, 8]
   int width[2][26];     // first array is width of uppercase, second is width of lowercase, each character
-  //int size[2][2];       //  size y by size x - [6, 7] = uppercase dimensions 
-} font;                 //                     [6, 7] = uppercase dimensions
+} font_t;
 
 // see lower part of the file for font samples - they look weird in arrays because of the escape characters
 // make sure to escape characters that need it like back slashes
-font fonts[1] = {
+font_t fonts[1] = {
   {    // Doom font
     {  // uppercase
       "  ___   ______   _____  ______   _____  ______   _____   _   _   _____     ___   _   __  _      ___  ___  _   _   _____  ______   _____  ______   _____   _____   _   _   _   _   _    _  __   __ __   __  ______",
@@ -33,7 +32,7 @@ font fonts[1] = {
   }
 };
 
-font doom = {
+font_t doom = {
   {  // make sure to escape characters that need it like back slashes
     "  ___   ______   _____  ______   _____  ______   _____   _   _   _____     ___   _   __  _      ___  ___  _   _   _____  ______   _____  ______   _____   _____   _   _   _   _   _    _  __   __ __   __  ______",
     " / _ \\  | ___ \\ /  __ \\ |  _  \\ |  ___| |  ___| |  __ \\ | | | | |_   _|   |_  | | | / / | |     |  \\/  | | \\ | | |  _  | | ___ \\ |  _  | | ___ \\ /  ___| |_   _| | | | | | | | | | |  | | \\ \\ / / \\ \\ / / |___  /",
@@ -51,23 +50,64 @@ font doom = {
 
 // functions for manipulating ascii characters
 
-// returns position in array where letter begins
-// send letter and font you want - letter_position('A', doom)
-int letter_position(int letter, font font) {
-  int position = 0;
-  int space= 1;       // later, change this to passed argument if there are fonts spaced differently
-  if ( letter >= 65 && letter <= 91) {    // this is a capital letter
-    for (int i = 0; i < letter - 'A'; i++) position = position + font.width[0][i] + space;
-  }
-  if ( letter >= 121 && letter <= 147) {  // this is a lowercase letter
-    for (int i = 0; i < letter - 'a'; i++) position = position + font.width[1][i]  + space;
-  }
+int is_capital(int letter) {
+  int result;
+  if ( letter >= 65 && letter <= 90) result = 1;
+  if ( letter >= 97 && letter <= 122) result = 0;
+  return result;
+}
+
+// returns position in alphabet for letter
+int letter_position(int letter) {
+  int position;
+  if (is_capital(letter)) position = letter - 'A';  // ie. D is 68, return 68 - 65 = 3 (D is fourth letter in alphabet) 
+  if (!is_capital(letter)) position = letter - 'a';
   return position;
 }
 
-// void bigly(WINDOW *win, ) {
+// returns position in array where letter starts
+// send letter and font you want - letter_position('A', doom)
+int letter_start(int letter, font_t font) {
+  int start = 0;
+  int space= 1;       // later, change this to passed argument if there are fonts spaced differently
+  if (is_capital(letter)) {    // this is a capital letter
+    for (int i = 0; i < letter - 'A'; i++) start = start + font.width[0][i] + space;
+  } else {                     // this is a lowercase letter
+    for (int i = 0; i < letter - 'a'; i++) start = start + font.width[1][i]  + space;
+  }
+  return start;
+}
 
-// }
+//void bigly(WINDOW *win, int font, char *text) {
+void bigly(WINDOW *win, int font, char *text) {
+  int ch, text_y, text_x, start, letter_width, win_y, win_x;
+
+  getmaxyx(win, win_y, win_x);
+
+  // where to start printing the letters - later, make these arguments
+  text_y = (win_y / 2 - 5) / 2;
+  text_x = (win_x - (LETTERS * fonts[font].width[0][0])) / 2; // estimate size using 1st character
+
+  // Iterate over text and print the letters
+  for (int let = 0; text[let] != '\0'; let++) {
+    ch            = text[let];
+    letter_width  = fonts[font].width[!is_capital(ch)][letter_position(ch)];
+    start         = letter_start(ch, fonts[font]);
+    for (int i = start; i < start + letter_width; i++) {
+      text_y = (win_y / 2 - 5) / 2;
+      for (int j = 0; j < fonts[font].height[!is_capital(ch)]; j++) { // j < height
+        if (is_capital(ch)) mvaddch(text_y, text_x, fonts[font].up[j][i]);
+        //else mvaddch(text_y, text_x, fonts[font].low[j][i + letter_width]); // need to add lowercase to font
+        text_y++;
+      }
+      text_x++;
+    }
+    text_x++; // accounts for space between each character
+
+    wrefresh(win);
+    napms(100);
+  }
+}
 
 //
 // FONT SAMPLES
