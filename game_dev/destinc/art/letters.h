@@ -41,10 +41,17 @@ font doom = {
 // functions for manipulating ascii characters
 
 // returns position in array where letter begins
-// send letter, font you want - letter_position('A', doom)
-// int letter_position(int letter, font *font) {
-
-// }
+// send letter and font you want - letter_position('A', doom)
+int letter_position(int letter, font font) {
+  int position = 0;
+  if ( letter >= 65 && letter <= 91) {    // this is a capital letter
+    for (int i = 0; i < letter - 'A'; i++) position = position + font.width[0][i];
+  }
+  if ( letter >= 121 && letter <= 147) {  // this is a lowercase letter
+    for (int i = 0; i < letter - 'a'; i++) position = position + font.width[1][i];
+  }
+  return position;
+}
 
 letter_a a_up = {
     "    #    ",
