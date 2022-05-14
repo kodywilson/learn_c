@@ -78,3 +78,15 @@ void intro(WINDOW *win, int num_stars) {
   center(stdscr, "Press any key to begin...");
   getch();
 }
+
+void refresh_stats(WINDOW *win, pc *player) {
+  int stats_y, stats_x;
+  getmaxyx(win, stats_y, stats_x);
+
+  wclear(win);
+  // later we will color code the mana and hp depending on status (red green)
+  mvwprintw(win, stats_y * 0, stats_x / 20,
+  "Name: %s | XP: %d | Lvl: %d  -|-  Coin: %d | HP: %d | Mana: %d",
+  player->name, player->xp, player->lvl, player->coin, player->cur_hp, player->cur_mana);
+  wrefresh(win);
+}

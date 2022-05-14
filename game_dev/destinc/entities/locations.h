@@ -17,9 +17,13 @@ char *tavern_list[TAVERN] = {
 };
 
 // you are visiting the tavern
-void tavern(WINDOW *game_text, WINDOW *select, pc *player) {
-  int choice;
+void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
+  int choice, drink_cost, food_cost, rest_cost;
   char tavern_prompt[96];
+
+  drink_cost = player->lvl * 1;  // tweak these at some point
+  food_cost  = player->lvl * 1;  // later this will give buff, for now restore health
+  rest_cost  = player->lvl * 2;  // later this will give buff, for now restore mana
 
   snprintf(tavern_prompt, 95, "What would you like to do in the tavern, %s?", player->name);
 
@@ -31,13 +35,32 @@ void tavern(WINDOW *game_text, WINDOW *select, pc *player) {
     choice = choose(select, tavern_list, TAVERN, tavern_prompt);
     wclear(game_text);
     switch (choice) {
-      case 0: mvwaddstr(game_text, 1, 1, tavern_table); break;
-      case 1: mvwaddstr(game_text, 1, 1, "You buy a drink."); break;
-      case 2: mvwaddstr(game_text, 1, 1, "You rest..."); break;
-              //save_game(player); main_loop = 0; break;
-      case 3: mvwaddstr(game_text, 1, 1, "Come back soon!"); break;
+      case 0: if (player->coin >= food_cost) {
+        mvwaddstr(game_text, 1, 1, tavern_table);
+        player->cur_hp = player->max_hp * player->lvl; // food restores health
+        player->coin-=food_cost;  // pay for food
+      } else {
+        mvwaddstr(game_text, 1, 1, "You can't afford a meal! Go to the dungeon and earn some money!");
+      } break;
+      case 1: if (player->coin >= drink_cost) {
+        mvwaddstr(game_text, 1, 1, tavern_bar);
+        player->cur_mana = player->max_mana * player->lvl; // drink restores mana
+        player->coin-=drink_cost;  // pay for drink
+      } else {
+        mvwaddstr(game_text, 1, 1, "You can't afford wine, you churl! Go to the dungeon and earn some money!");
+      } break;
+      case 2: if (player->coin >= rest_cost) {
+        mvwaddstr(game_text, 1, 1, tavern_rest);
+        player->cur_hp = player->max_hp * player->lvl; // resting restores health
+        player->cur_mana = player->max_mana * player->lvl; // resting restores mana
+        player->coin-=rest_cost;  // pay for room
+      } else {
+        mvwaddstr(game_text, 1, 1, "You can't afford a room! Hit the dungeon and earn some money!");
+      } break;
+      case 3: mvwaddstr(game_text, 1, 1, "Feeling much better, you step out of the tavern and back into town. Come back soon!"); break;
       default: break;
     }
+    refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
     napms(500);
     if (choice == 3) break; // end tavern loop
