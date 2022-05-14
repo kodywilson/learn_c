@@ -17,7 +17,7 @@ void clear_box(WINDOW *win) {
 
 // print stars in the window
 void stars(WINDOW *win, int num_stars) {
-  int destiny_y, destiny_x, letter_width, win_y, win_x;
+  int win_y, win_x;
   int starsY[num_stars], starsX[num_stars], starsColor[num_stars];
   //char intro[8] = "Destiny";
 
@@ -66,31 +66,27 @@ void stars(WINDOW *win, int num_stars) {
     napms(drop_speed-=5);
   }
 
-  // Iterate over struct and print the letters
-  destiny_y = (win_y / 2 - 5) / 2;
-  destiny_x = (win_x - (LETTERS * doom.width[0][0])) / 2;
-  letter_width = 0; // initialize letter width
-  for (int let = 0; let < LETTERS; let++) {
-    for (int i = 0; i < doom.width[0][0]; i++) {
-      destiny_y = (win_y / 2 - 5) / 2;
-      for (int j = 0; j < doom.height[0]; j++) { // have to pass the height of the character j < height
-        //mvaddstr(destiny_y, destiny_x, letters[i].doom_up[j]);
-        mvaddch(destiny_y, destiny_x, doom.up[j][i + letter_width]);
-        destiny_y++;
-      }
-      destiny_x++;
-    }
-    destiny_x++; // accounts for space between each character
-    letter_width+=8; // letter width plus the space
-    //bigly(intro[i]);
-    refresh();
-    napms(100);
-  }
+  clear();
+}
+
+void intro(WINDOW *win, int num_stars) {
+
+  stars(win, num_stars);
+  bigly(win, DOOM, "DESTINY");
 
   attrset(A_UNDERLINE | COLOR_PAIR(1));
   center(stdscr, "Press any key to begin...");
   getch();
-
-  clear();
 }
 
+void refresh_stats(WINDOW *win, pc *player) {
+  int stats_y, stats_x;
+  getmaxyx(win, stats_y, stats_x);
+
+  wclear(win);
+  // later we will color code the mana and hp depending on status (red green)
+  mvwprintw(win, stats_y * 0, stats_x / 20,
+  "Name: %s | XP: %d | Lvl: %d  -|-  Coin: %d | HP: %d | Mana: %d",
+  player->name, player->xp, player->lvl, player->coin, player->cur_hp, player->cur_mana);
+  wrefresh(win);
+}

@@ -56,9 +56,9 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
     // mvwprintw(game_text, 3, 3, "Found game directory at %s", game_dir); DEBUG
   } else {
     mvwaddstr(game_text, 1, 1, "Hi and welcome to Destiny. To make a character and start playing");
-    mvwaddstr(game_text, 2, 1, "we need to create a save file. Would you like to do that now?");
+    mvwaddstr(game_text, 2, 1, "we need to create a save file.");
     wrefresh(game_text);
-    choice = choose(select, yes_no, 2) + 1;
+    choice = choose(select, yes_no, Y_N, "Would you like to do that now?") + 1;
     clear_box(game_text);
     if (choice == 1) {
       mvwaddstr(game_text, 4, 1, "Excellent choice. Creating game directory and save file...");

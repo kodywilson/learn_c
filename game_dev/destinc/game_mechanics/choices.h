@@ -8,20 +8,21 @@ char *yes_no[Y_N] = {"Yes", "No"};
 // choose from num (number of) choices
 // choose(select, yes_no, 2);
 // Send window for menu, char** of choices, and number of choices
-int choose(WINDOW *win, char **choices, int num) {
+int choose(WINDOW *win, char **choices, int num, char *text) {
   int choice, x, y;
   int highlight = 0;
 
   wclear(win);
+  mvwaddstr(win, 0, 0, text);
 
   while(1) {
     for (int i = 0; i < num; i++) {
       if (i < 6) {
-        y = i;
+        y = i + 1;
         x = 1;
       }
-      if (i > 5) {
-        y = i - 4;
+      if (i > 5) { // wrap choices over to new column if there are more than 5 (should be 4?)
+        y = i - 3;
         x = 16;
       }
       if (i == highlight) wattron(win, A_BOLD | COLOR_PAIR(6));

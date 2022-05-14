@@ -6,17 +6,13 @@
 
 #define INPUT_MAX 33
 
-// function prototypes
-
 int main() {
   srand(time(0)); // seed rand using time
-  //int min = 24, max = 0, roll;
-  int choice, max_y, max_x, stats_y_border, stats_y, stats_x_border, stats_x;
+  int choice, max_y, max_x, stats_y_border, stats_x_border;
   // last four of next line are oft used offsets
   int game_text_y, game_text_x, main_loop, y_high, x_high, y_low, x_low;
   pc player; // create player struct
 
-  //char name[INPUT_MAX], filepath[PATH_MAX], *yes_no[2] = {"Yes", "No"};
   WINDOW *game_text_border, *select_border, *stats_border;
   WINDOW *game_text, *select, *input, *stats;
 
@@ -40,7 +36,7 @@ int main() {
   getmaxyx(stdscr, max_y, max_x);
   curs_set(0); // turn off visible cursor
 
-  stars(stdscr, 100);  // draw stars on the whole screen
+  intro(stdscr, 100);  // draw stars and intro text on the whole screen
 
   clear();
   refresh();
@@ -58,7 +54,6 @@ int main() {
 
   // calculate window sizes
   getmaxyx(stats_border, stats_y_border, stats_x_border); // dimensions of stats border window
-  getmaxyx(stats, stats_y, stats_x);  // dimensions of stats window
   getmaxyx(game_text, game_text_y, game_text_x);
 
   // build offsets for text padding
@@ -83,25 +78,24 @@ int main() {
 
   // check for existing save
   if (file_there(save_file)) {
-    if (check_saves()) { // below, totally lame way to hide warning about unused stats_y_border
-      mvwaddstr(game_text, y_high, stats_y_border, "I noticed you already have a saved game going!");
-      mvwaddstr(game_text, y_low, x_low, "Choose (Yes) to load last save, (No) to create a new game.");
+    if (check_saves()) {
+      mvwaddstr(game_text, y_high, x_high, "I noticed you already have a saved game going. Welcome back to Destiny!");
       wrefresh(game_text);
-      choice = choose(select, yes_no, Y_N) + 1;
+      choice = choose(select, yes_no, Y_N, "Choose (Yes) to load last save, (No) to create a new game.") + 1;
       if (choice == 1) load_game(&player);
       else {
         wclear(game_text);
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
         wattron(game_text, COLOR_PAIR(1) | A_BOLD);
-        mvwaddstr(game_text, y_low, x_low, "This will remove the current save game. Are you sure?");
+        mvwaddstr(game_text, y_low, x_low, "Please note, this will remove the current save game.");
         wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
         wattron(game_text, COLOR_PAIR(4));
-        wrefresh(game_text); // below, totally lame way to hide warning about unused stats_y
-        choice = choose(select, yes_no, Y_N) + stats_y;
+        wrefresh(game_text);
+        choice = choose(select, yes_no, Y_N, "Are you sure?") + 1;
         if (choice == 1) {
           trunc_file(save_file);
           wclear(game_text);
-          mvwaddstr(game_text, y_high, x_high, "Now let's create a new character.");
+          mvwaddstr(game_text, y_high, x_high, "Right on, let's create a new character.");
           wrefresh(game_text);
           create_character(game_text, select, input, &player);
           save_game(player);
@@ -129,16 +123,12 @@ int main() {
   // Intro
   wclear(select);
   wrefresh(select);
-  // set up stats window
+  // set up stats window border
   wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats_border, 0, (stats_x_border / 2) - 3, " Stats ");
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
-  // later we will color code the mana and hp depending on status (red green)
-  mvwprintw(stats, 0, stats_x / 24,
-  "Name: %s | XP: %d | Lvl: %d  -|-  Coin: %d | HP: %d | Mana: %d",
-  player.name, player.xp, player.lvl, player.coin, player.cur_hp, player.cur_mana);
   wrefresh(stats_border);
-  wrefresh(stats);
+  refresh_stats(stats, &player); // print stats window
   // Initial greeting
   wclear(game_text);
   mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome to your Destiny...", player.name);
@@ -154,14 +144,13 @@ int main() {
     mvwaddstr(game_text, y_high, x_high, "You walk into town, looking here and there.");
     mvwaddstr(game_text, y_high + 2, x_high, "Warmth and cheer emanate from an old tavern to the west.");
     mvwaddstr(game_text, y_high + 3, x_high, "To the east, a sign says 'dungeon this way'.");
-    mvwaddstr(game_text, y_low, x_low, "Please choose where you will head next:");
     wrefresh(game_text);
-    choice = choose(select, town_list, TOWN);
+    choice = choose(select, town_list, TOWN, "Please choose where you will head next:");
     switch (choice) {
       case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon."); break;
-      case 1: mvwaddstr(game_text, y_low - 2, x_low, "You chose the tavern."); break;
+      case 1: tavern(game_text, select, stats, &player); break;
       case 2: mvwaddstr(game_text, y_low, x_low, "Thanks for playing, see you next time!");
-              save_game(player); main_loop = 0; break;
+              save_game(player); main_loop = 0 * stats_y_border; break;
       default: break;
     }
     wrefresh(game_text);
