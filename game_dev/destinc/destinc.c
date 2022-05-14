@@ -147,7 +147,9 @@ int main() {
     wrefresh(game_text);
     choice = choose(select, town_list, TOWN, "Please choose where you will head next:");
     switch (choice) {
-      case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon."); break;
+      case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon.");
+              dungeon(game_text, select, stats, &player);
+              break;
       case 1: tavern(game_text, select, stats, &player); break;
       case 2: mvwaddstr(game_text, y_low, x_low, "Thanks for playing, see you next time!");
               save_game(player); main_loop = 0 * stats_y_border; break;
