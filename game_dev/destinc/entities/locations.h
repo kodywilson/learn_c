@@ -173,7 +173,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     }
     // then handle special choice
     // if (choice_key[choice] > 3 ) handle special action. Use lookup tables
-    if (dice(1, 20) < 7) combat(game_text, select, stats, player);
+    if (dice(1, 20) < 7) combat(game_text, select, stats, player, 0);
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
     napms(250);

@@ -1,5 +1,6 @@
 #include "game_mechanics/dice.h"
 #include "entities/pc.h"
+#include "entities/npc.h"
 #include "art/text.h"
 #include <ncurses.h>
 #include "art/letters.h"
