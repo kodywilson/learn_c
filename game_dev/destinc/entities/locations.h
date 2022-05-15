@@ -89,6 +89,7 @@ int can_move(int y, int x, int direction) {
     default: break;
   }
   // now test potential move - would be better to see if potential move is in a list of valid moves
+  if (test_y < 0 || test_x < 0) return 0;
   if (dungeon_map[test_y][test_x] == '$' || dungeon_map[test_y][test_x] == 'E') return 1;
   else return 0;
 }
@@ -97,12 +98,8 @@ int can_move(int y, int x, int direction) {
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
-  int choice, num_choices, y_pos = 3, x_pos = 0; // starting position in the dungeon
+  int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];
-  char choices[6][64];
-  char **choices_p;
-  choices_p = &choices;
-  //char *choices[6];
   int  choice_key[6];
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
@@ -111,16 +108,25 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   mvwaddstr(game_text, 1, 1, "Stepping into the dungeon, you prepare for adventure.");
   wrefresh(game_text);
   getch();
+  mvwprintw(game_text, 2, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
+  wrefresh(game_text);
+  getch();
   while(1) {
     //getch(); // DEBUG
     // clear previous list of choices - this could probably be a function
     num_choices = 0;
+    mvwaddstr(game_text, 3, 1, "Trying to clear choices");
+    wrefresh(game_text);
+    getch();
     for (int i = 0; i < 6; i++) {
-      strncpy(choices[i], "", 2); // null each array
+      memset(choices[i], 0, MAX_CHOICE_LEN);
+      //strncpy(choices[i], '', 2); // null each array
       //getch();
       //for (int j = 0; j < 64; j++) choices[i] = '\0';
       choice_key[i] = 99;           // "null" array
     }
+    mvwaddstr(game_text, 4, 1, "Nulled out previous choices");
+    wrefresh(game_text);
     getch();
     // build choices based on current position - test each direction
     for (int i = 0; i < 4; i++) {    // directions: 0 = north, 1 = east, 2 = south, 3 = west
@@ -134,7 +140,13 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
         }
       }
     }
-    choice = choose(select, choices_p, num_choices, dungeon_prompt);
+    wclear(game_text);
+    for (int i = 0; i < 4; i++) {
+      mvwprintw(game_text, i, 1, "Choice %d: %s", i, choices[i]);
+      wrefresh(game_text);
+      getch();
+    }
+    choice = choose_test(select, choices, num_choices, dungeon_prompt);
     wclear(game_text);
     switch (choice_key[choice]) {
       case 0: y_pos--; break;
