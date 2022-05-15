@@ -108,10 +108,10 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   mvwaddstr(game_text, 1, 1, "Stepping into the dungeon, you prepare for adventure.");
   wrefresh(game_text);
   getch();
-  mvwprintw(game_text, 2, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
-  wrefresh(game_text);
-  getch();
   while(1) {
+    mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
+    wrefresh(game_text);
+    getch();
     //getch(); // DEBUG
     // clear previous list of choices - this could probably be a function
     num_choices = 0;
@@ -132,10 +132,10 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     for (int i = 0; i < 4; i++) {    // directions: 0 = north, 1 = east, 2 = south, 3 = west
       if (can_move(y_pos, x_pos, i)) {
         switch (i) {
-          case 0: strncpy(choices[num_choices], "North", 63); choice_key[num_choices] = 0; num_choices++; break;
-          case 1: strncpy(choices[num_choices], "East", 63);  choice_key[num_choices] = 0; num_choices++; break;
-          case 2: strncpy(choices[num_choices], "South", 63); choice_key[num_choices] = 0; num_choices++; break;
-          case 3: strncpy(choices[num_choices], "West", 63);  choice_key[num_choices] = 0; num_choices++; break;
+          case 0: strncpy(choices[num_choices], "North", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; break;
+          case 1: strncpy(choices[num_choices], "East", MAX_CHOICE_LEN);  choice_key[num_choices] = 0; num_choices++; break;
+          case 2: strncpy(choices[num_choices], "South", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; break;
+          case 3: strncpy(choices[num_choices], "West", MAX_CHOICE_LEN);  choice_key[num_choices] = 0; num_choices++; break;
           default: break;
         }
       }
