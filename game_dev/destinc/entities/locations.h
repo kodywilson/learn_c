@@ -79,18 +79,17 @@ char dungeon_map[4][4] = {
 // send current position and direction you are testing
 // directions are 0 = north, 1 = east, 2 = south, 3 = west
 int can_move(int y, int x, int direction) {
-  int test_y = 0, test_x = 0;
 
   switch (direction) {
-    case 0: test_y = y - 1; break;
-    case 1: test_x = x + 1; break;
-    case 2: test_y = y + 1; break;
-    case 3: test_x = x - 1; break;
+    case 0: y--; break;
+    case 1: x++; break;
+    case 2: y++; break;
+    case 3: x--; break;
     default: break;
   }
   // now test potential move - would be better to see if potential move is in a list of valid moves
-  if (test_y < 0 || test_x < 0) return 0;
-  if (dungeon_map[test_y][test_x] == '$' || dungeon_map[test_y][test_x] == 'E') return 1;
+  if (y < 0 || x < 0 || y > 3 || x > 3) return 0; // stay within bounds of dungeon map
+  if (dungeon_map[y][x] == '$' || dungeon_map[y][x] == 'E') return 1;
   else return 0;
 }
 
@@ -147,6 +146,9 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
       getch();
     }
     choice = choose_test(select, choices, num_choices, dungeon_prompt);
+    mvwprintw(game_text, 10, 1, "You selected %d: %s", choice, choices[choice]);
+    wrefresh(game_text);
+    getch();
     wclear(game_text);
     switch (choice_key[choice]) {
       case 0: y_pos--; break;
