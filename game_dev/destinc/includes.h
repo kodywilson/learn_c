@@ -7,4 +7,5 @@
 #include "game_mechanics/choices.h"
 #include "game_mechanics/file.h"
 #include "game_mechanics/character.h"
+#include "game_mechanics/combat.h"
 #include "entities/locations.h"
