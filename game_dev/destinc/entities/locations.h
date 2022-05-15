@@ -67,6 +67,113 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   }
 }
 
+// DUNGEON
+
+// Options for dungeon maps: array of maps, randomly select one. Static, carefully created maps.
+//                           randomly generated maps (might be cool for some sort of tower challenge)
+//                           Could also consider using a Dungeon struct. Would contain map(s) + special
+//                           locations, bosses, etc. A generic Location struct would work too, with the type
+//                           set to dungeon, overland, city, etc.
+//                           Might make it easy to support 2d map traversal vs. only text mode
+
+// A tiny dungeon for testing
+char dungeon_map[4][4] = {
+  "####",
+  "#$$#",
+  "E$##",
+  "####"
+};
+// dungeon key: E = entrance, # = wall, $ = path
+
+// send current position and direction you are testing
+// directions are 0 = north, 1 = east, 2 = south, 3 = west
+int can_move(int y, int x, int direction) {
+
+  switch (direction) {
+    case 0: y--; break;
+    case 1: x++; break;
+    case 2: y++; break;
+    case 3: x--; break;
+    default: break;
+  }
+  // now test potential move - would be better to see if potential move is in a list of valid moves
+  if (y < 0 || x < 0 || y > 3 || x > 3) return 0; // stay within bounds of dungeon map // send bounds as parameters
+  if (dungeon_map[y][x] == '$' || dungeon_map[y][x] == 'E') return 1;
+  else return 0;
+}
+
+// you are visiting the dungeon
+void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
+  int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
+  char dungeon_prompt[96];
+  int  choice_key[6];
+
+  snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
+
+  wclear(game_text);
+  mvwaddstr(game_text, 1, 1, "Stepping into the dungeon, you prepare for adventure.");
+  while(1) {
+    mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
+    wrefresh(game_text);
+    //getch(); // DEBUG
+    // clear previous list of choices - this could probably be a function
+    num_choices = 0;
+    // DEBUG
+    // mvwaddstr(game_text, 3, 1, "Trying to clear choices");
+    // wrefresh(game_text);
+    // getch();
+    for (int i = 0; i < 6; i++) {
+      memset(choices[i], 0, MAX_CHOICE_LEN);
+      choice_key[i] = 99;           // "null" array
+    }
+    // DEBUG
+    // mvwaddstr(game_text, 4, 1, "Nulled out previous choices");
+    // wrefresh(game_text);
+    // getch();
+    // build choices based on current position - test each direction
+    for (int i = 0; i < 4; i++) {    // directions: 0 = north, 1 = east, 2 = south, 3 = west
+      if (can_move(y_pos, x_pos, i)) {
+        switch (i) {
+          case 0: strncpy(choices[num_choices], "North", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; break;
+          case 1: strncpy(choices[num_choices], "East", MAX_CHOICE_LEN);  choice_key[num_choices] = 1; num_choices++; break;
+          case 2: strncpy(choices[num_choices], "South", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++; break;
+          case 3: strncpy(choices[num_choices], "West", MAX_CHOICE_LEN);  choice_key[num_choices] = 3; num_choices++; break;
+          default: break;
+        }
+      }
+    }
+    wclear(game_text);
+    // DEBUG
+    // for (int i = 0; i < 4; i++) {
+    //   mvwprintw(game_text, i, 1, "Choice %d: %s", i, choices[i]);
+    //   wrefresh(game_text);
+    //   getch();
+    // }
+    choice = choose_test(select, choices, num_choices, dungeon_prompt);
+    // DEBUG
+    // mvwprintw(game_text, 10, 1, "You selected %d: %s", choice, choices[choice]);
+    // wrefresh(game_text);
+    // getch();
+    wclear(game_text);
+    switch (choice_key[choice]) {
+      case 0: y_pos--; break;
+      case 1: x_pos++; break;
+      case 2: y_pos++; break;
+      case 3: x_pos--; break;
+      case 4: mvwaddstr(game_text, 1, 1, "Great choice!"); break; // this needs some thought! how to handle custom options
+      case 5: mvwaddstr(game_text, 1, 1, "Great choice!"); break;
+      default: break;
+    }
+    refresh_stats(stats, player); // update stats window
+    wrefresh(game_text);
+    napms(500);
+    if (dungeon_map[y_pos][x_pos] == 'E') {
+      choice = choose(select, yes_no, Y_N, "You are at the dungone entrance. Would you like to leave?");
+      if (choice == 0) break; // end dungeon loop
+    }
+  }
+}
+
 // later add more variety for what you can do at these locations
 // like maybe you can chat with the barkeep, buy a drink, etc. at the bar
 // order food, chat with waitress, examine room, etc. while seated at a table
