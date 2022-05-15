@@ -130,7 +130,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     // mvwaddstr(game_text, 4, 1, "Nulled out previous choices");
     // wrefresh(game_text);
     // getch();
-    // build choices based on current position - test each direction
+    // build movement choices based on current position - test each direction
     for (int i = 0; i < 4; i++) {    // directions: 0 = north, 1 = east, 2 = south, 3 = west
       if (can_move(y_pos, x_pos, i)) {
         switch (i) {
@@ -142,6 +142,12 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
         }
       }
     }
+    // now we would add any custom choices, ie. Search pile of rubble
+    // strncpy(choices[num_choices], "Search rubble", MAX_CHOICE_LEN); choice_key[++num_choices] = 101; // number code for action
+    // could have a table of number codes and corresponding actions: 101 = search rubble, 102 = open door, 103 = examine bookshelf
+    // link that table to results table (ie. you search rubble and find coins, a rat pops out and attacks, etc.)
+    // Each room in the dungeon we will roll for random combat anyway. Here we could roll for random interesting thing. Then roll
+    // for random results from taking that action. Stats and class abilities could influence the rolls...
     wclear(game_text);
     // DEBUG
     // for (int i = 0; i < 4; i++) {
@@ -155,6 +161,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     // wrefresh(game_text);
     // getch();
     wclear(game_text);
+    // handle movement
     switch (choice_key[choice]) {
       case 0: y_pos--; break;
       case 1: x_pos++; break;
@@ -164,11 +171,14 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
       case 5: mvwaddstr(game_text, 1, 1, "Great choice!"); break;
       default: break;
     }
+    // then handle special choice
+    // if (choice_key[choice] > 3 ) handle special action. Use lookup tables
+    if (dice(1, 20) < 7) combat(game_text, select, stats, player, 0);
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
-    napms(500);
+    napms(250);
     if (dungeon_map[y_pos][x_pos] == 'E') {
-      choice = choose(select, yes_no, Y_N, "You are at the dungone entrance. Would you like to leave?");
+      choice = choose(select, yes_no, Y_N, "You are at the dungeon entrance. Would you like to leave?");
       if (choice == 0) break; // end dungeon loop
     }
   }

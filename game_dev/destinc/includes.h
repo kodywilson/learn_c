@@ -1,5 +1,6 @@
 #include "game_mechanics/dice.h"
 #include "entities/pc.h"
+#include "entities/npc.h"
 #include "art/text.h"
 #include <ncurses.h>
 #include "art/letters.h"
@@ -7,4 +8,5 @@
 #include "game_mechanics/choices.h"
 #include "game_mechanics/file.h"
 #include "game_mechanics/character.h"
+#include "game_mechanics/combat.h"
 #include "entities/locations.h"
