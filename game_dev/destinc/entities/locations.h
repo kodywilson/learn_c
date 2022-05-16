@@ -106,7 +106,7 @@ int can_move(int y, int x, int direction) {
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];
-  int  choice_key[6];
+  int  choice_key[MAX_CHOICES];
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
 
@@ -122,7 +122,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     // mvwaddstr(game_text, 3, 1, "Trying to clear choices");
     // wrefresh(game_text);
     // getch();
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < MAX_CHOICES; i++) {
       memset(choices[i], 0, MAX_CHOICE_LEN);
       choice_key[i] = 99;           // "null" array
     }
