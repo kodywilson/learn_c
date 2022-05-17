@@ -81,6 +81,35 @@ int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char
   return choice;
 }
 
+// handle npc actions and battle choices, return choice
+// this will only return attack at first, but eventually will support other options
+int npc_turn(WINDOW *game_text, pc *player, pc *monster) {
+  int choice, damage = 0;
+  
+  choice = dice(1, 6) * 0;
+  switch (choice) {
+    case 0: mvwprintw(game_text, 3, 1, "%s tries to hit you.", monster->name);
+            wrefresh(game_text);
+            napms(250);
+            damage = attack(monster, player);
+            if (damage > 0) {
+              mvwprintw(game_text, 4, 1, "%s hit you for %d damage!", monster->name, damage);
+            } else {
+              mvwprintw(game_text, 4, 1, "You dodge %s's ferocious strike.", monster->name);
+            }
+            wrefresh(game_text);
+            napms(250);
+            break;
+    case 2: mvwprintw(game_text, 4, 1, "%s runs away!", monster->name);
+            wrefresh(game_text);
+            napms(250);
+            break;
+    default: break;
+  }
+
+  return choice;
+}
+
 void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int environ) {
   int choice, flee, monster_roll, player_damage, mob_damage;  // store result of dice roll
   pc monster;        // create struct for monster
@@ -120,18 +149,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
       if (choice == 2) break; // get out, you fled
     } //else {
       // monster attacks now
-      // create function, monster attack - for now just a simple roll
-      // two checks to see if monster hits the player. First dodge chance and then against armor
-      if (dice(1, 20) > player->dodge) { // ok, they didn't dodge, now check armor
-        if (dice(1, 20) > AC_BASE + player->armor) {
-          // formula = 1d2 + mob damage bonus + strength bonus (1 for every 2 points over 10 str)
-          mob_damage = dice(1, 2) + monster.dmg + ((monster.str - 10) % 2);
-          player->cur_hp-=mob_damage;
-          mvwprintw(game_text, 5, 1, "%s hits you for %d!", monster.name, mob_damage);
-        }
-      } else {
-        mvwprintw(game_text, 5, 1, "%s attacks you %s, but misses!", monster.name, player->name);
-      }
+      
       wrefresh(game_text);
       napms(250);
     if (flee == 1) break; // exit combat loop, you escaped!
