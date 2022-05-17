@@ -58,9 +58,11 @@ void setup_file(WINDOW *game_text, WINDOW *select) {
     mvwaddstr(game_text, 1, 1, "Hi and welcome to Destiny. To make a character and start playing");
     mvwaddstr(game_text, 2, 1, "we need to create a save file.");
     wrefresh(game_text);
-    choice = choose(select, yes_no, Y_N, "Would you like to do that now?") + 1;
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to do that now?");
     clear_box(game_text);
-    if (choice == 1) {
+    if (choice_key[choice] == 0) {
       mvwaddstr(game_text, 4, 1, "Excellent choice. Creating game directory and save file...");
       wrefresh(game_text);
       if (mkdir(game_dir, 0777) == -1) {  // if directory creation fails, bail out

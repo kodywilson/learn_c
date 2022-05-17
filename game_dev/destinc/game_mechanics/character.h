@@ -2,6 +2,16 @@
 
 #define BUFF 256  // maximum size of character buffer
 
+int class_choices() {
+  int num_choices = 0;
+
+  for (int i = 0; i < PCS; i++) {
+    strncpy(choices[num_choices], class_list[i], MAX_CHOICE_LEN); choice_key[num_choices] = num_choices; num_choices++;
+  }
+
+  return num_choices;
+}
+
 // fill out character stats, name, source (chosen) class, target player
 // could have looped and sent data to update_character...
 void build_character(char name[32], pc chosen_class, pc *player) {
@@ -29,7 +39,7 @@ void build_character(char name[32], pc chosen_class, pc *player) {
 
 // character selection
 void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *player) {
-  int class_choice, y_n;
+  int class_choice, choice;
   char name[32], class_prompt[64];
 
   wclear(game_text);
@@ -38,13 +48,18 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *play
   wrefresh(game_text);
   // create loop so player can check out each class if they want
   while(1) {
-    class_choice = choose(select, class_list, PCS, "Choose class:");
+    reset_choices();
+    num_choices = class_choices();
+    class_choice = choose(select, num_choices, "Choose class:");
+    //choice_key[choice]
     wclear(game_text);
     mvwprintw(game_text, 1, 1, "%s", player_classes[class_choice].desc);
     snprintf(class_prompt, 63, "Would you like to play as a %s?", player_classes[class_choice].name);
     wrefresh(game_text);
-    y_n = choose(select, yes_no, Y_N, class_prompt);
-    if (y_n == 0) {
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, class_prompt);
+    if (choice == 0) {
       wclear(select);
       mvwprintw(select, 1, 1, "Please enter your character's name to get adventuring!");
       echo();    // allow player to see name they are entering
