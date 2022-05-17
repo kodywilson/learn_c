@@ -9,12 +9,39 @@ char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "Exit Game"};
 
 
 // ## Tavern
+// base list, later add options depending on class, quest, etc.
 char *tavern_list[TAVERN] = {
-  "Buy some food.       | Cost: 1 coin",
-  "Buy a drink.         | Cost: 1 coin",
-  "Rest.                | Cost: 2 coins",
-  "Leave the tavern."
+  "Buy some food",
+  "Buy a drink",
+  "Rest",
+  "Leave the tavern"
 };
+// char *tavern_list[TAVERN] = {
+//   "Buy some food.       | Cost: 1 coin",
+//   "Buy a drink.         | Cost: 1 coin",
+//   "Rest.                | Cost: 2 coins",
+//   "Leave the tavern."
+// };
+
+int town_choices() {
+  int num_choices = 0;
+
+  for (int i = 0; i < TOWN; i++) {
+    strncpy(choices[num_choices], town_list[i], MAX_CHOICE_LEN); choice_key[num_choices] = num_choices; num_choices++;
+  }
+
+  return num_choices;
+}
+
+int tavern_choices() {
+  int num_choices = 0;
+
+  for (int i = 0; i < TAVERN; i++) {
+    strncpy(choices[num_choices], tavern_list[i], MAX_CHOICE_LEN); choice_key[num_choices] = num_choices; num_choices++;
+  }
+
+  return num_choices;
+}
 
 // you are visiting the tavern
 void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
@@ -32,7 +59,9 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   wrefresh(game_text);
   while(1) {
     //getch(); // DEBUG
-    choice = choose(select, tavern_list, TAVERN, tavern_prompt);
+    reset_choices();
+    num_choices = tavern_choices();
+    choice = choose(select, num_choices, tavern_prompt);
     wclear(game_text);
     switch (choice) {
       case 0: if (player->coin >= food_cost) {
@@ -154,7 +183,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     //   wrefresh(game_text);
     //   getch();
     // }
-    choice = choose_test(select, choices, num_choices, dungeon_prompt);
+    choice = choose(select, num_choices, dungeon_prompt); // make choice based on options built above where we test each direction
     // DEBUG
     // mvwprintw(game_text, 10, 1, "You selected %d: %s", choice, choices[choice]);
     // wrefresh(game_text);
@@ -177,7 +206,9 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     wrefresh(game_text);
     napms(250);
     if (dungeon_map[y_pos][x_pos] == 'E') {
-      choice = choose(select, yes_no, Y_N, "You are at the dungeon entrance. Would you like to leave?");
+      reset_choices();
+      num_choices = y_n();
+      choice = choose(select, num_choices, "You are at the dungeon entrance. Would you like to leave?");
       if (choice == 0) break; // end dungeon loop
     }
   }

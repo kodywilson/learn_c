@@ -81,8 +81,10 @@ int main() {
     if (check_saves()) {
       mvwaddstr(game_text, y_high, x_high, "I noticed you already have a saved game going. Welcome back to Destiny!");
       wrefresh(game_text);
-      choice = choose(select, yes_no, Y_N, "Choose (Yes) to load last save, (No) to create a new game.") + 1;
-      if (choice == 1) load_game(&player);
+      reset_choices();
+      num_choices = y_n();
+      choice = choose(select, num_choices, "Choose (Yes) to load last save, (No) to create a new game.");
+      if (choice_key[choice] == 0) load_game(&player);
       else {
         wclear(game_text);
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
@@ -91,8 +93,10 @@ int main() {
         wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
         wattron(game_text, COLOR_PAIR(4));
         wrefresh(game_text);
-        choice = choose(select, yes_no, Y_N, "Are you sure?") + 1;
-        if (choice == 1) {
+        reset_choices();
+        num_choices = y_n();
+        choice = choose(select, num_choices, "Are you sure?");
+        if (choice_key[choice] == 0) {
           trunc_file(save_file);
           wclear(game_text);
           mvwaddstr(game_text, y_high, x_high, "Right on, let's create a new character.");
@@ -145,7 +149,9 @@ int main() {
     mvwaddstr(game_text, y_high + 2, x_high, "Warmth and cheer emanate from an old tavern to the west.");
     mvwaddstr(game_text, y_high + 3, x_high, "To the east, a sign says 'dungeon this way'.");
     wrefresh(game_text);
-    choice = choose(select, town_list, TOWN, "Please choose where you will head next:");
+    reset_choices();
+    num_choices = town_choices();
+    choice = choose(select, num_choices, "Please choose where you will head next:");
     switch (choice) {
       case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon.");
               dungeon(game_text, select, stats, &player);
@@ -159,16 +165,8 @@ int main() {
     napms(1000);
   }
 
-  /*for(int i = 0; i < ROLLS; i++) {
-    roll = dice(4, 6);
-    if ( roll > max ) max = roll;
-    if ( roll < min ) min = roll;
-  }
-  printf("We rolled four d6 a %d times and got the following\n", ROLLS);
-  printf("Min: %d\t\tMax: %d\n", min, max);
+  //printf("Test text is %s \n", rand_move_text[dice(1, MOVE_TEXT) - 1]);
 
-  printf("Test text is %s \n", rand_move_text[dice(1, MOVE_TEXT) - 1]);
-*/
   endwin();
   return 0;
 }
