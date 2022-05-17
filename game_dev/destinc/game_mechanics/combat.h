@@ -3,11 +3,42 @@
 
 #define COMBAT_PROBABILITY 15 // dial it down for less monsters
 
+int actions(char choices[MAX_CHOICES][MAX_CHOICE_LEN], int choice_key[MAX_CHOICES], char *role) {
+  int num_choices = 0;
+
+  if (strcmp(role, "Cleric") == 0) {
+        // set up options for Clerics
+        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
+        strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
+      }
+      // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
+      if (strcmp(role, "Knight") == 0) {
+        // set up options for Knights
+        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
+        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;             // set third option as attempt to flee
+      }
+      if (strcmp(role, "Rogue") == 0) {
+        // set up options for Rogues
+        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
+        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
+      }
+      if (strcmp(role, "Wizard") == 0) {
+        // set up options for Wizards
+        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
+        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
+      }
+
+  return num_choices;
+}
+
 void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int environ) {
   int choice, flee, monster_roll, num_choices, player_damage, mob_damage;  // store result of dice roll
   pc monster;        // create struct for monster
   char combat_prompt[96];
-  int  choice_key[MAX_CHOICES];
 
   snprintf(combat_prompt, 95, "What will you do now, %s?", player->name);
 
@@ -42,31 +73,32 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
     if ((dice(1, 20) + player->dodge) > 0) { // player always wins for now
       // you get to go first this round!
       // this should be a function, player attack
-      if (strcmp(player->role, "Cleric") == 0) {
-        // set up options for Clerics
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
-        strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
-        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
-      }
-      // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
-      if (strcmp(player->role, "Knight") == 0) {
-        // set up options for Knights
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
-        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
-        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;             // set third option as attempt to flee
-      }
-      if (strcmp(player->role, "Rogue") == 0) {
-        // set up options for Rogues
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
-        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
-        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
-      }
-      if (strcmp(player->role, "Wizard") == 0) {
-        // set up options for Wizards
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
-        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
-        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
-      }
+      // if (strcmp(player->role, "Cleric") == 0) {
+      //   // set up options for Clerics
+      //   strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
+      //   strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+      //   strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
+      // }
+      // // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
+      // if (strcmp(player->role, "Knight") == 0) {
+      //   // set up options for Knights
+      //   strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
+      //   //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+      //   strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;             // set third option as attempt to flee
+      // }
+      // if (strcmp(player->role, "Rogue") == 0) {
+      //   // set up options for Rogues
+      //   strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
+      //   //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+      //   strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
+      // }
+      // if (strcmp(player->role, "Wizard") == 0) {
+      //   // set up options for Wizards
+      //   strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
+      //   //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+      //   strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
+      // }
+      num_choices = actions(choices, choice_key, player->role);
       choice = choose_test(select, choices, num_choices, combat_prompt);
       switch (choice_key[choice]) {
         case 0: mvwprintw(game_text, 3, 1, "You swing at %s", monster.name);
@@ -74,14 +106,16 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
                 napms(250);
                 // 2 checks, first to bypass their dodge, then to hit
                 if (dice(1, 20) > monster.dodge) { // ok, they didn't dodge, now check armor
-                  if (dice(1, 20) > 10 + monster.armor - ((player->str - 10) % 2)) {
+                  if (dice(1, 20) > (10 + monster.armor - ((player->str - 10) % 2))) {
                     // formula = 1d2 + player damage bonus + strength bonus (1 for every 2 points over 10 str)
                     player_damage = dice(1, 3) + player->dmg + ((player->str - 10) % 2);
                     monster.cur_hp-=player_damage;
                     mvwprintw(game_text, 4, 1, "You hit %s for %d damage!", monster.name, player_damage);
+                  } else {
+                    mvwprintw(game_text, 4, 1, "The %s dodges your strike.", monster.name);
                   }
                 } else {
-                  mvwprintw(game_text, 4, 1, "%s attacks you %s, but misses!", monster.name, player->name);
+                  mvwprintw(game_text, 4, 1, "The %s dodges your strike.", monster.name);
                 }
                 wrefresh(game_text);
                 napms(250);

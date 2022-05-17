@@ -7,6 +7,7 @@
 // globals
 char *yes_no[Y_N] = {"Yes", "No"};
 char choices[MAX_CHOICES][MAX_CHOICE_LEN];
+int  choice_key[MAX_CHOICES];
 
 // choose from num (number of) choices
 // choose(select, yes_no, 2);

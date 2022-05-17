@@ -106,7 +106,6 @@ int can_move(int y, int x, int direction) {
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];
-  int  choice_key[MAX_CHOICES];
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
 
