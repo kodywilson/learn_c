@@ -4,7 +4,7 @@
 #define COMBAT_PROBABILITY 15 // dial it down for less monsters
 
 void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int environ) {
-  int choice, flee, monster_roll, num_choices;  // store result of dice roll
+  int choice, flee, monster_roll, num_choices, player_damage, mob_damage;  // store result of dice roll
   pc monster;        // create struct for monster
   char combat_prompt[96];
   int  choice_key[MAX_CHOICES];
@@ -29,9 +29,8 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
   wrefresh(game_text);
   
   while(1) { // battle loop
-    flee = 0;
     // clear previous choices
-    num_choices = 0;
+    flee = mob_damage = player_damage = num_choices = 0;
     for (int i = 0; i < MAX_CHOICES; i++) {
       memset(choices[i], 0, MAX_CHOICE_LEN);
       choice_key[i] = 99;           // "null" array
@@ -39,8 +38,8 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
     // We have our foe, now we fight until either one succumbs or you flee
     // roll to see who goes first - bonus to dex, int, wis, and dodge (good for rogues)
     // formula is d20 + mods > x = player goes first
-    // for now, just a simple 50 50 chance with minor bonus
-    if ((dice(1, 20) + player->dodge) > 1) {
+    // for now, just start with player and takes turns, add check for who goes first later
+    if ((dice(1, 20) + player->dodge) > 0) { // player always wins for now
       // you get to go first this round!
       // this should be a function, player attack
       if (strcmp(player->role, "Cleric") == 0) {
@@ -73,30 +72,46 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
         case 0: mvwprintw(game_text, 3, 1, "You swing at %s", monster.name);
                 wrefresh(game_text);
                 napms(250);
-                monster.cur_hp-=4;
+                // 2 checks, first to bypass their dodge, then to hit
+                if (dice(1, 20) > monster.dodge) { // ok, they didn't dodge, now check armor
+                  if (dice(1, 20) > 10 + monster.armor - ((player->str - 10) % 2)) {
+                    // formula = 1d2 + player damage bonus + strength bonus (1 for every 2 points over 10 str)
+                    player_damage = dice(1, 3) + player->dmg + ((player->str - 10) % 2);
+                    monster.cur_hp-=player_damage;
+                    mvwprintw(game_text, 4, 1, "You hit %s for %d damage!", monster.name, player_damage);
+                  }
+                } else {
+                  mvwprintw(game_text, 4, 1, "%s attacks you %s, but misses!", monster.name, player->name);
+                }
+                wrefresh(game_text);
+                napms(250);
                 break;
-        case 2: mvwprintw(game_text, 3, 1, "You run as fast as you can away from %s!", monster.name);
+        case 2: mvwprintw(game_text, 4, 1, "You run as fast as you can away from %s!", monster.name);
                 wrefresh(game_text);
                 napms(250);
                 flee = 1;
                 break;
         default: break;
       }
-    } else {
-      // monster goes first this round!
+    }// else {
+      // monster attacks now
       // create function, monster attack - for now just a simple roll
-      if (dice(1, 20) > 15) {
-        player->cur_hp-=3;
-        mvwprintw(game_text, 3, 1, "%s hits you %s!", monster.name, player->name);
+      // two checks to see if monster hits the player. First dodge chance and then against armor
+      if (dice(1, 20) > player->dodge) { // ok, they didn't dodge, now check armor
+        if (dice(1, 20) > 10 + player->armor) {
+          // formula = 1d2 + mob damage bonus + strength bonus (1 for every 2 points over 10 str)
+          mob_damage = dice(1, 2) + monster.dmg + ((monster.str - 10) % 2);
+          player->cur_hp-=mob_damage;
+          mvwprintw(game_text, 5, 1, "%s hits you for %d!", monster.name, mob_damage);
+        }
       } else {
-        mvwprintw(game_text, 3, 1, "%s attacks you %s, but misses!", monster.name, player->name);
+        mvwprintw(game_text, 5, 1, "%s attacks you %s, but misses!", monster.name, player->name);
       }
       wrefresh(game_text);
       napms(250);
-    }
     if (flee == 1) break; // exit combat loop, you escaped!
     if (monster.cur_hp <= 0) {
-      mvwprintw(game_text, 5, 1, "You defeated %s, %s!", monster.name, player->name);
+      mvwprintw(game_text, 6, 1, "You defeated %s, %s!", monster.name, player->name);
       player->coin+=monster.coin;
       player->xp+=monster.xp;
       wrefresh(game_text);
@@ -104,7 +119,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
       break;
     }
     if (player->cur_hp <= 0) {
-      mvwprintw(game_text, 5, 1, "%s killed you, %s...", monster.name, player->name);
+      mvwprintw(game_text, 6, 1, "%s killed you, %s...", monster.name, player->name);
       wrefresh(game_text);
       napms(500);
       break;
