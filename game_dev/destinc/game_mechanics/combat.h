@@ -62,10 +62,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
   while(1) { // battle loop
     // clear previous choices
     flee = mob_damage = player_damage = num_choices = 0;
-    for (int i = 0; i < MAX_CHOICES; i++) {
-      memset(choices[i], 0, MAX_CHOICE_LEN);
-      choice_key[i] = 99;           // "null" array
-    }
+    reset_choices(choices, choice_key);
     // We have our foe, now we fight until either one succumbs or you flee
     // roll to see who goes first - bonus to dex, int, wis, and dodge (good for rogues)
     // formula is d20 + mods > x = player goes first

@@ -9,6 +9,13 @@ char *yes_no[Y_N] = {"Yes", "No"};
 char choices[MAX_CHOICES][MAX_CHOICE_LEN];
 int  choice_key[MAX_CHOICES];
 
+void reset_choices(char choices[MAX_CHOICES][MAX_CHOICE_LEN], int choice_key[MAX_CHOICES]) {
+  for (int i = 0; i < MAX_CHOICES; i++) {
+    memset(choices[i], 0, MAX_CHOICE_LEN);     // "null" char[][] array
+    choice_key[i] = 99;                        // "null" int array
+  }
+}
+
 // choose from num (number of) choices
 // choose(select, yes_no, 2);
 // Send window for menu, char** of choices, and number of choices
