@@ -25,6 +25,8 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
   mvwaddstr(game_text, 3, 1, "Press any key to begin combat!");
   wrefresh(game_text);
   getch();
+  wclear(game_text);
+  wrefresh(game_text);
   
   while(1) { // battle loop
     flee = 0;
@@ -38,29 +40,29 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
     // roll to see who goes first - bonus to dex, int, wis, and dodge (good for rogues)
     // formula is d20 + mods > x = player goes first
     // for now, just a simple 50 50 chance with minor bonus
-    if ((dice(1, 20) + player->dodge) > COMBAT_PROBABILITY) {
+    if ((dice(1, 20) + player->dodge) > 1) {
       // you get to go first this round!
       // this should be a function, player attack
-      if (strcmp(player->role, "Cleric")) {
+      if (strcmp(player->role, "Cleric") == 0) {
         // set up options for Clerics
         strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
         strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
-      if (strcmp(player->role, "Knight")) {
+      if (strcmp(player->role, "Knight") == 0) {
         // set up options for Knights
         strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
         //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
-        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2;                            // set third option as attempt to flee
+        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;             // set third option as attempt to flee
       }
-      if (strcmp(player->role, "Rogue")) {
+      if (strcmp(player->role, "Rogue") == 0) {
         // set up options for Rogues
         strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
         //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
-      if (strcmp(player->role, "Wizard")) {
+      if (strcmp(player->role, "Wizard") == 0) {
         // set up options for Wizards
         strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
         //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
@@ -82,8 +84,13 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
       }
     } else {
       // monster goes first this round!
-      // create function, monster attack - for now just have monster wiff each time
-      mvwprintw(game_text, 3, 1, "%s attacks you %s, but misses!", monster.name, player->name);
+      // create function, monster attack - for now just a simple roll
+      if (dice(1, 20) > 15) {
+        player->cur_hp-=3;
+        mvwprintw(game_text, 3, 1, "%s hits you %s!", monster.name, player->name);
+      } else {
+        mvwprintw(game_text, 3, 1, "%s attacks you %s, but misses!", monster.name, player->name);
+      }
       wrefresh(game_text);
       napms(250);
     }
@@ -96,6 +103,13 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
       napms(500);
       break;
     }
+    if (player->cur_hp <= 0) {
+      mvwprintw(game_text, 5, 1, "%s killed you, %s...", monster.name, player->name);
+      wrefresh(game_text);
+      napms(500);
+      break;
+    }
     wclear(game_text);
+    wrefresh(stats);
   }
 }
