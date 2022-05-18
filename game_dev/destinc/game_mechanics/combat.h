@@ -83,7 +83,6 @@ int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char
             player_damage = attack(player, monster);
             if (player_damage > 0) {
               mvwprintw(game_text, 3, 1, "You hit %s for %d damage!", monster->name, player_damage);
-              health_bar(game_text, monster);
             } else {
               mvwprintw(game_text, 3, 1, "The %s dodges your strike.", monster->name);
             }
@@ -92,15 +91,13 @@ int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char
               player->coin+=monster->coin;
               player->xp+=monster->xp;
             }
-            wrefresh(game_text);
-            napms(250);
             break;
     case 2: mvwprintw(game_text, 3, 1, "You run as fast as you can away from %s!", monster->name);
-            wrefresh(game_text);
-            napms(250);
             break;
     default: break;
   }
+  health_bar(game_text, monster);
+  napms(250);
 
   return choice;
 }
@@ -124,15 +121,13 @@ int npc_turn(WINDOW *game_text, pc *player, pc *monster) {
             if (player->cur_hp <= 0) {
               mvwprintw(game_text, 7, 1, "%s killed you, %s...", monster->name, player->name);
             }
-            wrefresh(game_text);
-            napms(250);
             break;
     case 2: mvwprintw(game_text, 6, 1, "%s runs away!", monster->name);
-            wrefresh(game_text);
-            napms(250);
             break;
     default: break;
   }
+  wrefresh(game_text);
+  napms(250);
 
   return choice;
 }
