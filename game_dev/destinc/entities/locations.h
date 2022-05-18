@@ -131,6 +131,7 @@ char dungeon_map[MAP_Y][MAP_X] = {
 // send current position and direction you are testing
 // directions are 0 = north, 1 = east, 2 = south, 3 = west
 int can_move(int y, int x, int direction) {
+  int orig_y = y, orig_x = x;
 
   switch (direction) {
     case 0: y--; break;
@@ -142,14 +143,14 @@ int can_move(int y, int x, int direction) {
   // now test potential move - would be better to see if potential move is in a list of valid moves
   if (y < 0 || x < 0 || y > MAP_Y - 1 || x > MAP_X - 1) return 0; // stay within bounds of dungeon map // send bounds as parameters
   if (dungeon_map[y][x] == '$' || dungeon_map[y][x] == 'E' || dungeon_map[y][x] == 'T' || dungeon_map[y][x] == 'B') return 1;
-  if (dungeon_map[y][x] == 'S' && dungeon_map[y + 1][x] == 'B') return 1;  // one way secret passage after Boss
+  if (dungeon_map[y][x] == 'S' && dungeon_map[orig_y][orig_x] == 'B') return 1;  // one way secret passage after Boss
   else return 0;
 }
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
-  char dungeon_prompt[96];
+  char dungeon_prompt[96];                       // later, make this something you pass in
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
 
