@@ -11,7 +11,7 @@ int main() {
   int choice, max_y, max_x, stats_y_border, stats_x_border;
   // last four of next line are oft used offsets
   int game_text_y, game_text_x, main_loop, y_high, x_high, y_low, x_low;
-  pc player; // create player struct
+  mob player; // create player struct
 
   WINDOW *game_text_border, *select_border, *stats_border;
   WINDOW *game_text, *select, *input, *stats;

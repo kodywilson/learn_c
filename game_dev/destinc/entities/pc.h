@@ -2,29 +2,7 @@
 
 #define PCS 4  // number of playable classes
 
-typedef struct Player {
-  char name[32];  // player name
-  char role[16];  // player class choice
-  char desc[256]; // class description
-  int  str;       // --= Begin basic stat block
-  int  dex;
-  int  con;
-  int  intel;
-  int  wis;
-  int  cha;       // End basic stat block =--
-  int  dmg;       // class specific damage bonus
-  int  armor;     // class specific armor bonus
-  int  max_hp;    // max hit points (hp) per level
-  int  cur_hp;    // current hit points
-  int  dodge;     // class specific bonus to dodge
-  int  max_mana;  // max mana per level for spells and special attacks
-  int  cur_mana;  // current mana
-  int  xp;        // Experience points - used to gain levels
-  int  lvl;       // player level, reflects relative power
-  int  coin;      // money the player has earned
-} pc;
-
-pc player_classes[PCS] = {
+mob player_classes[PCS] = {
   // Cleric
   {
     "Cleric",     // name

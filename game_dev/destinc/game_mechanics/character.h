@@ -14,7 +14,7 @@ int class_choices() {
 
 // fill out character stats, name, source (chosen) class, target player
 // could have looped and sent data to update_character...
-void build_character(char name[32], pc chosen_class, pc *player) {
+void build_character(char name[32], mob chosen_class, mob *player) {
   strncpy(player->name, name, 32);
   strncpy(player->role, chosen_class.role, 16);
   strncpy(player->desc, chosen_class.desc, 256);
@@ -38,7 +38,7 @@ void build_character(char name[32], pc chosen_class, pc *player) {
 }
 
 // character selection
-void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *player) {
+void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *player) {
   int class_choice, choice;
   char name[32], class_prompt[64];
 
@@ -84,7 +84,7 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, pc *play
 // tokens indicate what is being updated
 // another valid approach would be to have two functions, one for
 // strings and one for ints
-void update_character(int token, char val[BUFF], pc *player) {
+void update_character(int token, char val[BUFF], mob *player) {
   switch (token) {
     case 0: strncpy(player->name, val, 32); break;
     case 1: strncpy(player->role, val, 16); break;
@@ -111,7 +111,7 @@ void update_character(int token, char val[BUFF], pc *player) {
 
 // load character data into player struct
 // future: send name and load that particular character
-void load_game(pc *player) {
+void load_game(mob *player) {
   FILE *fp;
   int ch, counter = 0, pos = 0, token = 0;
   char buffer[BUFF];
@@ -138,7 +138,7 @@ void load_game(pc *player) {
 }
 
 // write player data to save file
-void save_game(pc player) {
+void save_game(mob player) {
   FILE *fp;
   //int ch, pos = 0;
 

@@ -1,32 +1,8 @@
 // functions and data for non playable character types
 
-#define MOBS 4     // number of mobs
+#define MOBS 4     // number of mobs - change to monsters or something for now mobs and bosses
 
-// this should be consolidated to be a shared struct between both pc and npc since they
-// really use the same stats, etc.
-typedef struct Mob {
-  char name[32];  // mob name
-  char role[16];  // mob class
-  char desc[256]; // mob description
-  int  str;       // --= Begin basic stat block
-  int  dex;
-  int  con;
-  int  intel;
-  int  wis;
-  int  cha;       // End basic stat block =--
-  int  dmg;       // class specific damage bonus
-  int  armor;     // class specific armor bonus
-  int  max_hp;    // max hit points (hp) per level
-  int  cur_hp;    // current hit points
-  int  dodge;     // class specific bonus to dodge
-  int  max_mana;  // max mana per level for spells and special attacks
-  int  cur_mana;  // current mana
-  int  xp;        // Experience points - earned when defeated
-  int  lvl;       // mob level, reflects relative power
-  int  coin;      // money the player earns when mob is defeated
-} mob;
-
-pc mobs[MOBS] = {
+mob mobs[MOBS] = {
   // Rat
   {
     "rat",     // name
@@ -116,6 +92,4 @@ pc mobs[MOBS] = {
     4,            // coin      - money
   }
 };
-
-//char *class_list[PCS] = {"Cleric", "Knight", "Rogue", "Wizard"};
 

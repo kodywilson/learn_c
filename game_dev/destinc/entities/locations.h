@@ -46,7 +46,7 @@ int tavern_choices() {
 }
 
 // you are visiting the tavern
-void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
+void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   int choice, drink_cost, food_cost, rest_cost;
   char tavern_prompt[96];
 
@@ -148,7 +148,7 @@ int can_move(int y, int x, int direction) {
 }
 
 // you are visiting the dungeon
-void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
+void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];                       // later, make this something you pass in
 

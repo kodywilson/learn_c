@@ -36,7 +36,7 @@ int actions(char *role) {
   return num_choices;
 }
 
-int attack(pc *attacker, pc *target) {
+int attack(mob *attacker, mob *target) {
   int ac, damage, roll;
 
   ac = AC_BASE + target->dodge + target->armor;                      // Base AC + bonuses
@@ -53,7 +53,7 @@ int attack(pc *attacker, pc *target) {
 }
 
 // pass window to draw health bar and what entity (monster, etc.)
-void health_bar(WINDOW *win, pc *entity) {
+void health_bar(WINDOW *win, mob *entity) {
   int hp, max_y, max_x;
 
   getmaxyx(win, max_y, max_x);
@@ -71,7 +71,7 @@ void health_bar(WINDOW *win, pc *entity) {
 }
 
 // handle player actions and battle choices, return choice
-int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char *combat_prompt) {
+int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, char *combat_prompt) {
   int choice = 2, player_damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
@@ -112,7 +112,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char
 
 // handle npc actions and battle choices, return choice
 // this will only return attack at first, but eventually will support other options
-int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, pc *monster) {
+int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob *monster) {
   int choice, damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
@@ -148,9 +148,9 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, pc *m
   return choice;
 }
 
-void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int environ) {
+void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int environ) {
   int choice, init_mob, init_player, monster_roll;
-  pc monster;        // create struct for monster
+  mob monster;        // create struct for monster
   char combat_prompt[96];
 
   snprintf(combat_prompt, 95, "What will you do now, %s?", player->name);

@@ -79,7 +79,7 @@ void intro(WINDOW *win, int num_stars) {
   getch();
 }
 
-void refresh_stats(WINDOW *win, pc *player) {
+void refresh_stats(WINDOW *win, mob *player) {
   int stats_y, stats_x;
   getmaxyx(win, stats_y, stats_x);
 
