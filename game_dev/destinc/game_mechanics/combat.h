@@ -2,7 +2,7 @@
 // selecting foe, handling battle rounds, etc.
 
 #define AC_BASE 10
-#define COMBAT_PROBABILITY 15 // dial it down for less monsters
+#define COMBAT_PROBABILITY 5 // dial it down for less monsters
 
 int actions(char *role) {
   int num_choices = 0;
@@ -58,7 +58,7 @@ void health_bar(WINDOW *win, pc *entity) {
 
   getmaxyx(win, max_y, max_x);
   hp = ((float) entity->cur_hp / entity->max_hp * 10); // get amount of health
-  if (hp < 1) hp = 1; // need at least one # if mob is still alive
+  if (entity->cur_hp > 0 && hp < 1) hp = 1; // need at least one # if mob is still alive
 
   // we want to print a # for roughly every 10% of health
   // then make missing health turn red, other ones green

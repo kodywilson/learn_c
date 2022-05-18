@@ -3,8 +3,8 @@
 
 #define TOWN 3
 #define TAVERN 4
-#define MAP_Y 8
-#define MAP_X 8
+#define MAP_Y 12
+#define MAP_X 12
 
 // Town
 char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "Exit Game"};
@@ -13,7 +13,7 @@ char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "Exit Game"};
 // ## Tavern
 // base list, later add options depending on class, quest, etc.
 char *tavern_list[TAVERN] = {
-  "Buy some food",
+  "Order some food",
   "Buy a drink",
   "Rest",
   "Leave the tavern"
@@ -93,9 +93,13 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     }
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
-    napms(500);
+    napms(250);
     if (choice == 3) break; // end tavern loop
   }
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // DUNGEON
@@ -109,12 +113,20 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
 
 // A tiny dungeon for testing
 char dungeon_map[MAP_Y][MAP_X] = {
-  "###$$$##",
-  "#$$$#$$$",
-  "E$###$##",
-  "#####$$$"
+  "###$$$######",
+  "#$$$#$$$$$$T",
+  "E$###$######",
+  "S####$$$####",
+  "B######$$$##",
+  "$$#######$##",
+  "#$#######$##",
+  "#$###T$$$$##",
+  "#$####$##$##",
+  "#$$$#$$#$$$#",
+  "#T#$$$##$B$#",
+  "############",
 };
-// dungeon key: E = entrance, # = wall, $ = path
+// dungeon key: E = entrance, # = wall, $ = path, B = boss, T = chance for treasure, S = secret passage
 
 // send current position and direction you are testing
 // directions are 0 = north, 1 = east, 2 = south, 3 = west
@@ -129,7 +141,8 @@ int can_move(int y, int x, int direction) {
   }
   // now test potential move - would be better to see if potential move is in a list of valid moves
   if (y < 0 || x < 0 || y > MAP_Y - 1 || x > MAP_X - 1) return 0; // stay within bounds of dungeon map // send bounds as parameters
-  if (dungeon_map[y][x] == '$' || dungeon_map[y][x] == 'E') return 1;
+  if (dungeon_map[y][x] == '$' || dungeon_map[y][x] == 'E' || dungeon_map[y][x] == 'T' || dungeon_map[y][x] == 'B') return 1;
+  if (dungeon_map[y][x] == 'S' && dungeon_map[y + 1][x] == 'B') return 1;  // one way secret passage after Boss
   else return 0;
 }
 

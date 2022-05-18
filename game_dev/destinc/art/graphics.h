@@ -32,7 +32,7 @@ void stars(WINDOW *win, int num_stars) {
     attrset(COLOR_PAIR(starsColor[i]));
     mvaddch(starsY[i], starsX[i], '*');
     refresh();
-    napms(dice(1, 80));
+    napms(dice(1, 50));
   }
 
   napms(1500);
@@ -48,7 +48,7 @@ void stars(WINDOW *win, int num_stars) {
       mvaddch(starsY[i], starsX[i], '*');
     }
     refresh();
-    napms(120);
+    napms(100);
   }
 
   napms(500);
