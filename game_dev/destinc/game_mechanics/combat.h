@@ -52,6 +52,24 @@ int attack(pc *attacker, pc *target) {
   return damage; // later, find a way to reflect damage absorption. For now, less than 1 means they missed
 }
 
+// pass window to draw health bar and what entity (monster, etc.)
+void health_bar(WINDOW *win, pc *entity) {
+  int hp, max_y, max_x;
+
+  getmaxyx(win, max_y, max_x);
+  hp = ((float) entity->cur_hp / entity->max_hp * 10); // get amount of health
+  if (hp < 1) hp = 1; // need at least one # if mob is still alive
+
+  // we want to print a # for roughly every 10% of health
+  // then make missing health turn red, other ones green
+  mvwprintw(win, max_y - 4, max_x - 11, "  %s  ", entity->name); // bar label
+  mvwaddstr(win, max_y - 3, max_x - 11, "__Health__");          // bar label
+  for (int i = 0; i < hp; i++) {       //##########
+    mvwaddch(win,  max_y - 2, max_x - 11 + i, '#');
+  }
+  wrefresh(win);
+}
+
 // handle player actions and battle choices, return choice
 int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char *combat_prompt) {
   int choice = 2, player_damage = 0;
@@ -65,6 +83,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char
             player_damage = attack(player, monster);
             if (player_damage > 0) {
               mvwprintw(game_text, 3, 1, "You hit %s for %d damage!", monster->name, player_damage);
+              health_bar(game_text, monster);
             } else {
               mvwprintw(game_text, 3, 1, "The %s dodges your strike.", monster->name);
             }
@@ -141,7 +160,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
   wrefresh(game_text);
   getch();
   wclear(game_text);
-  wrefresh(game_text);
+  health_bar(game_text, &monster);
   
   while(1) { // battle loop
     // clear previous choices
@@ -170,6 +189,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
     }
     //if (choice == 1) break; // exit combat loop, you escaped!
     wclear(game_text);
+    health_bar(game_text, &monster);
     wrefresh(stats);
   }
 }

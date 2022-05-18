@@ -98,16 +98,16 @@ pc mobs[MOBS] = {
     "Bugbear",     // name
     "Bugbear",     // role
     "A large bugbear bursts into the room and strides toward you!",
-    14,           // str       - strength
+    10,           // str       - strength   // change from 14 for testing
     12,           // dex       - dexterity
     12,           // con       - constitution
     12,           // intel     - intelligence
     12,           // wis       - wisdom
     12,           // cha       - charisma
-    3,            // dmg       - innate damage bonus
+    0,            // dmg       - innate damage bonus // change from 3 for testing
     2,            // armor     - innate armor (defense) bonus
-    9,            // max_hp    - max hp earned per level
-    9,            // cur_hp    - current hp
+    20,            // max_hp    - max hp earned per level   //change from 9 for testing
+    20,            // cur_hp    - current hp                // change from 9 for testing
     1,            // dodge     - innate bonus to dodge
     12,           // max_mana  - max mana per level
     12,           // cur_mana  - current mana
