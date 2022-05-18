@@ -39,8 +39,8 @@ int actions(char *role) {
 int attack(mob *attacker, mob *target) {
   int ac, damage, roll;
 
-  ac = AC_BASE + target->dodge + target->armor;                      // Base AC + bonuses
-  roll = dice(1, 20) + attacker->dmg + ((attacker->str - 10) / 2);   // d20 + bonuses
+  ac = AC_BASE + target->dodge + target->armor + ((target->dex - 10) / 2);     // Base AC + bonuses
+  roll = dice(1, 20) + attacker->dmg + ((attacker->str - 10) / 2);     // d20 + bonuses
 
   if (roll >= ac ) { // may need to drop the damage bonus and only use for to hit
     damage = dice(1, 3) + attacker->dmg + ((attacker->str - 10) / 2);
