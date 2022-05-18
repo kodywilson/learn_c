@@ -73,67 +73,83 @@ void health_bar(WINDOW *win, pc *entity) {
 // handle player actions and battle choices, return choice
 int player_turn(WINDOW *select, WINDOW *game_text, pc *player, pc *monster, char *combat_prompt) {
   int choice = 2, player_damage = 0;
+
+  wclear(game_text);  // clear the window and take the turn
+  mvwprintw(game_text, 0, 0, "%s's turn...", player->name);
+  health_bar(game_text, monster);
   
   num_choices = actions(player->role);
   choice = choose(select, num_choices, combat_prompt);
   switch (choice_key[choice]) {
-    case 0: mvwprintw(game_text, 2, 1, "You swing at %s", monster->name);
+    case 0: mvwprintw(game_text, 2, 0, "You swing at %s", monster->name);
             wrefresh(game_text);
             napms(250);
             player_damage = attack(player, monster);
             if (player_damage > 0) {
-              mvwprintw(game_text, 3, 1, "You hit %s for %d damage!", monster->name, player_damage);
+              mvwprintw(game_text, 4, 0, "You hit %s for %d damage!", monster->name, player_damage);
+              health_bar(game_text, monster);
             } else {
-              mvwprintw(game_text, 3, 1, "The %s dodges your strike.", monster->name);
+              mvwprintw(game_text, 4, 0, "The %s dodges your strike.", monster->name);
             }
             if (monster->cur_hp <= 0) {
-              mvwprintw(game_text, 6, 1, "You defeated %s, %s!", monster->name, player->name);
+              mvwprintw(game_text, 6, 0, "You defeated %s, %s!", monster->name, player->name);
               player->coin+=monster->coin;
               player->xp+=monster->xp;
             }
+            wrefresh(game_text);
+            wclear(select);         // stop after turn is complete so player can see results of their turn
+            mvwaddstr(select, 0, 0, "Press any key to continue...");
+            wrefresh(select);
+            getch();
             break;
-    case 2: mvwprintw(game_text, 3, 1, "You run as fast as you can away from %s!", monster->name);
+    case 2: mvwprintw(game_text, 2, 0, "You run as fast as you can away from %s!", monster->name);
             break;
     default: break;
   }
-  health_bar(game_text, monster);
-  napms(250);
 
   return choice;
 }
 
 // handle npc actions and battle choices, return choice
 // this will only return attack at first, but eventually will support other options
-int npc_turn(WINDOW *game_text, pc *player, pc *monster) {
+int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, pc *monster) {
   int choice, damage = 0;
+
+  wclear(game_text);  // clear the window and take the turn
+  mvwprintw(game_text, 0, 0, "%s's turn...", monster->name);
+  health_bar(game_text, monster);
   
   choice = dice(1, 6) * 0;
   switch (choice) {
-    case 0: mvwprintw(game_text, 5, 1, "%s tries to hit you.", monster->name);
+    case 0: mvwprintw(game_text, 2, 0, "%s tries to hit you.", monster->name);
             wrefresh(game_text);
             napms(250);
             damage = attack(monster, player);
             if (damage > 0) {
-              mvwprintw(game_text, 6, 1, "%s hit you for %d damage!", monster->name, damage);
+              mvwprintw(game_text, 4, 0, "%s hit you for %d damage!", monster->name, damage);
+              refresh_stats(stats, player); // update stats window
             } else {
-              mvwprintw(game_text, 6, 1, "You dodge %s's ferocious strike.", monster->name);
+              mvwprintw(game_text, 4, 0, "You dodge %s's ferocious strike.", monster->name);
             }
             if (player->cur_hp <= 0) {
-              mvwprintw(game_text, 7, 1, "%s killed you, %s...", monster->name, player->name);
+              mvwprintw(game_text, 6, 0, "%s killed you, %s...", monster->name, player->name);
             }
+            wrefresh(game_text);
+            wclear(select);         // stop after turn is complete so player can see results of monster's turn
+            mvwaddstr(select, 0, 0, "Press any key to continue...");
+            wrefresh(select);
+            getch();
             break;
-    case 2: mvwprintw(game_text, 6, 1, "%s runs away!", monster->name);
+    case 2: mvwprintw(game_text, 2, 0, "%s runs away!", monster->name);
             break;
     default: break;
   }
-  wrefresh(game_text);
-  napms(250);
 
   return choice;
 }
 
 void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int environ) {
-  int choice, monster_roll;
+  int choice, init_mob, init_player, monster_roll;
   pc monster;        // create struct for monster
   char combat_prompt[96];
 
@@ -150,12 +166,16 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
 
   wclear(select);
   wrefresh(select);
-  mvwprintw(game_text, 1, 1, "%s", monster.desc);
-  mvwaddstr(game_text, 3, 1, "Press any key to begin combat!");
+  mvwprintw(game_text, 0, 0, "%s", monster.desc);
+  mvwaddstr(select, 0, 0, "Press any key to begin combat!");
   wrefresh(game_text);
+  wrefresh(select);
   getch();
   wclear(game_text);
   health_bar(game_text, &monster);
+
+  init_mob = ((monster.dex - 10) / 2) + monster.dodge;
+  init_player = ((player->dex - 10) / 2) + player->dodge; // tweak this later, wizard buffs, etc.
   
   while(1) { // battle loop
     // clear previous choices
@@ -163,19 +183,19 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
     // We have our foe, now we fight until either one succumbs or you flee
     // roll to see who goes first - bonus to dex, int, wis, and dodge (good for rogues)
     // formula is d20 + mods > x = player goes first
-    if ((dice(1, 20) + player->dodge + player->intel) > 10) { // help rogues and wizards not die
+    if ((dice(1, 20) + init_player) >= (dice(1, 20) + init_mob)) { // determine turn order
       // you get to go first this round!
       choice = player_turn(select, game_text, player, &monster, combat_prompt);
       if (choice_key[choice] == 2) break; // get out, you fled
       if (monster.cur_hp < 1) break; // you won!
       // now monster goes
-      npc_turn(game_text, player, &monster);
-      wrefresh(stats);
+      npc_turn(select, game_text, stats, player, &monster);
+      refresh_stats(stats, player); // update stats window
       if (player->cur_hp < 1) break; // you died, so sad
     } else {
       // monster goes first
-      npc_turn(game_text, player, &monster);
-      wrefresh(stats);
+      npc_turn(select, game_text, stats, player, &monster);
+      refresh_stats(stats, player); // update stats window
       if (player->cur_hp <= 0) break; // you died. later, call game over function
       // then player goes
       choice = player_turn(select, game_text, player, &monster, combat_prompt);
@@ -183,8 +203,9 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int en
       if (monster.cur_hp < 1) break; // you won!
     }
     //if (choice == 1) break; // exit combat loop, you escaped!
+    //health_bar(game_text, &monster);
+    //wrefresh(stats);
     wclear(game_text);
-    health_bar(game_text, &monster);
-    wrefresh(stats);
   }
+  wclear(game_text);
 }

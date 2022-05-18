@@ -62,7 +62,7 @@ pc player_classes[PCS] = {
     4,            // armor     - innate armor (defense) bonus
     8,            // max_hp    - max hp earned per level
     8,            // cur_hp    - current hp
-    1,            // dodge     - innate bonus to dodge
+    0,            // dodge     - innate bonus to dodge
     8,            // max_mana  - max mana per level
     8,            // cur_mana  - current mana
     0,            // xp        - experience points
@@ -84,7 +84,7 @@ pc player_classes[PCS] = {
     1,            // armor     - innate armor (defense) bonus
     6,            // max_hp    - max hp earned per level
     6,            // cur_hp    - current hp
-    3,            // dodge     - innate bonus to dodge
+    2,            // dodge     - innate bonus to dodge
     6,            // max_mana  - max mana per level
     6,            // cur_mana  - current mana
     0,            // xp        - experience points

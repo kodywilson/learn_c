@@ -108,7 +108,7 @@ pc mobs[MOBS] = {
     2,            // armor     - innate armor (defense) bonus
     20,            // max_hp    - max hp earned per level   //change from 9 for testing
     20,            // cur_hp    - current hp                // change from 9 for testing
-    1,            // dodge     - innate bonus to dodge
+    0,            // dodge     - innate bonus to dodge
     12,           // max_mana  - max mana per level
     12,           // cur_mana  - current mana
     50,            // xp        - experience points

@@ -3,6 +3,8 @@
 
 #define TOWN 3
 #define TAVERN 4
+#define MAP_Y 8
+#define MAP_X 8
 
 // Town
 char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "Exit Game"};
@@ -106,11 +108,11 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
 //                           Might make it easy to support 2d map traversal vs. only text mode
 
 // A tiny dungeon for testing
-char dungeon_map[4][4] = {
-  "####",
-  "#$$#",
-  "E$##",
-  "####"
+char dungeon_map[MAP_Y][MAP_X] = {
+  "###$$$##",
+  "#$$$#$$$",
+  "E$###$##",
+  "#####$$$"
 };
 // dungeon key: E = entrance, # = wall, $ = path
 
@@ -126,7 +128,7 @@ int can_move(int y, int x, int direction) {
     default: break;
   }
   // now test potential move - would be better to see if potential move is in a list of valid moves
-  if (y < 0 || x < 0 || y > 3 || x > 3) return 0; // stay within bounds of dungeon map // send bounds as parameters
+  if (y < 0 || x < 0 || y > MAP_Y - 1 || x > MAP_X - 1) return 0; // stay within bounds of dungeon map // send bounds as parameters
   if (dungeon_map[y][x] == '$' || dungeon_map[y][x] == 'E') return 1;
   else return 0;
 }
@@ -204,7 +206,6 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     if (dice(1, 20) < COMBAT_PROBABILITY) combat(game_text, select, stats, player, 0);
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
-    napms(250);
     if (dungeon_map[y_pos][x_pos] == 'E') {
       reset_choices();
       num_choices = y_n();
