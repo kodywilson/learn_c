@@ -29,5 +29,5 @@ typedef struct Mob {
   int  buffs[MAX_BUFFS];  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   int  pc?;       // is this a player character? combat calculations vary a bit so we need to know
   int  type;      // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-  int  alignmentl // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-} mob;
+  int  alignment; // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+} mob;            // 3 = true neutral, 4 = chaotic good
