@@ -27,8 +27,11 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     4,            // damage dice - 4 for rat
     1,            // number of damage dice. 1 for rat, so rat can do 1d4 +2 (from dmg) damage.
-    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-  },
+    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    0,            // is this a player character? combat calculations vary a bit so we need to know
+    1,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
+    3             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+  },               // 3 = true neutral, 4 = chaotic good
   // Kobold
   {
     "Kobold",     // name
@@ -53,8 +56,11 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     4,            // damage dice - 4 for kobold
     1,            // number of damage dice. 1 for kobold, so kobold can do 1d4 +2 (from dmg) damage.
-    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-  },
+    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    0,            // is this a player character? combat calculations vary a bit so we need to know
+    0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
+    2             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+  },               // 3 = true neutral, 4 = chaotic good
   // Skeleton
   {
     "Skeleton",     // name
@@ -79,8 +85,11 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     6,            // damage dice - 6 for skeleton
     1,            // number of damage dice. 1 for skeleton, so skeleton can do 1d6 +2 (from dmg) damage.
-    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-  },
+    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    0,            // is this a player character? combat calculations vary a bit so we need to know
+    2,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
+    2             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+  },               // 3 = true neutral, 4 = chaotic good
   // Bugbear -- this guy is way too tough, needs to be moved to boss section
   {
     "Bugbear",     // name
@@ -105,7 +114,10 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     8,            // damage dice - 8 for bugbear
     2,            // number of damage dice. 1 for bugbear, so bugbear can do 2d8 +2 (from dmg) damage.
-    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-  }
+    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    0,            // is this a player character? combat calculations vary a bit so we need to know
+    3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
+    2             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+  }               // 3 = true neutral, 4 = chaotic good
 };
 
