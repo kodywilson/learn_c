@@ -27,4 +27,7 @@ typedef struct Mob {
   int  dice_dam;  // damage dice. 6 for 1d6, 12 for 1d12, etc.  -- used with dice_num (1d6) = (dice_num x dice_dam)
   int  dice_num;  // number of damage dice. 2 for 2d6, 1 for 1d8, etc. -- used with dice_dam
   int  buffs[MAX_BUFFS];  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+  int  pc?;       // is this a player character? combat calculations vary a bit so we need to know
+  int  type;      // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
+  int  alignmentl // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
 } mob;
