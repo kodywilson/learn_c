@@ -36,11 +36,15 @@ int actions(char *role) {
   return num_choices;
 }
 
+// calculate if a given attack hits, and if so, for how much
+// mobs are super strong, so tweak as needed to make combat possible
 int attack(mob *attacker, mob *target) {
   int ac, damage, roll;
 
+  // note - mob stat blocks include dex bonus (if any) in armor category so I set all mobs to have 10 or less dex
+  // later, add more attributes so I can tell player from monster and then conditional off that...
   ac = AC_BASE + target->dodge + target->armor + ((target->dex - 10) / 2);     // Base AC + bonuses
-  roll = dice(1, 20) + attacker->dmg + ((attacker->str - 10) / 2);     // d20 + bonuses
+  roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);          // d20 + bonuses
 
   if (roll >= ac ) { // may need to drop the damage bonus and only use for to hit
     damage = dice(1, 3) + attacker->dmg + ((attacker->str - 10) / 2);
