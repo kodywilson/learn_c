@@ -24,6 +24,10 @@ mob mobs[MOBS] = {
     25,           // xp        - experience points
     1,            // level     - current level
     1,            // coin      - money
+    4,            // modifier to chance to hit
+    4,            // damage dice - 4 for rat
+    1,            // number of damage dice. 1 for rat, so rat can do 1d4 +2 (from dmg) damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   },
   // Kobold
   {
@@ -36,7 +40,7 @@ mob mobs[MOBS] = {
     8,            // intel     - intelligence
     7,            // wis       - wisdom
     8,            // cha       - charisma
-    1,            // dmg       - innate damage bonus
+    2,            // dmg       - innate damage bonus
     2,            // armor     - innate armor (defense) bonus
     6,            // max_hp    - max hp earned per level
     6,            // cur_hp    - current hp
@@ -46,6 +50,10 @@ mob mobs[MOBS] = {
     25,           // xp        - experience points
     1,            // level     - current level
     1,            // coin      - money
+    4,            // modifier to chance to hit
+    4,            // damage dice - 4 for kobold
+    1,            // number of damage dice. 1 for kobold, so kobold can do 1d4 +2 (from dmg) damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   },
   // Skeleton
   {
@@ -58,7 +66,7 @@ mob mobs[MOBS] = {
     6,            // intel     - intelligence
     8,            // wis       - wisdom
     5,            // cha       - charisma
-    3,            // dmg       - innate damage bonus
+    2,            // dmg       - innate damage bonus
     3,            // armor     - armor class - AC (defense) - armor scraps
     13,           // max_hp    - max hp earned per level
     13,           // cur_hp    - current hp
@@ -68,8 +76,12 @@ mob mobs[MOBS] = {
     50,           // xp        - experience points
     1,            // level     - current level
     2,            // coin      - money
+    4,            // modifier to chance to hit
+    6,            // damage dice - 6 for skeleton
+    1,            // number of damage dice. 1 for skeleton, so skeleton can do 1d6 +2 (from dmg) damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   },
-  // Bugbear
+  // Bugbear -- this guy is way too tough, needs to be moved to boss section
   {
     "Bugbear",     // name
     "Bugbear",     // role
@@ -80,7 +92,7 @@ mob mobs[MOBS] = {
     8,            // intel     - intelligence
     11,           // wis       - wisdom
     9,            // cha       - charisma
-    6,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
+    2,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
     16,           // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
     27,           // max_hp    - max hp earned per level
     27,           // cur_hp    - current hp
@@ -90,6 +102,10 @@ mob mobs[MOBS] = {
     200,          // xp        - experience points
     1,            // level     - current level
     4,            // coin      - money
+    4,            // modifier to chance to hit
+    8,            // damage dice - 8 for bugbear
+    2,            // number of damage dice. 1 for bugbear, so bugbear can do 2d8 +2 (from dmg) damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   }
 };
 

@@ -24,6 +24,10 @@ mob player_classes[PCS] = {
     0,            // xp        - experience points
     1,            // level     - current level
     3,            // coin      - money
+    2,            // modifier to chance to hit - proficiency bonus for players
+    6,            // damage dice - 6 for mace
+    1,            // number of damage dice. 1 for mace, so cleric can do 1d6 damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   },
   // Knight
   {
@@ -36,7 +40,7 @@ mob player_classes[PCS] = {
     10,           // intel     - intelligence
     14,           // wis       - wisdom
     14,           // cha       - charisma
-    2,            // dmg       - innate damage bonus
+    0,            // dmg       - innate damage bonus -- May use this to tweak survivability
     6,            // armor     - armor (defense) - ring mail + shield
     13,           // max_hp    - max hp earned per level (1d10 + Con modifier)
     13,           // cur_hp    - current hp
@@ -46,6 +50,10 @@ mob player_classes[PCS] = {
     0,            // xp        - experience points
     1,            // level     - current level
     3,            // coin      - money
+    2,            // modifier to chance to hit - proficiency bonus for players
+    8,            // damage dice - 8 for longsword
+    1,            // number of damage dice. 1 for longsword, so knight can do 1d8 damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   },
   // Rogue
   {
@@ -58,7 +66,7 @@ mob player_classes[PCS] = {
     14,           // intel     - intelligence
     12,           // wis       - wisdom
     14,           // cha       - charisma
-    3,            // dmg       - innate damage bonus
+    1,            // dmg       - innate damage bonus
     1,            // armor     - armor (defense) - leather armor gives +1 AC
     9,            // max_hp    - max hp earned per level (1d8 + Con modifier)
     9,            // cur_hp    - current hp
@@ -68,6 +76,10 @@ mob player_classes[PCS] = {
     0,            // xp        - experience points
     1,            // level     - current level
     5,            // coin      - money
+    2,            // modifier to chance to hit - proficiency bonus for players
+    8,            // damage dice - 8 for rapier
+    1,            // number of damage dice. 1 for rapier, so rogue can do 1d8 damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   },
   // Wizard
   {
@@ -90,6 +102,10 @@ mob player_classes[PCS] = {
     0,            // xp        - experience points
     1,            // level     - current level
     3,            // coin      - money
+    2,            // modifier to chance to hit - proficiency bonus for players
+    6,            // damage dice - 6 for quarterstaff
+    1,            // number of damage dice. 1 for quarterstaff, so wizard can do 1d6 damage.
+    {0, 0, 0, 0}  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   }
 };
 

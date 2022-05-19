@@ -35,6 +35,9 @@ void build_character(char name[32], mob chosen_class, mob *player) {
   player->xp        = chosen_class.xp;
   player->lvl       = chosen_class.lvl;
   player->coin      = chosen_class.coin;
+  player->to_hit    = chosen_class.to_hit;
+  player->dice_dam  = chosen_class.dice_dam;
+  player->dice_num  = chosen_class.dice_num;
 }
 
 // character selection
@@ -105,6 +108,9 @@ void update_character(int token, char val[BUFF], mob *player) {
     case 16: player->xp        = atoi(val); break;
     case 17: player->lvl       = atoi(val); break;
     case 18: player->coin      = atoi(val); break;
+    case 19: player->to_hit    = atoi(val); break;
+    case 20: player->dice_dam  = atoi(val); break;
+    case 21: player->dice_num  = atoi(val); break;
     default: break;
   }
 }
@@ -152,9 +158,10 @@ void save_game(mob player) {
     }
     fseek(fp, pos, SEEK_SET);*/
     fprintf(fp,
-    "=name:%s,role:%s,desc:%s,str:%d,dex:%d,con:%d,intel:%d,wis:%d,cha:%d,dmg:%d,armor:%d,max_hp:%d,cur_hp:%d,dodge:%d,max_mana:%d,cur_mana:%d,xp:%d,lvl:%d,coin:%d,_",
+    "=name:%s,role:%s,desc:%s,str:%d,dex:%d,con:%d,intel:%d,wis:%d,cha:%d,dmg:%d,armor:%d,max_hp:%d,cur_hp:%d,dodge:%d,max_mana:%d,cur_mana:%d,xp:%d,lvl:%d,coin:%d,to_hit:%d,dice_dam:%d,dice_num:%d,_",
     player.name, player.role, player.desc, player.str, player.dex, player.con, player.intel, player.wis, player.cha,
-    player.dmg, player.armor, player.max_hp, player.cur_hp, player.dodge, player.max_mana, player.cur_mana, player.xp, player.lvl, player.coin);
+    player.dmg, player.armor, player.max_hp, player.cur_hp, player.dodge, player.max_mana, player.cur_mana, player.xp,
+    player.lvl, player.coin, player.to_hit, player.dice_dam, player.dice_num);
     fclose(fp);
   }
 }
