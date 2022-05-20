@@ -195,6 +195,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
 
   init_mob = ((monster.dex - 10) / 2) + monster.dodge;
   init_player = ((player->dex - 10) / 2) + player->dodge; // tweak this later, wizard buffs, etc.
+  if (player->buffs[2] == 1) init_player+=2;              // bonus for having class buff active
   
   while(1) { // battle loop
     // clear previous choices
