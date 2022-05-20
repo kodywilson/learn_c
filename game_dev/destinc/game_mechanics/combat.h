@@ -9,27 +9,28 @@ int actions(char *role) {
 
   if (strcmp(role, "Cleric") == 0) {
         // set up options for Clerics
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
+        strncpy(choices[num_choices], "Attack with mace", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;// set first option as attack
         strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
       if (strcmp(role, "Knight") == 0) {
         // set up options for Knights
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
+        strncpy(choices[num_choices], "Attack with sword", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
         //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;             // set third option as attempt to flee
       }
       if (strcmp(role, "Rogue") == 0) {
         // set up options for Rogues
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;           // set first option as attack
+        strncpy(choices[num_choices], "Attack with rapier", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
         //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       if (strcmp(role, "Wizard") == 0) {
         // set up options for Wizards
-        strncpy(choices[num_choices], "Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;          // set first option as attack
-        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        strncpy(choices[num_choices], "Attack with quarterstaff", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
+        strncpy(choices[num_choices], "Magic missle [3d4+3]", MAX_CHOICE_LEN); choice_key[num_choices] = 100; num_choices++;  // set second option as magic missile
+        strncpy(choices[num_choices], "Fire bolt [1d10]", MAX_CHOICE_LEN); choice_key[num_choices] = 101; num_choices++;  // set second option as magic missile
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
 
@@ -115,21 +116,33 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
             } else {
               mvwprintw(game_text, 4, 0, "The %s dodges your strike.", monster->name);
             }
-            if (monster->cur_hp <= 0) {
-              mvwprintw(game_text, 6, 0, "You defeated %s, %s!", monster->name, player->name);
-              player->coin+=monster->coin;
-              player->xp+=monster->xp;
-            }
-            wrefresh(game_text);
-            wclear(select);         // stop after turn is complete so player can see results of their turn
-            mvwaddstr(select, 0, 0, "Press any key to continue...");
-            wrefresh(select);
-            getch();
             break;
     case 2: mvwprintw(game_text, 2, 0, "You run as fast as you can away from %s!", monster->name);
             break;
+    case 100: mvwprintw(game_text, 2, 0, "3 shimmering darts appear and fly toward %s!", monster->name);
+              monster->cur_hp-=dice(3, 4) + 3;  // later this will scale with higher levels (spell slots)
+              player->cur_mana-=4;
+              break;
+    case 101: mvwprintw(game_text, 2, 0, "You hurl a mote of fire at %s!", monster->name);
+              napms(250);
+              // this is a cantrip. It costs no mana, but it can miss...
+              if ((dice(1, 20) + player->to_hit + ((player->intel - 10) / 2)) >= (AC_BASE + monster->armor)) {
+                mvwaddstr(game_text, 4, 0, "Direct hit!");
+                monster->cur_hp-=dice(1, 10);  // later this will scale with higher levels
+              }
+              break;
     default: break;
   }
+  if (monster->cur_hp <= 0) {
+    mvwprintw(game_text, 6, 0, "You defeated %s, %s!", monster->name, player->name);
+    player->coin+=monster->coin;
+    player->xp+=monster->xp;
+  }
+  wrefresh(game_text);
+  wclear(select);         // stop after turn is complete so player can see results of their turn
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 
   return choice;
 }
