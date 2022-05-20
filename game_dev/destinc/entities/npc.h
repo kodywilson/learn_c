@@ -9,7 +9,7 @@ mob mobs[MOBS] = {
     "rat",     // role
     "A smelly rat shrieks and races toward you!",
     7,            // str       - strength
-    10,           // dex       - dexterity   // should be 15 - change again after adding way to tell player from monster
+    15,           // dex       - dexterity
     11,           // con       - constitution
     2,            // intel     - intelligence
     10,           // wis       - wisdom
@@ -38,7 +38,7 @@ mob mobs[MOBS] = {
     "Kobold",     // role
     "A tiny kobold jumps out of the darkness and attacks!",
     7,            // str       - strength
-    10,           // dex       - dexterity   // should be 15 - change again after adding way to tell player from monster
+    15,           // dex       - dexterity
     9,            // con       - constitution
     8,            // intel     - intelligence
     7,            // wis       - wisdom
@@ -67,7 +67,7 @@ mob mobs[MOBS] = {
     "Skeleton",     // role
     "You hear a clattering sound and see a skeleton approaching!",
     10,           // str       - strength
-    10,           // dex       - dexterity // should be 14 - change again after adding way to tell player from monster
+    14,           // dex       - dexterity
     15,           // con       - constitution
     6,            // intel     - intelligence
     8,            // wis       - wisdom
@@ -96,13 +96,13 @@ mob mobs[MOBS] = {
     "Bugbear",     // role
     "A large bugbear bursts into the room and strides toward you!",
     15,           // str       - strength
-    10,           // dex       - dexterity // should be 14 - change again after adding way to tell player from monster
+    14,           // dex       - dexterity
     13,           // con       - constitution
     8,            // intel     - intelligence
     11,           // wis       - wisdom
     9,            // cha       - charisma
     2,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
-    16,           // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
+    6,            // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
     27,           // max_hp    - max hp earned per level
     27,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
