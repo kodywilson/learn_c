@@ -149,13 +149,20 @@ int can_move(int y, int x, int direction) {
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
+  int choice, num_choices, class_buff = 0, y_pos = 2, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];                       // later, make this something you pass in
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
 
   wclear(game_text);
-  mvwaddstr(game_text, 1, 1, "Stepping into the dungeon, you prepare for adventure.");
+  mvwaddstr(game_text, 0, 0, "Stepping into the dungeon, you prepare for adventure.");
+  if ((strcmp(player->role, "Wizard") == 0) && class_buff < 1 ) {
+    mvwaddstr(game_text, 2, 0, "Your wizard senses tingle...");
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to summon a familiar?");
+    if (choice == 0) mvwaddstr(game_text, 3, 0, "That's nice.");
+  }
   while(1) {
     mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
     wrefresh(game_text);
