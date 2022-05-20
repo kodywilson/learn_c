@@ -63,8 +63,8 @@ int attack(mob *attacker, mob *target) {
     damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg; // number of dice, type of dice, +dmg
     // now handle buffs which may modify these numbers a bit
     if (target->buffs[2] == 1) {                                           // Wizard buff for having familiar
-      ac+=2;                                                               // + AC - maybe these scale later?
-      damage-=dice(1, 2);                                                  // small damage reduction
+      ac+=3;                                                               // + AC - maybe these scale later?
+      damage-=dice(1, 2) + 1;                                              // small damage reduction
     }
   }
   
@@ -213,8 +213,8 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
 
   init_mob = ((monster.dex - 10) / 2) + monster.dodge;
   init_player = ((player->dex - 10) / 2) + player->dodge; // tweak this later, wizard buffs, etc.
-  if (player->buffs[2] == 1) init_player+=3;              // bonus for having class buff active
-  
+  if (player->buffs[2] == 1) init_player+=4;              // bonus for having class buff active - wizard is super squishy soloing
+                                                          // need to come up with better way to buff them
   while(1) { // battle loop
     // clear previous choices
     reset_choices();
