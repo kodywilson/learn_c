@@ -29,7 +29,10 @@ int actions(mob *player) {
       if (strcmp(player->role, "Wizard") == 0) {
         // set up options for Wizards
         strncpy(choices[num_choices], "Attack with quarterstaff", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
-        if (player->cur_mana >= 4) strncpy(choices[num_choices], "Magic missle [3d4+3]", MAX_CHOICE_LEN); choice_key[num_choices] = 100; num_choices++;  // set second option as magic missile
+        if (player->cur_mana >= 4) {
+          strncpy(choices[num_choices], "Magic missle [3d4+3]", MAX_CHOICE_LEN);
+          choice_key[num_choices] = 100;
+          num_choices++; }  // set second option as magic missile if player has enough mana
         strncpy(choices[num_choices], "Fire bolt [1d10]", MAX_CHOICE_LEN); choice_key[num_choices] = 101; num_choices++;  // set second option as magic missile
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
