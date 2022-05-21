@@ -4,32 +4,32 @@
 #define AC_BASE 10
 #define COMBAT_PROBABILITY 5 // dial it down for less monsters
 
-int actions(char *role) {
+int actions(mob *player) {
   int num_choices = 0;
 
-  if (strcmp(role, "Cleric") == 0) {
+  if (strcmp(player->role, "Cleric") == 0) {
         // set up options for Clerics
         strncpy(choices[num_choices], "Attack with mace", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;// set first option as attack
         strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
-      if (strcmp(role, "Knight") == 0) {
+      if (strcmp(player->role, "Knight") == 0) {
         // set up options for Knights
         strncpy(choices[num_choices], "Attack with sword", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
         //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;             // set third option as attempt to flee
       }
-      if (strcmp(role, "Rogue") == 0) {
+      if (strcmp(player->role, "Rogue") == 0) {
         // set up options for Rogues
         strncpy(choices[num_choices], "Attack with rapier", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
         //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
-      if (strcmp(role, "Wizard") == 0) {
+      if (strcmp(player->role, "Wizard") == 0) {
         // set up options for Wizards
         strncpy(choices[num_choices], "Attack with quarterstaff", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
-        strncpy(choices[num_choices], "Magic missle [3d4+3]", MAX_CHOICE_LEN); choice_key[num_choices] = 100; num_choices++;  // set second option as magic missile
+        if (player->cur_mana >= 4) strncpy(choices[num_choices], "Magic missle [3d4+3]", MAX_CHOICE_LEN); choice_key[num_choices] = 100; num_choices++;  // set second option as magic missile
         strncpy(choices[num_choices], "Fire bolt [1d10]", MAX_CHOICE_LEN); choice_key[num_choices] = 101; num_choices++;  // set second option as magic missile
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
@@ -103,7 +103,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
   mvwprintw(game_text, 0, 0, "%s's turn...", player->name);
   health_bar(game_text, monster);
   
-  num_choices = actions(player->role);
+  num_choices = actions(player);
   choice = choose(select, num_choices, combat_prompt);
   switch (choice_key[choice]) {
     case 0: mvwprintw(game_text, 2, 0, "You swing at %s", monster->name);
