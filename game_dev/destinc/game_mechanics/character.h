@@ -41,6 +41,7 @@ void build_character(char name[32], mob chosen_class, mob *player) {
   player->is_pc     = chosen_class.is_pc;
   player->type      = chosen_class.type;
   player->alignment = chosen_class.alignment;
+  for (int i = 0; i < 4; i++) player->buffs[i] = 0;
 }
 
 // character selection
@@ -146,6 +147,7 @@ void load_game(mob *player) {
         counter = 0; // reset counter for next buffer fill
       }
     }
+    for (int i = 0; i < 4; i++) player->buffs[i] = 0;
   }
 }
 
