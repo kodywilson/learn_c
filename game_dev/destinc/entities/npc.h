@@ -1,7 +1,7 @@
 // functions and data for non playable character types
 
 #define MOBS 6     // number of mobs - change to monsters or something for now mobs and bosses
-#define BOSS 2     // number of boss type mobs
+#define BOSS 4     // number of boss type mobs
 
 mob mobs[MOBS] = {
   // Rat - giant

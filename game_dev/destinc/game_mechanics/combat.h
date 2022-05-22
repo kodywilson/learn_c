@@ -198,8 +198,8 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
   // roll for foe - by environ (different mobs live in different places)
   // 0 is dungeon, etc.
   switch(environ) {
-    case 0: monster_roll = dice(1, 4) - 1; break;   // 4 choices, so roll 4 sided die
-    default: monster_roll = dice(1, 4) - 1; break;  // dice never return 0 so subtract one for proper array indexing
+    case 0: monster_roll = dice(1, MOBS) - 1; break;   // 4 choices, so roll 4 sided die
+    default: monster_roll = dice(1, MOBS) - 1; break;  // dice never return 0 so subtract one for proper array indexing
   }
 
   build_character(mobs[monster_roll].name, mobs[monster_roll], &monster); // generate foe
