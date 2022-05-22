@@ -1,6 +1,6 @@
 // functions and data for non playable character types
 
-#define MOBS 4     // number of mobs - change to monsters or something for now mobs and bosses
+#define MOBS 6     // number of mobs - change to monsters or something for now mobs and bosses
 #define BOSS 2     // number of boss type mobs
 
 mob mobs[MOBS] = {
@@ -109,12 +109,70 @@ mob mobs[MOBS] = {
     0,            // dodge     - innate bonus to dodge
     12,           // max_mana  - max mana per level
     12,           // cur_mana  - current mana
-    200,          // xp        - experience points
+    25,           // xp        - experience points
     1,            // level     - current level
     1,            // coin      - money
     3,            // modifier to chance to hit
-    6,            // damage dice - 8 for bugbear
-    1,            // number of damage dice. 2 for bugbear, so bugbear can do 2d8 +2 (from dmg) damage.
+    6,            // damage dice - 8 for bandit
+    1,            // number of damage dice. 1 for bandit, so bandit can do 1d6 +1 (from dmg) damage.
+    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    0,            // is this a player character? combat calculations vary a bit so we need to know
+    0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
+    5             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+  },               // 3 = true neutral, 4 = chaotic good
+  // Goblin
+  {
+    "goblin",     // name
+    "goblin",     // role
+    "A muttering goblin looks up and heads toward you.",
+    8,            // str       - strength
+    14,           // dex       - dexterity
+    10,           // con       - constitution
+    10,           // intel     - intelligence
+    8,            // wis       - wisdom
+    8,            // cha       - charisma
+    2,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
+    5,            // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
+    7,            // max_hp    - max hp earned per level
+    7,            // cur_hp    - current hp
+    0,            // dodge     - innate bonus to dodge
+    12,           // max_mana  - max mana per level
+    12,           // cur_mana  - current mana
+    50,           // xp        - experience points
+    1,            // level     - current level
+    2,            // coin      - money
+    4,            // modifier to chance to hit
+    6,            // damage dice - 8 for goblin
+    1,            // number of damage dice. 2 for goblin, so goblin can do 1d6 +2 (from dmg) damage.
+    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    0,            // is this a player character? combat calculations vary a bit so we need to know
+    3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
+    5             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+  },               // 3 = true neutral, 4 = chaotic good
+  // Zombie
+  {
+    "zombie",     // name
+    "zombie",     // role
+    "You see a rotting zombie shuffling toward you.",
+    13,           // str       - strength
+    6,            // dex       - dexterity
+    16,           // con       - constitution
+    3,            // intel     - intelligence
+    6,            // wis       - wisdom
+    5,            // cha       - charisma
+    1,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
+    -2,           // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
+    22,           // max_hp    - max hp earned per level
+    22,           // cur_hp    - current hp
+    0,            // dodge     - innate bonus to dodge
+    12,           // max_mana  - max mana per level
+    12,           // cur_mana  - current mana
+    50,           // xp        - experience points
+    1,            // level     - current level
+    2,            // coin      - money
+    3,            // modifier to chance to hit
+    6,            // damage dice - 6 for zombie
+    1,            // number of damage dice. 2 for zombie, so zombie can do 2d8 +2 (from dmg) damage.
     {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
