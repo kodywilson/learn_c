@@ -82,19 +82,39 @@ int attack(mob *attacker, mob *target) {
 
 // pass window to draw health bar and what entity (monster, etc.)
 void health_bar(WINDOW *win, mob *entity) {
-  int hp, max_y, max_x;
+  int hp, max_y, max_x, y, x;
 
   getmaxyx(win, max_y, max_x);
+  // where the bar goes depends on the entity
+  if (entity->is_pc == 1) {
+    y = max_y - 6; 
+    x = max_x - 11;
+  } else {
+    y = max_y - 3;
+    x = max_x - 11;
+  }
   hp = ((float) entity->cur_hp / entity->max_hp * 10); // get amount of health
   if (entity->cur_hp > 0 && hp < 1) hp = 1; // need at least one # if mob is still alive
 
   // we want to print a # for roughly every 10% of health
   // then make missing health turn red, other ones green
-  mvwprintw(win, max_y - 4, max_x - 11, "  %s  ", entity->name); // bar label
-  mvwaddstr(win, max_y - 3, max_x - 11, "__Health__");          // bar label
-  for (int i = 0; i < hp; i++) {       //##########
-    mvwaddch(win,  max_y - 2, max_x - 11 + i, '#');
+  wattron(win, COLOR_PAIR(5) | A_BOLD);
+  mvwaddstr(win, max_y - 7, x, "__Health__");          // bar label
+  wattroff(win, COLOR_PAIR(5) | A_BOLD);
+  
+  // now print health markers in either green or red depending on health
+  if (hp > 5) {
+    wattron(win, COLOR_PAIR(7) | A_BOLD);
+    for (int i = 0; i < hp; i++) mvwaddch(win,  y + 1, x + i, '#');
+    wattroff(win, COLOR_PAIR(7) | A_BOLD);
+  } else {
+    wattron(win, COLOR_PAIR(1) | A_BOLD);
+    for (int i = 0; i < hp; i++) mvwaddch(win,  y + 1, x + i, '#');
+    wattroff(win, COLOR_PAIR(1) | A_BOLD);
   }
+  wattron(win, COLOR_PAIR(6) | A_BOLD);
+  mvwprintw(win, y + 2, x, "  %s  ", entity->name);        // bar label
+  wattroff(win, COLOR_PAIR(6) | A_BOLD);
   wrefresh(win);
 }
 
@@ -104,6 +124,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
 
   wclear(game_text);  // clear the window and take the turn
   mvwprintw(game_text, 0, 0, "%s's turn...", player->name);
+  health_bar(game_text, player);
   health_bar(game_text, monster);
   
   num_choices = actions(player);
@@ -157,6 +178,7 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob 
 
   wclear(game_text);  // clear the window and take the turn
   mvwprintw(game_text, 0, 0, "%s's turn...", monster->name);
+  health_bar(game_text, player);
   health_bar(game_text, monster);
   
   choice = dice(1, 6) * 0;
@@ -168,6 +190,7 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob 
             if (damage > 0) {
               mvwprintw(game_text, 4, 0, "%s hit you for %d damage!", monster->name, damage);
               refresh_stats(stats, player); // update stats window
+              health_bar(game_text, player);
             } else {
               mvwprintw(game_text, 4, 0, "You dodge %s's ferocious strike.", monster->name);
             }
@@ -212,6 +235,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
   wrefresh(select);
   getch();
   wclear(game_text);
+  health_bar(game_text, player);
   health_bar(game_text, &monster);
 
   init_mob = ((monster.dex - 10) / 2) + monster.dodge;

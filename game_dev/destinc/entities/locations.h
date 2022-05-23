@@ -254,11 +254,13 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     choice = choose(select, num_choices, "Please choose where you will head next:");
     switch (choice) {
       case 0: wclear(game_text);
+              wclear(select);
               mvwaddstr(game_text, 1, 1, "You follow the eastern path toward the dungeon, stopping");
               mvwaddstr(game_text, 2, 1, "when you reach battered gates at the entrance.");
               mvwaddstr(game_text, 4, 1, "Bracing yourself, you step down into the darkness.");
-              mvwaddstr(game_text, 6, 1, "Press any key to continue...");
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
               wrefresh(game_text);
+              wrefresh(select);
               getch();
               dungeon(game_text, select, stats, player);
               break;
