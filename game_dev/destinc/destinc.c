@@ -8,7 +8,7 @@
 
 int main() {
   srand(time(0)); // seed rand using time
-  int choice, max_y, max_x, stats_y_border, stats_x_border;
+  int choice, max_y, max_x;
   // last four of next line are oft used offsets
   int game_text_y, game_text_x, main_loop, y_high, x_high, y_low, x_low;
   mob player; // create player struct
@@ -53,7 +53,6 @@ int main() {
   input            = newwin(3, max_x / 2, max_y / 2, max_x / 4);
 
   // calculate window sizes
-  getmaxyx(stats_border, stats_y_border, stats_x_border); // dimensions of stats border window
   getmaxyx(game_text, game_text_y, game_text_x);
 
   // build offsets for text padding
@@ -129,10 +128,20 @@ int main() {
   wrefresh(select);
   // set up stats window border
   wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(stats_border, 0, (stats_x_border / 2) - 3, " Stats ");
+  mvwaddstr(stats_border, 0, (((max_x * 7) / 8) / 2) - 2, " Stats ");
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(stats_border);
   refresh_stats(stats, &player); // print stats window
+  // set up game text window border
+  wattron(game_text_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(game_text_border, 0, (max_x / 2) - 5, " Game Text ");
+  wattroff(game_text_border, COLOR_PAIR(6) | A_BOLD);
+  wrefresh(game_text_border);
+  // set up actions window border
+  wattron(select_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
+  wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
+  wrefresh(select_border);
   // Initial greeting
   wclear(game_text);
   mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome to your Destiny...", player.name);
@@ -158,11 +167,11 @@ int main() {
               break;
       case 1: tavern(game_text, select, stats, &player); break;
       case 2: mvwaddstr(game_text, y_low, x_low, "Thanks for playing, see you next time!");
-              save_game(player); main_loop = 0 * stats_y_border; break;
+              save_game(player); main_loop = 0; break;
       default: break;
     }
     wrefresh(game_text);
-    napms(1000);
+    napms(500);
   }
 
   //printf("Test text is %s \n", rand_move_text[dice(1, MOVE_TEXT) - 1]);
