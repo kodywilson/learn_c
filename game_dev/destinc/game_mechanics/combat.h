@@ -206,7 +206,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
 
   wclear(select);
   wrefresh(select);
-  mvwprintw(game_text, 0, 0, "%s", monster.desc);
+  mvwprintw(game_text, 2, 0, "%s", monster.desc);
   mvwaddstr(select, 0, 0, "Press any key to begin combat!");
   wrefresh(game_text);
   wrefresh(select);

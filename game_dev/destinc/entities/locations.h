@@ -217,10 +217,10 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     wclear(game_text);
     // handle movement
     switch (choice_key[choice]) {
-      case 0: y_pos--; break;
-      case 1: x_pos++; break;
-      case 2: y_pos++; break;
-      case 3: x_pos--; break;
+      case 0: y_pos--; mvwaddstr(game_text, 0, 0, "You head north."); break;
+      case 1: x_pos++; mvwaddstr(game_text, 0, 0, "You head east."); break;
+      case 2: y_pos++; mvwaddstr(game_text, 0, 0, "You head south."); break;
+      case 3: x_pos--; mvwaddstr(game_text, 0, 0, "You head west."); break;
       case 4: mvwaddstr(game_text, 1, 1, "Great choice!"); break; // this needs some thought! how to handle custom options
       case 5: mvwaddstr(game_text, 1, 1, "Great choice!"); break;
       default: break;
