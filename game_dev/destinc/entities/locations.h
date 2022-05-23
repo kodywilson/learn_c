@@ -1,14 +1,14 @@
 // game locations - town, dungeon, tavern, etc.
 // each location will start with a list of options
 
-#define TOWN 3
-#define TAVERN 4
-#define MAP_Y 12
-#define MAP_X 12
+#define TOWN 3              // number of options in town
+#define TAVERN 4            // number of options in tavern
+#define MAP_Y 12            // size of dungeon in rows
+#define MAP_X 12            // size of dungeon in columns
 
+// These lists are used with the xxxxxx_choices() functions to build menus
 // Town
 char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "Exit Game"};
-
 
 // ## Tavern
 // base list, later add options depending on class, quest, etc.
@@ -18,13 +18,8 @@ char *tavern_list[TAVERN] = {
   "Rest",
   "Leave the tavern"
 };
-// char *tavern_list[TAVERN] = {
-//   "Buy some food.       | Cost: 1 coin",
-//   "Buy a drink.         | Cost: 1 coin",
-//   "Rest.                | Cost: 2 coins",
-//   "Leave the tavern."
-// };
 
+// these functions use the lists above to present options to the player
 int town_choices() {
   int num_choices = 0;
 
@@ -155,7 +150,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
 
   wclear(game_text);
-  mvwaddstr(game_text, 0, 0, "Stepping into the dungeon, you prepare for adventure.");
+  mvwaddstr(game_text, 0, 0, "You stop at the bottom of the stairs and light a torch.");
   wrefresh(game_text);
   if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] != 1)) {
     mvwaddstr(game_text, 2, 0, "Your wizard senses tingle...");
@@ -242,6 +237,42 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       if (choice == 0) break; // end dungeon loop
     }
   }
+}
+
+// you are visiting the town
+int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+  int choice, done = 1;
+
+  while(done) {
+    wclear(game_text);
+    mvwaddstr(game_text, 1, 1, "You walk into town, looking here and there.");
+    mvwaddstr(game_text, 3, 1, "Warmth and cheer emanate from an old tavern to the west.");
+    mvwaddstr(game_text, 5, 1, "To the east, a sign says 'dungeon this way'.");
+    wrefresh(game_text);
+    reset_choices();
+    num_choices = town_choices();
+    choice = choose(select, num_choices, "Please choose where you will head next:");
+    switch (choice) {
+      case 0: wclear(game_text);
+              mvwaddstr(game_text, 1, 1, "You follow the eastern path toward the dungeon, stopping");
+              mvwaddstr(game_text, 2, 1, "when you reach battered gates at the entrance.");
+              mvwaddstr(game_text, 4, 1, "Bracing yourself, you step down into the darkness.");
+              mvwaddstr(game_text, 6, 1, "Press any key to continue...");
+              wrefresh(game_text);
+              getch();
+              dungeon(game_text, select, stats, player);
+              break;
+      case 1: tavern(game_text, select, stats, player); break;
+      case 2: wclear(game_text);
+              mvwaddstr(game_text, 1, 1, "Thanks for playing, see you next time!");
+              done = 0; break;
+      default: break;
+    }
+  }
+
+  wrefresh(game_text);
+  
+  return done;
 }
 
 // later add more variety for what you can do at these locations

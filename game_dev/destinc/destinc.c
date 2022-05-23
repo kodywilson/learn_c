@@ -153,26 +153,11 @@ int main() {
   main_loop = 1;
   // Main game loop
   while(main_loop) {
-    wclear(game_text);
-    mvwaddstr(game_text, y_high, x_high, "You walk into town, looking here and there.");
-    mvwaddstr(game_text, y_high + 2, x_high, "Warmth and cheer emanate from an old tavern to the west.");
-    mvwaddstr(game_text, y_high + 3, x_high, "To the east, a sign says 'dungeon this way'.");
-    wrefresh(game_text);
-    reset_choices();
-    num_choices = town_choices();
-    choice = choose(select, num_choices, "Please choose where you will head next:");
-    switch (choice) {
-      case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon.");
-              dungeon(game_text, select, stats, &player);
-              break;
-      case 1: tavern(game_text, select, stats, &player); break;
-      case 2: mvwaddstr(game_text, y_low, x_low, "Thanks for playing, see you next time!");
-              save_game(player); main_loop = 0; break;
-      default: break;
-    }
-    wrefresh(game_text);
-    napms(500);
+    main_loop = town(game_text, select, stats, &player);
+    napms(250);
   }
+
+  save_game(player);
 
   //printf("Test text is %s \n", rand_move_text[dice(1, MOVE_TEXT) - 1]);
 
