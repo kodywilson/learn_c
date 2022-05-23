@@ -45,20 +45,20 @@ int actions(mob *player) {
 int attack(mob *attacker, mob *target) {
   int ac, damage, roll;
 
-  // note - mob stat blocks include dex bonus (if any) in armor category so I set all mobs to have 10 or less dex
-  // later, add more attributes so I can tell player from monster and then conditional off that...
+  // note - mob stat blocks include dex bonus (if any) in armor category
+  // Determine if attacker is player or monster and then calculate outcome of attack
   if ( attacker->is_pc == 1 ) { // first we handle when attacker is pc
-    if (strcmp(attacker->role, "Rogue") == 0) { // to hit roll
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2); // use dex to hit for rogue
+    if (strcmp(attacker->role, "Rogue") == 0) {
+      roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2);                                 // use dex to hit for rogue
       damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg + ((attacker->dex - 10) / 2); // dex for damage for rogue
     } else {
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2); // str to hit for everyone else
+      roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit for everyone else
       damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg + ((attacker->str - 10) / 2); // str for damage for non rogues
     }
     ac = AC_BASE + target->armor;     // Base AC + armor for monsters // later may add mods
   } else { // monster is attacker, use different formulas
     roll = dice(1, 20) + attacker->to_hit;  // monster roll = d20 + to hit
-    if (strcmp(attacker->role, "Rogue") == 0 || strcmp(attacker->role, "Wizard") == 0) {
+    if (strcmp(target->role, "Rogue") == 0 || strcmp(target->role, "Wizard") == 0) {
       ac = AC_BASE + target->dodge + target->armor + ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
     } else { // non rogue/wizard
       ac = AC_BASE + target->dodge + target->armor;     // Base AC + dodge + armor
@@ -71,7 +71,7 @@ int attack(mob *attacker, mob *target) {
     }
   }
   
-  if (roll >= ac ) { // may need to drop the damage bonus and only use for to hit
+  if (roll >= ac ) { // check if attacker rolled greater than or equal to target AC
     target->cur_hp-=damage;
   } else {
     damage = 0;
