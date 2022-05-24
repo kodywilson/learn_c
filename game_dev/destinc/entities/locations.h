@@ -240,6 +240,8 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     }
     // then handle special choice
     // if (choice_key[choice] > 3 ) handle special action. Use lookup tables
+    if (dice(1, 20) > 12) mvwprintw(game_text, 1, 0, "%s", rand_move_text[dice(1, MOVE_TEXT) - 1]);
+    // now check for random combat
     if (dice(1, 20) < COMBAT_PROBABILITY) combat(game_text, select, stats, player, 0);
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
