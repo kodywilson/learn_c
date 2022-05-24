@@ -148,7 +148,7 @@ int can_move(int y, int x, int direction) {
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int buff, choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
+  int buff, choice, lucky_coin, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];                       // later, make this something you pass in
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
@@ -185,6 +185,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     }
   }
   while(1) {
+    lucky_coin = 0;
     // random chance that food and drink buffs will restore some mana or health
     if (player->buffs[0] == 1) { // this is food buff
       if (dice(1, 20) > 15) player->cur_hp+= dice(1, 4); // tune this as needed
@@ -254,7 +255,14 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     }
     // then handle special choice
     // if (choice_key[choice] > 3 ) handle special action. Use lookup tables
+    // random flavor text
     if (dice(1, 20) > 12) mvwprintw(game_text, 1, 0, "%s", rand_move_text[dice(1, MOVE_TEXT) - 1]);
+    // random chance at coin
+    if (dice(1, 20) > 19) {
+      lucky_coin+=dice(1, 3);
+      mvwprintw(game_text, 3, 0, "%s, it's your lucky day! You find %d coin(s) in a small pile of rubble!", player->name, lucky_coin);
+      player->coin+=lucky_coin;
+    }
     // now check for random combat
     if (dice(1, 20) < COMBAT_PROBABILITY) combat(game_text, select, stats, player, 0);
     refresh_stats(stats, player); // update stats window
