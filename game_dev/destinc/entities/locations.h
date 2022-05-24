@@ -148,7 +148,7 @@ int can_move(int y, int x, int direction) {
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
+  int buff, choice, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];                       // later, make this something you pass in
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
@@ -266,6 +266,28 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       if (choice == 0) break; // end dungeon loop
     }
   }
+  wclear(game_text);
+  mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");
+  // later, show spoils of your adventure. coin and xp earned, mobs defeated, distance traveled, etc.
+  // Remove player buffs
+  if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
+    mvwaddstr(game_text, 7, 0, "Drako wishes you well and fades away, ready to help another day.");
+  };
+  buff = 0;
+  for (int i = 0; i < MAX_BUFFS; i++) {
+    if (buff == 0) {
+      if (player->buffs[i] == 1) {
+        mvwaddstr(game_text, 5, 0, "Your buffs fade. Hit the Tavern for more!");
+        buff = 1;
+      }
+    }
+    player->buffs[i] = 0;
+  }
+  wrefresh(game_text);
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // you are visiting the town
