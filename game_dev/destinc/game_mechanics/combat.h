@@ -10,7 +10,7 @@ int actions(mob *player) {
   if (strcmp(player->role, "Cleric") == 0) {
         // set up options for Clerics
         strncpy(choices[num_choices], "Attack with mace", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;// set first option as attack
-        strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 200; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
@@ -120,7 +120,7 @@ void health_bar(WINDOW *win, mob *entity) {
 
 // handle player actions and battle choices, return choice
 int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, char *combat_prompt) {
-  int choice = 2, player_damage = 0;
+  int choice = 2, heal_amt = 0, player_damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
   mvwprintw(game_text, 0, 0, "%s's turn...", player->name);
@@ -134,7 +134,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
             wrefresh(game_text);
             napms(250);
             player_damage = attack(player, monster);
-            if (player_damage > 0) {
+            if (player_damage > 0) { // move this into attack function?
               mvwprintw(game_text, 4, 0, "You hit %s for %d damage!", monster->name, player_damage);
               health_bar(game_text, monster);
             } else {
@@ -155,6 +155,21 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
                 monster->cur_hp-=dice(1, 10);  // later this will scale with higher levels
               }
               break;
+    case 200: heal_amt = (dice(1, 8) * player->lvl) + ((player->wis - 10) / 2);
+              mvwprintw(game_text, 2, 0, "Praying intently, you add %d health points as you prepare to strike.", heal_amt);
+              player->cur_hp+=heal_amt;
+              player->cur_mana-=4;
+              mvwprintw(game_text, 3, 0, "You swing at %s", monster->name);
+              wrefresh(game_text);
+              napms(250);
+              player_damage = attack(player, monster);
+              if (player_damage > 0) { // move this into attack function?
+                mvwprintw(game_text, 4, 0, "You hit %s for %d damage!", monster->name, player_damage);
+                health_bar(game_text, monster);
+              } else {
+                mvwprintw(game_text, 4, 0, "The %s dodges your strike.", monster->name);
+              }
+            break;
     default: break;
   }
   if (monster->cur_hp <= 0) {
@@ -229,7 +244,7 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
 
   wclear(select);
   wrefresh(select);
-  mvwprintw(game_text, 2, 0, "%s", monster.desc);
+  mvwprintw(game_text, 3, 0, "%s", monster.desc);
   mvwaddstr(select, 0, 0, "Press any key to begin combat!");
   wrefresh(game_text);
   wrefresh(select);
