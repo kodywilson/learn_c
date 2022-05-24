@@ -55,6 +55,12 @@ int attack(mob *attacker, mob *target) {
       roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit for everyone else
       damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg + ((attacker->str - 10) / 2); // str for damage for non rogues
     }
+    if (attacker->buffs[2] == 1) {                          // check for player buff
+      if (strcmp(attacker->role, "Cleric") == 0) {          // Cleric buff for praying
+        roll+=1;                                                               // tiny boost to roll
+        damage+=dice(1, 2);                                                    // minor damage boost
+      }
+    }
     ac = AC_BASE + target->armor;     // Base AC + armor for monsters // later may add mods
   } else { // monster is attacker, use different formulas
     roll = dice(1, 20) + attacker->to_hit;  // monster roll = d20 + to hit
@@ -65,9 +71,15 @@ int attack(mob *attacker, mob *target) {
     }
     damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg; // number of dice, type of dice, +dmg
     // now handle buffs which may modify these numbers a bit
-    if (target->buffs[2] == 1) {                                           // Wizard buff for having familiar
-      ac+=3;                                                               // + AC - maybe these scale later?
-      damage-=dice(1, 2) + 1;                                              // small damage reduction
+    if (target->buffs[2] == 1) {               // check for player buff
+      if (strcmp(target->role, "Wizard") == 0) {          // Wizard buff for having familiar
+        ac+=2;                                                               // + AC - maybe these scale later?
+        damage-=dice(1, 2) + 1;                                              // small damage reduction
+      }
+      if (strcmp(target->role, "Cleric") == 0) {          // Cleric buff for praying
+        ac+=1;                                                               // + AC - maybe these scale later?
+        damage-=dice(1, 2);                                                  // tiny damage reduction
+      }
     }
   }
   

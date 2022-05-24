@@ -170,6 +170,20 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       player->cur_mana-=player->lvl*2;
     }
   }
+  if ((strcmp(player->role, "Cleric") == 0) && (player->buffs[2] != 1)) {
+    mvwaddstr(game_text, 2, 0, "As you pray for aid, you feel danger here...");
+    wrefresh(game_text);
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to cast a buff?");
+    if (choice == 0) {
+      mvwprintw(game_text, 4, 0, "%s bows in prayer and asks for the aid of Teseldor.", player->name);
+      napms(250);
+      mvwaddstr(game_text, 6, 0, "A soothing feeling passes through your body and you are ready for anything.");
+      player->buffs[2] = 1;
+      player->cur_mana-=player->lvl*2;
+    }
+  }
   while(1) {
     // random chance that food and drink buffs will restore some mana or health
     if (player->buffs[0] == 1) { // this is food buff
