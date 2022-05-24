@@ -6,6 +6,7 @@
 #include <ncurses.h>
 #include "art/letters.h"
 #include "art/graphics.h"
+#include "art/assets.h"
 #include "game_mechanics/choices.h"
 #include "game_mechanics/file.h"
 #include "game_mechanics/character.h"
