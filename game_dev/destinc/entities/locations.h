@@ -63,14 +63,18 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     switch (choice) {
       case 0: if (player->coin >= food_cost) {
         mvwaddstr(game_text, 1, 1, tavern_table);
-        player->cur_hp = player->max_hp * player->lvl; // food restores health
+        player->cur_hp+= dice(2, (player->max_hp / 2)) * player->lvl; // food restores some health and adds buff
+        if (player->cur_hp > player->max_hp * player->lvl) player->cur_hp = player->max_hp * player->lvl;
+        player->buffs[0] = 1;  // this buff lasts through one dungeon trip - chance to restore health
         player->coin-=food_cost;  // pay for food
       } else {
         mvwaddstr(game_text, 1, 1, "You can't afford a meal! Go to the dungeon and earn some money!");
       } break;
       case 1: if (player->coin >= drink_cost) {
         mvwaddstr(game_text, 1, 1, tavern_bar);
-        player->cur_mana = player->max_mana * player->lvl; // drink restores mana
+        player->cur_mana+= dice(2, (player->max_mana / 2)) * player->lvl; // drink restores some mana and adds buff
+        if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
+        player->buffs[1] = 1;  // this buff lasts through one dungeon trip - chance to restore mana
         player->coin-=drink_cost;  // pay for drink
       } else {
         mvwaddstr(game_text, 1, 1, "You can't afford wine, you churl! Go to the dungeon and earn some money!");
@@ -167,6 +171,15 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     }
   }
   while(1) {
+    // random chance that food and drink buffs will restore some mana or health
+    if (player->buffs[0] == 1) { // this is food buff
+      if (dice(1, 20) > 15) player->cur_hp+= dice(1, 4); // tune this as needed
+      if (player->cur_hp > player->max_hp * player->lvl) player->cur_hp = player->max_hp * player->lvl;
+    }
+    if (player->buffs[1] == 1) { // this is drink buff
+      if (dice(1, 20) > 15) player->cur_mana+= dice(1, 4); // tune this as needed
+      if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
+    }
     mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
     wrefresh(game_text);
     //getch(); // DEBUG
