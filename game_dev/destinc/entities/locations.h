@@ -148,7 +148,7 @@ int can_move(int y, int x, int direction) {
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int buff, choice, lucky_coin, num_choices, y_pos = 2, x_pos = 0; // starting position in the dungeon
+  int buff, choice, lucky_coin, num_choices, y_pos = 5, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];                       // later, make this something you pass in
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
@@ -255,16 +255,22 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     }
     // then handle special choice
     // if (choice_key[choice] > 3 ) handle special action. Use lookup tables
-    // random flavor text
-    if (dice(1, 20) > 12) mvwprintw(game_text, 1, 0, "%s", rand_move_text[dice(1, MOVE_TEXT) - 1]);
-    // random chance at coin
-    if (dice(1, 20) > 19) {
-      lucky_coin+=dice(1, 3);
-      mvwprintw(game_text, 3, 0, "%s, it's your lucky day! You find %d coin(s) in a small pile of rubble!", player->name, lucky_coin);
-      player->coin+=lucky_coin;
+    if (dungeon_map[y_pos][x_pos] == '$') { // random stuff happens on general spaces, not special ones like T or B
+      // random flavor text
+      if (dice(1, 20) > 12) mvwprintw(game_text, 1, 0, "%s", rand_move_text[dice(1, MOVE_TEXT) - 1]);
+      // random chance at coin
+      if (dice(1, 20) > 19) {
+        lucky_coin+=dice(1, 3);
+        mvwprintw(game_text, 3, 0, "%s, it's your lucky day! You find %d coin(s) in a small pile of rubble!", player->name, lucky_coin);
+        player->coin+=lucky_coin;
+      }
+      // now check for random combat
+      if (dice(1, 20) < COMBAT_PROBABILITY) combat(game_text, select, stats, player, 0);
     }
-    // now check for random combat
-    if (dice(1, 20) < COMBAT_PROBABILITY) combat(game_text, select, stats, player, 0);
+    if (dungeon_map[y_pos][x_pos] == 'B') {
+      mvwprintw(game_text, 2, 0, "%s", rand_boss_text[dice(1, BOSS_TEXT) - 1]);
+      combat(game_text, select, stats, player, 1);
+    }
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
     if (dungeon_map[y_pos][x_pos] == 'E') {

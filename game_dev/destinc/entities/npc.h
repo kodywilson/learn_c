@@ -201,7 +201,7 @@ mob bosses[BOSS] = {
     4,            // cur_mana  - current mana
     100,          // xp        - experience points
     1,            // level     - current level
-    3,            // coin      - money
+    4,            // coin      - money
     5,            // modifier to chance to hit
     12,           // damage dice - 12 for orc
     1,            // number of damage dice. 1 for orc, so orc can do 1d12 +3 (from dmg) damage.
@@ -230,7 +230,7 @@ mob bosses[BOSS] = {
     8,            // cur_mana  - current mana
     100,          // xp        - experience points
     1,            // level     - current level
-    3,            // coin      - money
+    4,            // coin      - money
     3,            // modifier to chance to hit
     8,            // damage dice - 8 for hobgoblin
     1,            // number of damage dice. 1 for hobgoblin, so hobgoblin can do 1d8 +1 (from dmg) damage.
@@ -259,7 +259,7 @@ mob bosses[BOSS] = {
     6,            // cur_mana  - current mana
     100,          // xp        - experience points
     1,            // level     - current level
-    3,            // coin      - money
+    4,            // coin      - money
     4,            // modifier to chance to hit
     6,            // damage dice - 6 for gnoll
     1,            // number of damage dice. 1 for gnoll, so gnoll can do 1d6 +2 (from dmg) damage.
@@ -288,7 +288,7 @@ mob bosses[BOSS] = {
     12,           // cur_mana  - current mana
     200,          // xp        - experience points
     1,            // level     - current level
-    4,            // coin      - money
+    5,            // coin      - money
     4,            // modifier to chance to hit
     8,            // damage dice - 8 for bugbear
     2,            // number of damage dice. 2 for bugbear, so bugbear can do 2d8 +2 (from dmg) damage.

@@ -1,5 +1,6 @@
 #include <string.h>
 
+#define BOSS_TEXT 9
 #define MOVE_TEXT 12
 
 char *rand_move_text[MOVE_TEXT] = 
@@ -7,6 +8,12 @@ char *rand_move_text[MOVE_TEXT] =
    "You hear a faint groan in the distance.", "A howl of wind passes over you and your torch flickers.", "You notice strange markings on the walls.",
    "Your torch flickers briefly, and you hear the sound of water.", "You hear the sound of water dripping.", "A breeze causes your torch to flicker.",
    "Fear grips your heart as you step into this area.", "You feel an eerie sensation..."};
+
+char *rand_boss_text[MOVE_TEXT] = 
+  {"The moment you enter this area, you feel a keen sense of dread...", "Your nose is assailed by a gut wrenching smell.",
+   "It is quite. Too quite...", "A low and gutteral sounds meets your ears.", "You hear something and it does not sound good. Not at all.",
+   "Is your torch flickering or is that your hand shaking in fear?", "You can hardly believe what rushes toward you!",
+   "You knew this day would come, are you ready?", "All your hard work has made you ready for this. Was it enough?"};
 
 char *tavern_table = "You find a seat at an open table and the waiter approaches to take your order.\n\nThe waiter tells you the food is so darn good, that it will help sustain your health as you travel in the dungeon.\n\nYou order and enjoy a delicious meal, you really do feel swell!";
 
