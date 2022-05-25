@@ -65,9 +65,13 @@ int attack(mob *attacker, mob *target) {
       damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg + ((attacker->str - 10) / 2); // str for damage for non rogues
     }
     if (attacker->buffs[2] == 1) {                          // check for player buff
-      if (strcmp(attacker->role, "Cleric") == 0) {          // Cleric buff for praying
+      if ((strcmp(attacker->role, "Cleric") == 0) || (strcmp(attacker->role, "Knight") == 0)) {          // Cleric and Knight buff for praying
         roll+=1;                                                               // tiny boost to roll
         damage+=dice(1, 2);                                                    // minor damage boost
+      }
+      if (strcmp(attacker->role, "Rogue") == 0) {          // Rogues get a decent boost to combat
+        roll+=2;                                                               // boost to roll - tweak if too much!
+        damage+=dice(1, 4);                                                    // damage boost - tweak if too much!
       }
     }
     ac = AC_BASE + target->armor;     // Base AC + armor for monsters // later may add mods
@@ -81,11 +85,11 @@ int attack(mob *attacker, mob *target) {
     damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg; // number of dice, type of dice, +dmg
     // now handle buffs which may modify these numbers a bit
     if (target->buffs[2] == 1) {               // check for player buff
-      if (strcmp(target->role, "Wizard") == 0) {          // Wizard buff for having familiar
+      if ((strcmp(target->role, "Rogue") == 0) || (strcmp(target->role, "Wizard") == 0)) {        // Rogue and Wizard class buff
         ac+=2;                                                               // + AC - maybe these scale later?
         damage-=dice(1, 2) + 1;                                              // small damage reduction
       }
-      if (strcmp(target->role, "Cleric") == 0) {          // Cleric buff for praying
+      if ((strcmp(target->role, "Cleric") == 0) || (strcmp(target->role, "Knight") == 0)) {       // Cleric and Knight buff for praying
         ac+=1;                                                               // + AC - maybe these scale later?
         damage-=dice(1, 2);                                                  // tiny damage reduction
       }
@@ -265,8 +269,8 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
   // roll for foe - by environ (different mobs live in different places)
   // 0 is dungeon, etc.
   switch(environ) { // ok, I am cheating a bit here and leveraging the environ variable to differentiate between regular and boss mobs
-    case 0: monster_roll = dice(1, MOBS) - 1; build_character(mobs[monster_roll].name, mobs[monster_roll], &monster); // generate foe break;   // 4 choices, so roll 4 sided die       |  Need to fix later to support both
-    case 1: monster_roll = dice(1, BOSS) - 1; build_character(bosses[monster_roll].name, bosses[monster_roll], &monster); // generate foe break; 
+    case 0: monster_roll = dice(1, MOBS) - 1; build_character(mobs[monster_roll].name, mobs[monster_roll], &monster); break;// generate foe break;   // 4 choices, so roll 4 sided die       |  Need to fix later to support both
+    case 1: monster_roll = dice(1, BOSS) - 1; build_character(bosses[monster_roll].name, bosses[monster_roll], &monster); break;// generate foe break; 
     default: monster_roll = dice(1, MOBS) - 1; break;  // dice never return 0 so subtract one for proper array indexing
   }
 

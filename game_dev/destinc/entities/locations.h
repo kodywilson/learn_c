@@ -156,20 +156,6 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "You stop at the bottom of the stairs and light a torch.");
   wrefresh(game_text);
-  if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] != 1)) {
-    mvwaddstr(game_text, 2, 0, "Your wizard senses tingle...");
-    wrefresh(game_text);
-    reset_choices();
-    num_choices = y_n();
-    choice = choose(select, num_choices, "Would you like to summon a familiar?");
-    if (choice == 0) {
-      mvwprintw(game_text, 4, 0, "%s concentrates intently while casting a familiar spell...", player->name);
-      napms(250);
-      mvwaddstr(game_text, 6, 0, "A tiny dragon appears and curls up on your shoulder, snoring loudly.");
-      player->buffs[2] = 1;
-      player->cur_mana-=player->lvl*2;
-    }
-  }
   if ((strcmp(player->role, "Cleric") == 0) && (player->buffs[2] != 1)) {
     mvwaddstr(game_text, 2, 0, "As you pray for aid, you feel danger here...");
     wrefresh(game_text);
@@ -180,6 +166,48 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       mvwprintw(game_text, 4, 0, "%s bows in prayer and asks for the aid of Teseldor.", player->name);
       napms(250);
       mvwaddstr(game_text, 6, 0, "A soothing feeling passes through your body and you are ready for anything.");
+      player->buffs[2] = 1;
+      player->cur_mana-=player->lvl*2;
+    }
+  }
+  if ((strcmp(player->role, "Knight") == 0) && (player->buffs[2] != 1)) {
+    mvwaddstr(game_text, 2, 0, "You've trained hard, but somehow you feel like you could use some help...");
+    wrefresh(game_text);
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to cast a buff?");
+    if (choice == 0) {
+      mvwprintw(game_text, 4, 0, "%s bows in prayer and asks for the aid of The Divine.", player->name);
+      napms(250);
+      mvwaddstr(game_text, 6, 0, "You feel divine strength flow through you.");
+      player->buffs[2] = 1;
+      player->cur_mana-=player->lvl*2;
+    }
+  }
+  if ((strcmp(player->role, "Rogue") == 0) && (player->buffs[2] != 1)) {
+    mvwaddstr(game_text, 2, 0, "Your finely tuned senses tell you this place is dangerous.");
+    wrefresh(game_text);
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to take a moment to prepare for what lies ahead?");
+    if (choice == 0) {
+      mvwprintw(game_text, 4, 0, "%s clears their mind and strengthens their awareness and senses.", player->name);
+      napms(250);
+      mvwaddstr(game_text, 6, 0, "Now you are ready.");
+      player->buffs[2] = 1;
+      player->cur_mana-=player->lvl*2;
+    }
+  }
+  if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] != 1)) {
+    mvwaddstr(game_text, 2, 0, "Your wizard senses tingle...");
+    wrefresh(game_text);
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to summon a familiar?");
+    if (choice == 0) {
+      mvwprintw(game_text, 4, 0, "%s concentrates intently while casting a familiar spell...", player->name);
+      napms(250);
+      mvwaddstr(game_text, 6, 0, "A tiny dragon appears and curls up on your shoulder, snoring loudly.");
       player->buffs[2] = 1;
       player->cur_mana-=player->lvl*2;
     }
