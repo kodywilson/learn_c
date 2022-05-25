@@ -223,6 +223,11 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       if (dice(1, 20) > 15) player->cur_mana+= dice(1, 4); // tune this as needed
       if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
     }
+    // wizards rely exclusively on spells for damage (if they want to survive, lol) so let familiar help restore mana
+    if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
+      if (dice(1, 20) > 12) player->cur_mana+= dice(1, 2); // tune this as needed
+      if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
+    };
     mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
     wrefresh(game_text);
     //getch(); // DEBUG
