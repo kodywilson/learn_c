@@ -270,7 +270,13 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     //   wrefresh(game_text);
     //   getch();
     // }
+    if (dungeon_map[y_pos][x_pos] == 'T') {   // a treasure square!
+      mvwprintw(game_text, 0, 0, "You see a treasure chest nearby. Today is your lucky day %s!", player->name);
+      wrefresh(game_text);
+      strncpy(choices[num_choices], "Open treasure chest", MAX_CHOICE_LEN);  choice_key[num_choices] = 7; num_choices++;
+    }
     choice = choose(select, num_choices, dungeon_prompt); // make choice based on options built above where we test each direction
+    // now add options for special squares
     // DEBUG
     // mvwprintw(game_text, 10, 1, "You selected %d: %s", choice, choices[choice]);
     // wrefresh(game_text);
@@ -282,8 +288,9 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       case 1: x_pos++; mvwaddstr(game_text, 0, 0, "You head east."); break;
       case 2: y_pos++; mvwaddstr(game_text, 0, 0, "You head south."); break;
       case 3: x_pos--; mvwaddstr(game_text, 0, 0, "You head west."); break;
-      case 4: mvwaddstr(game_text, 1, 1, "Great choice!"); break; // this needs some thought! how to handle custom options
+      case 4: mvwaddstr(game_text, 1, 1, "Great choice!"); break; // 4 and 5 will be up and down for stairs and ladders
       case 5: mvwaddstr(game_text, 1, 1, "Great choice!"); break;
+      case 7: mvwaddstr(game_text, 4, 0, "You carefully open the treasure chest and collect the coins inside."); player->coin+=dice(1, 4); break;
       default: break;
     }
     // then handle special choice
