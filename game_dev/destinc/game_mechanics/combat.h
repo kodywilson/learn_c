@@ -164,6 +164,14 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
             break;
     case 2: mvwprintw(game_text, 2, 0, "You run as fast as you can away from %s!", monster->name);
             break;
+    case 50: mvwprintw(game_text, 2, 0, "Calling upon the Divine, you smite %s with righteous fury!", monster->name);
+              monster->cur_hp-=dice(4, 4) + 4;  // later this will scale with higher levels
+              player->cur_mana-=4;
+              break;
+    case 55: mvwprintw(game_text, 2, 0, "You leap around the %s and strike!", monster->name);
+              monster->cur_hp-=dice(4, 4) + 5;  // later this will scale with higher levels
+              player->cur_mana-=3;
+              break;
     case 100: mvwprintw(game_text, 2, 0, "3 shimmering darts appear and fly toward %s!", monster->name);
               monster->cur_hp-=dice(3, 4) + 3;  // later this will scale with higher levels (spell slots)
               player->cur_mana-=4;
