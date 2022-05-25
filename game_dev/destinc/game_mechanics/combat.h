@@ -17,24 +17,33 @@ int actions(mob *player) {
       if (strcmp(player->role, "Knight") == 0) {
         // set up options for Knights
         strncpy(choices[num_choices], "Attack with sword", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
-        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        if (player->cur_mana >= 4) {  // set second option as smite if player has enough mana
+          strncpy(choices[num_choices], "Smite Foe", MAX_CHOICE_LEN);
+          choice_key[num_choices] = 50;
+          num_choices++;
+        }
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;             // set third option as attempt to flee
       }
       if (strcmp(player->role, "Rogue") == 0) {
         // set up options for Rogues
         strncpy(choices[num_choices], "Attack with rapier", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
-        //strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 7; num_choices++; // set second option as heal and attack
+        if (player->cur_mana >= 3) {  // set second option as triple attack if player has enough mana
+          strncpy(choices[num_choices], "Cunning Strike", MAX_CHOICE_LEN);
+          choice_key[num_choices] = 55;
+          num_choices++;
+        }
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       if (strcmp(player->role, "Wizard") == 0) {
         // set up options for Wizards
         strncpy(choices[num_choices], "Attack with quarterstaff", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
-        if (player->cur_mana >= 4) {
+        if (player->cur_mana >= 4) {  // set second option as magic missile if player has enough mana
           strncpy(choices[num_choices], "Magic missle [3d4+3]", MAX_CHOICE_LEN);
           choice_key[num_choices] = 100;
-          num_choices++; }  // set second option as magic missile if player has enough mana
-        strncpy(choices[num_choices], "Fire bolt [1d10]", MAX_CHOICE_LEN); choice_key[num_choices] = 101; num_choices++;  // set second option as magic missile
-        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
+          num_choices++;
+        }
+        strncpy(choices[num_choices], "Fire bolt [1d10]", MAX_CHOICE_LEN); choice_key[num_choices] = 101; num_choices++;  // set third option as fire bolt
+        strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set fourth option as attempt to flee
       }
 
   return num_choices;
