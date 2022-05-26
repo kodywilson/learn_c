@@ -330,8 +330,14 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       if (dice(1, 20) < COMBAT_PROBABILITY) combat(game_text, select, stats, player, 0);
     }
     if (dungeon_map[y_pos][x_pos] == 'B') {
-      mvwprintw(game_text, 2, 0, "%s", rand_boss_text[dice(1, BOSS_TEXT) - 1]);
-      combat(game_text, select, stats, player, 1);
+      if (been_here(y_pos, x_pos, square_stack)) {}
+      else {
+        mvwprintw(game_text, 2, 0, "%s", rand_boss_text[dice(1, BOSS_TEXT) - 1]);
+        combat(game_text, select, stats, player, 1);
+        square_stack[specials][0] = y_pos;
+        square_stack[specials][1] = x_pos;
+        specials++;  // increment specials
+      }
     }
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
