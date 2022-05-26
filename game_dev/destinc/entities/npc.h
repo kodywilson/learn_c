@@ -181,10 +181,10 @@ mob mobs[MOBS] = {
 };
 
 mob bosses[BOSS] = {
-  // orç
+  // orc
   {
-    "orç",     // name
-    "orç",     // role
+    "orc",     // name
+    "orc",     // role
     "You smell something terrible and then see an orc approaching.",
     16,           // str       - strength
     12,           // dex       - dexterity

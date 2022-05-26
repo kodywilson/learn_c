@@ -259,8 +259,8 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob 
   return choice;
 }
 
-void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int environ) {
-  int choice, init_mob, init_player, monster_roll;
+int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int environ) {
+  int choice, init_mob, init_player, monster_roll, result = 2; // result 2: you fled  1: you won  13: you died
   mob monster;        // create struct for monster
   char combat_prompt[96];
 
@@ -299,20 +299,32 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
       // you get to go first this round!
       choice = player_turn(select, game_text, player, &monster, combat_prompt);
       if (choice_key[choice] == 2) break; // get out, you fled
-      if (monster.cur_hp < 1) break; // you won!
+      if (monster.cur_hp < 1) {
+        result = 1;
+        break; // you won!
+      }
       // now monster goes
       npc_turn(select, game_text, stats, player, &monster);
       refresh_stats(stats, player); // update stats window
-      if (player->cur_hp < 1) break; // you died, so sad
+      if (player->cur_hp < 1) {
+        result = 13;
+        break; // you died, so sad
+      }
     } else {
       // monster goes first
       npc_turn(select, game_text, stats, player, &monster);
       refresh_stats(stats, player); // update stats window
-      if (player->cur_hp <= 0) break; // you died. later, call game over function
+      if (player->cur_hp <= 0) {
+        result = 13;
+        break; // you died. later, call game over function
+      }
       // then player goes
       choice = player_turn(select, game_text, player, &monster, combat_prompt);
       if (choice_key[choice] == 2) break; // get out, you fled
-      if (monster.cur_hp < 1) break; // you won!
+      if (monster.cur_hp < 1) {
+        result = 1;
+        break; // you won!
+      }
     }
     //if (choice == 1) break; // exit combat loop, you escaped!
     //health_bar(game_text, &monster);
@@ -320,4 +332,6 @@ void combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int e
     wclear(game_text);
   }
   wclear(game_text);
+
+  return result;
 }

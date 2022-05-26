@@ -159,6 +159,7 @@ int can_move(int y, int x, int direction) {
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   int buff, choice, lucky_coin, num_choices, specials = 0, y_pos = 5, x_pos = 0; // starting position in the dungeon
+  int distance, start_coin, start_xp, mob_count, boss_count, result;
   char dungeon_prompt[96];                       // later, make this something you pass in
   int square_stack[10][2];                       // keep track of special squares, you can only do them once per dungeon trip
 
@@ -167,6 +168,11 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   // initialize special square stack
   for (int i = 0; i < 10; i++)
     for (int j = 0; j < 2; j++) square_stack[i][j] = 0;
+
+  // initialize dungeon delving stats
+  distance = boss_count = mob_count = 0;
+  start_coin = player->coin;
+  start_xp   = player->xp;
 
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "You stop at the bottom of the stairs and light a torch.");
@@ -229,6 +235,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   }
   while(1) {
     lucky_coin = 0;
+    result = 0;
     // random chance that food and drink buffs will restore some mana or health
     if (player->buffs[0] == 1) { // this is food buff
       if (dice(1, 20) > 15) player->cur_hp+= dice(1, 4); // tune this as needed
@@ -315,6 +322,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       case 7: mvwaddstr(game_text, 4, 0, "You carefully open the treasure chest and collect the coins inside."); player->coin+=dice(1, 4); break;
       default: break;
     }
+    if (choice_key[choice] < 6) distance++;  // you explored another room
     // then handle special choice
     // if (choice_key[choice] > 3 ) handle special action. Use lookup tables
     if (dungeon_map[y_pos][x_pos] == '$') { // random stuff happens on general spaces, not special ones like T or B
@@ -327,13 +335,17 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
         player->coin+=lucky_coin;
       }
       // now check for random combat
-      if (dice(1, 20) < COMBAT_PROBABILITY) combat(game_text, select, stats, player, 0);
+      if (dice(1, 20) < COMBAT_PROBABILITY) {
+        result = combat(game_text, select, stats, player, 0);
+        if (result == 1) mob_count++;
+      }
     }
     if (dungeon_map[y_pos][x_pos] == 'B') {
       if (been_here(y_pos, x_pos, square_stack)) {}
       else {
         mvwprintw(game_text, 2, 0, "%s", rand_boss_text[dice(1, BOSS_TEXT) - 1]);
-        combat(game_text, select, stats, player, 1);
+        result = combat(game_text, select, stats, player, 1);
+        if (result == 1) boss_count++;
         square_stack[specials][0] = y_pos;
         square_stack[specials][1] = x_pos;
         specials++;  // increment specials
@@ -351,6 +363,9 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");
   // later, show spoils of your adventure. coin and xp earned, mobs defeated, distance traveled, etc.
+  if (distance > 0) { // later, tailor message to how much the player earned while exploring the dungeon
+    mvwprintw(game_text, 2, 0, "%s, you traveled %d squares, earned %d coin(s), %d XP, and defeated %d monster(s) and %d boss(es)...", player->name, distance, player->coin - start_coin, player->xp - start_xp, mob_count, boss_count);
+  }
   // Remove player buffs
   if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
     mvwaddstr(game_text, 7, 0, "Drako wishes you well and fades away, ready to help another day.");
