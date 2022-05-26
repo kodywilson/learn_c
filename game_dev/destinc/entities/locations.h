@@ -287,7 +287,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     // }
     // later, treasure square will have a small chance to be ambushed by a boss mob if you choose to open the chest... :)
     if (dungeon_map[y_pos][x_pos] == 'T') {   // a treasure square!
-      if ((square_stack[0][0] == y_pos) && (square_stack[0][1] == x_pos)) {}
+      if (been_here(y_pos, x_pos, square_stack)) {}
       else {
         mvwprintw(game_text, 0, 0, "You see a treasure chest nearby. Today may be your lucky day %s!", player->name);
         wrefresh(game_text);
