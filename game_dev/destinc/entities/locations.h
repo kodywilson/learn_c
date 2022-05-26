@@ -270,8 +270,9 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     //   wrefresh(game_text);
     //   getch();
     // }
+    // later, treasure square will have a small chance to be ambushed by a boss mob if you choose to open the chest... :)
     if (dungeon_map[y_pos][x_pos] == 'T') {   // a treasure square!
-      mvwprintw(game_text, 0, 0, "You see a treasure chest nearby. Today is your lucky day %s!", player->name);
+      mvwprintw(game_text, 0, 0, "You see a treasure chest nearby. Today may be your lucky day %s!", player->name);
       wrefresh(game_text);
       strncpy(choices[num_choices], "Open treasure chest", MAX_CHOICE_LEN);  choice_key[num_choices] = 7; num_choices++;
     }
@@ -288,8 +289,8 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       case 1: x_pos++; mvwaddstr(game_text, 0, 0, "You head east."); break;
       case 2: y_pos++; mvwaddstr(game_text, 0, 0, "You head south."); break;
       case 3: x_pos--; mvwaddstr(game_text, 0, 0, "You head west."); break;
-      case 4: mvwaddstr(game_text, 1, 1, "Great choice!"); break; // 4 and 5 will be up and down for stairs and ladders
-      case 5: mvwaddstr(game_text, 1, 1, "Great choice!"); break;
+      case 4: mvwaddstr(game_text, 0, 0, "You head up."); break; // 4 and 5 will be up and down for stairs and ladders
+      case 5: mvwaddstr(game_text, 0, 0, "You head down."); break;
       case 7: mvwaddstr(game_text, 4, 0, "You carefully open the treasure chest and collect the coins inside."); player->coin+=dice(1, 4); break;
       default: break;
     }
