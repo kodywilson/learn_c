@@ -127,6 +127,16 @@ char dungeon_map[MAP_Y][MAP_X] = {
 };
 // dungeon key: E = entrance, # = wall, $ = path, B = boss, T = chance for treasure, S = secret passage
 
+// been here? Track if square has already been visited on this trip to the dungeon
+int been_here(int y_pos, int x_pos, int square_stack[10][2]) {
+  int found = 0;
+
+  for (int i = 0; i < 10; i++)
+    if ((square_stack[i][0] == y_pos) && (square_stack[i][1] == x_pos)) found = 1;
+
+  return found;
+}
+
 // send current position and direction you are testing
 // directions are 0 = north, 1 = east, 2 = south, 3 = west
 int can_move(int y, int x, int direction) {
@@ -148,10 +158,15 @@ int can_move(int y, int x, int direction) {
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int buff, choice, lucky_coin, num_choices, y_pos = 5, x_pos = 0; // starting position in the dungeon
+  int buff, choice, lucky_coin, num_choices, specials = 0, y_pos = 5, x_pos = 0; // starting position in the dungeon
   char dungeon_prompt[96];                       // later, make this something you pass in
+  int square_stack[10][2];                       // keep track of special squares, you can only do them once per dungeon trip
 
   snprintf(dungeon_prompt, 95, "Where to now, %s?", player->name);
+
+  // initialize special square stack
+  for (int i = 0; i < 10; i++)
+    for (int j = 0; j < 2; j++) square_stack[i][j] = 0;
 
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "You stop at the bottom of the stairs and light a torch.");
@@ -272,9 +287,15 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     // }
     // later, treasure square will have a small chance to be ambushed by a boss mob if you choose to open the chest... :)
     if (dungeon_map[y_pos][x_pos] == 'T') {   // a treasure square!
-      mvwprintw(game_text, 0, 0, "You see a treasure chest nearby. Today may be your lucky day %s!", player->name);
-      wrefresh(game_text);
-      strncpy(choices[num_choices], "Open treasure chest", MAX_CHOICE_LEN);  choice_key[num_choices] = 7; num_choices++;
+      if ((square_stack[0][0] == y_pos) && (square_stack[0][1] == x_pos)) {}
+      else {
+        mvwprintw(game_text, 0, 0, "You see a treasure chest nearby. Today may be your lucky day %s!", player->name);
+        wrefresh(game_text);
+        strncpy(choices[num_choices], "Open treasure chest", MAX_CHOICE_LEN);  choice_key[num_choices] = 7; num_choices++;
+        square_stack[specials][0] = y_pos;
+        square_stack[specials][1] = x_pos;
+        specials++;  // increment specials
+      }
     }
     choice = choose(select, num_choices, dungeon_prompt); // make choice based on options built above where we test each direction
     // now add options for special squares
