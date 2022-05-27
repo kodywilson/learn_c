@@ -236,14 +236,20 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob 
             napms(250);
             damage = attack(monster, player);
             if (damage > 0) {
+              wattron(game_text, COLOR_PAIR(1) | A_BOLD);
               mvwprintw(game_text, 4, 0, "%s hit you for %d damage!", monster->name, damage);
+              wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
               refresh_stats(stats, player); // update stats window
               health_bar(game_text, player);
             } else {
+              wattron(game_text, COLOR_PAIR(7) | A_BOLD);
               mvwprintw(game_text, 4, 0, "You dodge %s's ferocious strike.", monster->name);
+              wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
             }
             if (player->cur_hp <= 0) {
+              wattron(game_text, COLOR_PAIR(1) | A_BOLD);
               mvwprintw(game_text, 6, 0, "%s killed you, %s...", monster->name, player->name);
+              wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
             }
             wrefresh(game_text);
             wclear(select);         // stop after turn is complete so player can see results of monster's turn
