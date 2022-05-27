@@ -332,6 +332,7 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
     wclear(game_text);
   }
   wclear(game_text);
+  wattron(game_text, COLOR_PAIR(4));
 
   return result;
 }
