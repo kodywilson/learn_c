@@ -80,10 +80,14 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
         mvwaddstr(game_text, 1, 1, "You can't afford wine, you churl! Go to the dungeon and earn some money!");
       } break;
       case 2: if (player->coin >= rest_cost) {
-        mvwaddstr(game_text, 1, 1, tavern_rest);
-        player->cur_hp = player->max_hp * player->lvl; // resting restores health
-        player->cur_mana = player->max_mana * player->lvl; // resting restores mana
-        player->coin-=rest_cost;  // pay for room
+        if ((player->cur_hp < player->max_hp * player->lvl) || (player->cur_mana < player->max_mana * player->lvl)) {
+          mvwaddstr(game_text, 1, 1, tavern_rest);
+          player->cur_hp = player->max_hp * player->lvl; // resting restores health
+          player->cur_mana = player->max_mana * player->lvl; // resting restores mana
+          player->coin-=rest_cost;  // pay for room
+        } else {
+          mvwaddstr(game_text, 1, 1, "You don't need to rest, your health and mana are already full...");
+        }
       } else {
         mvwaddstr(game_text, 1, 1, "You can't afford a room! Hit the dungeon and earn some money!");
       } break;
