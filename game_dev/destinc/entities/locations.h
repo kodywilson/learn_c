@@ -162,7 +162,7 @@ int can_move(int y, int x, int direction) {
 
 // you are visiting the dungeon
 void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int buff, choice, lucky_coin, num_choices, specials = 0, y_pos = 5, x_pos = 0; // starting position in the dungeon
+  int buff, choice, lucky_coin, num_choices, specials = 0, y_pos = 2, x_pos = 0; // starting position in the dungeon
   int distance, start_coin, start_xp, mob_count, boss_count, result;
   char dungeon_prompt[96];                       // later, make this something you pass in
   int square_stack[10][2];                       // keep track of special squares, you can only do them once per dungeon trip
@@ -182,7 +182,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   mvwaddstr(game_text, 0, 0, "You stop at the bottom of the stairs and light a torch.");
   wrefresh(game_text);
   if ((strcmp(player->role, "Cleric") == 0) && (player->buffs[2] != 1)) {
-    mvwaddstr(game_text, 2, 0, "As you pray for aid, you feel danger here...");
+    mvwaddstr(game_text, 2, 0, "As you pray for insight, you feel danger here...");
     wrefresh(game_text);
     reset_choices();
     num_choices = y_n();
@@ -254,6 +254,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       if (dice(1, 20) > 12) player->cur_mana+= dice(1, 2); // tune this as needed
       if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
     };
+    refresh_stats(stats, player); // update stats window
     mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
     wrefresh(game_text);
     //getch(); // DEBUG

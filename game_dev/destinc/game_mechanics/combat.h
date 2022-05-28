@@ -144,7 +144,7 @@ void health_bar(WINDOW *win, mob *entity) {
 }
 
 // handle player actions and battle choices, return choice
-int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, char *combat_prompt) {
+int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob *monster, char *combat_prompt) {
   int choice = 2, heal_amt = 0, player_damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
@@ -160,36 +160,58 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
             napms(250);
             player_damage = attack(player, monster);
             if (player_damage > 0) { // move this into attack function?
+              wattron(game_text, COLOR_PAIR(7) | A_BOLD);
               mvwprintw(game_text, 4, 0, "You hit %s for %d damage!", monster->name, player_damage);
-              health_bar(game_text, monster);
+              wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
+              //health_bar(game_text, monster);
             } else {
+              wattron(game_text, COLOR_PAIR(1) | A_BOLD);
               mvwprintw(game_text, 4, 0, "The %s dodges your strike.", monster->name);
+              wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
             }
             break;
     case 2: mvwprintw(game_text, 2, 0, "You run as fast as you can away from %s!", monster->name);
             break;
-    case 50: mvwprintw(game_text, 2, 0, "Calling upon the Divine, you smite %s with righteous fury!", monster->name);
-              monster->cur_hp-=dice(4, 4) + 4;  // later this will scale with higher levels
+    case 50:  player_damage = dice(4, 4) + 4;  // later this will scale with higher levels
+              wattron(game_text, COLOR_PAIR(7) | A_BOLD);
+              mvwprintw(game_text, 2, 0, "Calling upon the Divine, you smite %s with righteous fury! Doing %d damage.", monster->name, player_damage);
+              wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
+              monster->cur_hp-=player_damage;
               player->cur_mana-=4;
               break;
-    case 55: mvwprintw(game_text, 2, 0, "You leap around the %s and strike!", monster->name);
-              monster->cur_hp-=dice(4, 4) + 5;  // later this will scale with higher levels
+    case 55:  player_damage = dice(4, 4) + 5;  // later this will scale with higher levels
+              wattron(game_text, COLOR_PAIR(7) | A_BOLD);
+              mvwprintw(game_text, 2, 0, "You leap around the %s and strike! You did %d damage.", monster->name, player_damage);
+              wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
+              monster->cur_hp-=player_damage;
               player->cur_mana-=3;
               break;
-    case 100: mvwprintw(game_text, 2, 0, "3 shimmering darts appear and fly toward %s!", monster->name);
-              monster->cur_hp-=dice(3, 4) + 3;  // later this will scale with higher levels (spell slots)
+    case 100: player_damage = dice(3, 4) + 3;  // later this will scale with higher levels (spell slots)
+              wattron(game_text, COLOR_PAIR(7) | A_BOLD);
+              mvwprintw(game_text, 2, 0, "3 shimmering darts appear and fly toward %s! You did %d damage.", monster->name, player_damage);
+              wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
+              monster->cur_hp-=player_damage;
               player->cur_mana-=4;
               break;
     case 101: mvwprintw(game_text, 2, 0, "You hurl a mote of fire at %s!", monster->name);
               napms(250);
               // this is a cantrip. It costs no mana, but it can miss...
               if ((dice(1, 20) + player->to_hit + ((player->intel - 10) / 2)) >= (AC_BASE + monster->armor)) {
-                mvwaddstr(game_text, 4, 0, "Direct hit!");
-                monster->cur_hp-=dice(1, 10);  // later this will scale with higher levels
+                player_damage = dice(1, 10);  // later this will scale with higher levels
+                wattron(game_text, COLOR_PAIR(7) | A_BOLD);
+                mvwprintw(game_text, 2, 0, "Direct hit! Your firebolt strikes %s for %d damage.", monster->name, player_damage);
+                wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
+                monster->cur_hp-=player_damage;
+              } else {  // you missed!
+                wattron(game_text, COLOR_PAIR(1) | A_BOLD);
+                mvwprintw(game_text, 2, 0, "You concentrate hard, but at the last second, the %s dodges the bolt!", monster->name);
+                wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
               }
               break;
     case 200: heal_amt = (dice(1, 8) * player->lvl) + ((player->wis - 10) / 2);
+              wattron(game_text, COLOR_PAIR(7) | A_BOLD);
               mvwprintw(game_text, 2, 0, "Praying intently, you add %d health points as you prepare to strike.", heal_amt);
+              wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
               player->cur_hp+=heal_amt;
               player->cur_mana-=4;
               mvwprintw(game_text, 3, 0, "You swing at %s", monster->name);
@@ -197,19 +219,27 @@ int player_turn(WINDOW *select, WINDOW *game_text, mob *player, mob *monster, ch
               napms(250);
               player_damage = attack(player, monster);
               if (player_damage > 0) { // move this into attack function?
+                wattron(game_text, COLOR_PAIR(7) | A_BOLD);
                 mvwprintw(game_text, 4, 0, "You hit %s for %d damage!", monster->name, player_damage);
-                health_bar(game_text, monster);
+                wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
               } else {
+                wattron(game_text, COLOR_PAIR(1) | A_BOLD);
                 mvwprintw(game_text, 4, 0, "The %s dodges your strike.", monster->name);
+                wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
               }
             break;
     default: break;
   }
   if (monster->cur_hp <= 0) {
+    wattron(game_text, COLOR_PAIR(7) | A_BOLD);
     mvwprintw(game_text, 6, 0, "You defeated %s, %s!", monster->name, player->name);
+    wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
     player->coin+=monster->coin;
     player->xp+=monster->xp;
   }
+  refresh_stats(stats, player); // update stats window
+  health_bar(game_text, player);
+  health_bar(game_text, monster);
   wrefresh(game_text);
   wclear(select);         // stop after turn is complete so player can see results of their turn
   mvwaddstr(select, 0, 0, "Press any key to continue...");
@@ -251,16 +281,16 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob 
               mvwprintw(game_text, 6, 0, "%s killed you, %s...", monster->name, player->name);
               wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
             }
-            wrefresh(game_text);
-            wclear(select);         // stop after turn is complete so player can see results of monster's turn
-            mvwaddstr(select, 0, 0, "Press any key to continue...");
-            wrefresh(select);
-            getch();
             break;
     case 2: mvwprintw(game_text, 2, 0, "%s runs away!", monster->name);
             break;
     default: break;
   }
+  wrefresh(game_text);
+  wclear(select);         // stop after turn is complete so player can see results of monster's turn
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 
   return choice;
 }
@@ -303,15 +333,20 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
     // formula is d20 + mods > x = player goes first
     if ((dice(1, 20) + init_player) >= (dice(1, 20) + init_mob)) { // determine turn order
       // you get to go first this round!
-      choice = player_turn(select, game_text, player, &monster, combat_prompt);
+      choice = player_turn(select, game_text, stats, player, &monster, combat_prompt);
       if (choice_key[choice] == 2) break; // get out, you fled
       if (monster.cur_hp < 1) {
         result = 1;
         break; // you won!
       }
+      //refresh_stats(stats, player); // update stats window
+      //health_bar(game_text, player);
+      //health_bar(game_text, &monster);
       // now monster goes
       npc_turn(select, game_text, stats, player, &monster);
-      refresh_stats(stats, player); // update stats window
+      //refresh_stats(stats, player); // update stats window
+      //health_bar(game_text, player);
+      //health_bar(game_text, &monster);
       if (player->cur_hp < 1) {
         result = 13;
         break; // you died, so sad
@@ -319,18 +354,23 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
     } else {
       // monster goes first
       npc_turn(select, game_text, stats, player, &monster);
-      refresh_stats(stats, player); // update stats window
       if (player->cur_hp <= 0) {
         result = 13;
         break; // you died. later, call game over function
       }
+      //refresh_stats(stats, player); // update stats window
+      //health_bar(game_text, player);
+      //health_bar(game_text, &monster);
       // then player goes
-      choice = player_turn(select, game_text, player, &monster, combat_prompt);
+      choice = player_turn(select, game_text, stats, player, &monster, combat_prompt);
       if (choice_key[choice] == 2) break; // get out, you fled
       if (monster.cur_hp < 1) {
         result = 1;
         break; // you won!
       }
+      //refresh_stats(stats, player); // update stats window
+      //health_bar(game_text, player);
+      //health_bar(game_text, &monster);
     }
     //if (choice == 1) break; // exit combat loop, you escaped!
     //health_bar(game_text, &monster);
