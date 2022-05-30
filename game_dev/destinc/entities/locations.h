@@ -181,6 +181,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "You stop at the bottom of the stairs and light a torch.");
   wrefresh(game_text);
+  // consider moving these to a new buff function in character.h
   if ((strcmp(player->role, "Cleric") == 0) && (player->buffs[2] != 1)) {
     mvwaddstr(game_text, 2, 0, "As you pray for insight, you feel danger here...");
     wrefresh(game_text);
@@ -367,7 +368,6 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   }
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");
-  // later, show spoils of your adventure. coin and xp earned, mobs defeated, distance traveled, etc.
   if (distance > 0) { // later, tailor message to how much the player earned while exploring the dungeon
     mvwprintw(game_text, 2, 0, "%s, you traveled %d squares, earned %d coin(s), %d XP, and defeated %d monster(s) and %d boss(es)...", player->name, distance, player->coin - start_coin, player->xp - start_xp, mob_count, boss_count);
   }
