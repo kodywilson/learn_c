@@ -5,7 +5,7 @@
 #define FRAME_WIDTH  12
 
 typedef char frame[FRAME_HEIGHT][FRAME_WIDTH];
-typedef char three_by_five[3][5];
+typedef char three_by_six[3][6];
 
 // Wizard animated frames
 frame wizard_frames[2] = {
@@ -29,7 +29,7 @@ frame wizard_frames[2] = {
   }
 };
 
-three_by_five cartwheel[3][5] = {
+three_by_six cartwheel[11] = {
   {
     "  o  ",
     " /|\ ",
@@ -46,9 +46,9 @@ three_by_five cartwheel[3][5] = {
     " | \ "
   },
   {
-    "  o  ",
-    " /|\ ",
-    " / \ "
+    "     ",
+    "___\o",
+    "/)  |"
   },
   {
     "  o  ",
