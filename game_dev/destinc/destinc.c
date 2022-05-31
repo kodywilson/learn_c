@@ -8,10 +8,10 @@
 
 int main() {
   srand(time(0)); // seed rand using time
-  int choice, max_y, max_x, stats_y_border, stats_x_border;
+  int choice, max_y, max_x;
   // last four of next line are oft used offsets
   int game_text_y, game_text_x, main_loop, y_high, x_high, y_low, x_low;
-  pc player; // create player struct
+  mob player; // create player struct
 
   WINDOW *game_text_border, *select_border, *stats_border;
   WINDOW *game_text, *select, *input, *stats;
@@ -32,6 +32,7 @@ int main() {
   init_pair(4, COLOR_CYAN, COLOR_BLACK);
   init_pair(5, COLOR_WHITE, COLOR_BLACK);
   init_pair(6, COLOR_YELLOW, COLOR_BLACK);
+  init_pair(7, COLOR_GREEN, COLOR_BLACK);
 
   getmaxyx(stdscr, max_y, max_x);
   curs_set(0); // turn off visible cursor
@@ -53,7 +54,6 @@ int main() {
   input            = newwin(3, max_x / 2, max_y / 2, max_x / 4);
 
   // calculate window sizes
-  getmaxyx(stats_border, stats_y_border, stats_x_border); // dimensions of stats border window
   getmaxyx(game_text, game_text_y, game_text_x);
 
   // build offsets for text padding
@@ -129,10 +129,20 @@ int main() {
   wrefresh(select);
   // set up stats window border
   wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(stats_border, 0, (stats_x_border / 2) - 3, " Stats ");
+  mvwaddstr(stats_border, 0, (((max_x * 7) / 8) / 2) - 2, " Stats ");
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(stats_border);
   refresh_stats(stats, &player); // print stats window
+  // set up game text window border
+  wattron(game_text_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(game_text_border, 0, (max_x / 2) - 5, " Game Text ");
+  wattroff(game_text_border, COLOR_PAIR(6) | A_BOLD);
+  wrefresh(game_text_border);
+  // set up actions window border
+  wattron(select_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
+  wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
+  wrefresh(select_border);
   // Initial greeting
   wclear(game_text);
   mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome to your Destiny...", player.name);
@@ -144,26 +154,11 @@ int main() {
   main_loop = 1;
   // Main game loop
   while(main_loop) {
-    wclear(game_text);
-    mvwaddstr(game_text, y_high, x_high, "You walk into town, looking here and there.");
-    mvwaddstr(game_text, y_high + 2, x_high, "Warmth and cheer emanate from an old tavern to the west.");
-    mvwaddstr(game_text, y_high + 3, x_high, "To the east, a sign says 'dungeon this way'.");
-    wrefresh(game_text);
-    reset_choices();
-    num_choices = town_choices();
-    choice = choose(select, num_choices, "Please choose where you will head next:");
-    switch (choice) {
-      case 0: mvwaddstr(game_text, y_low - 2, x_low, "You chose the dungeon.");
-              dungeon(game_text, select, stats, &player);
-              break;
-      case 1: tavern(game_text, select, stats, &player); break;
-      case 2: mvwaddstr(game_text, y_low, x_low, "Thanks for playing, see you next time!");
-              save_game(player); main_loop = 0 * stats_y_border; break;
-      default: break;
-    }
-    wrefresh(game_text);
-    napms(1000);
+    main_loop = town(game_text, select, stats, &player);
+    napms(250);
   }
+
+  save_game(player);
 
   //printf("Test text is %s \n", rand_move_text[dice(1, MOVE_TEXT) - 1]);
 

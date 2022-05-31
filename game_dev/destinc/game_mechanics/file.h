@@ -4,20 +4,20 @@
 
 #define GAME_DIR ".destiny"
 #define SAVE_FILE "/saves.txt"
-#define PATH_MAX 256
+#define FILE_PATH_MAX 256
 
 // globals for game directory and save file
-char game_dir[PATH_MAX];
-char save_file[PATH_MAX];
+char game_dir[FILE_PATH_MAX];
+char save_file[FILE_PATH_MAX];
 
 void file_init() {
-  snprintf(game_dir, PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
-  strncpy(save_file, game_dir, PATH_MAX);
+  snprintf(game_dir, FILE_PATH_MAX, "%s/%s", getenv("HOME"), GAME_DIR);
+  strncpy(save_file, game_dir, FILE_PATH_MAX);
   strncat(save_file, SAVE_FILE, 16);
 }
 
 // check if passed file exists and can be opened for reading
-int file_there(char filepath[PATH_MAX]) {
+int file_there(char filepath[FILE_PATH_MAX]) {
   FILE *fp;
   if ((fp = fopen(filepath, "r")) != NULL) {
     fclose(fp);
@@ -40,7 +40,7 @@ int check_saves() {
   return numfound;
 }
 
-void trunc_file(char filepath[PATH_MAX]) {
+void trunc_file(char filepath[FILE_PATH_MAX]) {
   FILE *fp;
 
   if ((fp = fopen(save_file, "w")) != NULL) fclose(fp);

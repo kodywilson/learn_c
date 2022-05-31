@@ -88,7 +88,7 @@ void bigly(WINDOW *win, int font, char *text) {
     for (int i = start; i < start + letter_width; i++) {
       text_y = (win_y / 2 - 5) / 2;
       for (int j = 0; j < fonts[font].height[!is_capital(ch)]; j++) { // j < height
-        if (is_capital(ch)) mvaddch(text_y, text_x, fonts[font].up[j][i]);
+        if (is_capital(ch)) mvwaddch(win, text_y, text_x, fonts[font].up[j][i]);
         //else mvaddch(text_y, text_x, fonts[font].low[j][i + letter_width]); // need to add lowercase to font first
         text_y++;
       }

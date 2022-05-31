@@ -32,7 +32,7 @@ void stars(WINDOW *win, int num_stars) {
     attrset(COLOR_PAIR(starsColor[i]));
     mvaddch(starsY[i], starsX[i], '*');
     refresh();
-    napms(dice(1, 80));
+    napms(dice(1, 50));
   }
 
   napms(1500);
@@ -48,7 +48,7 @@ void stars(WINDOW *win, int num_stars) {
       mvaddch(starsY[i], starsX[i], '*');
     }
     refresh();
-    napms(120);
+    napms(100);
   }
 
   napms(500);
@@ -79,14 +79,49 @@ void intro(WINDOW *win, int num_stars) {
   getch();
 }
 
-void refresh_stats(WINDOW *win, pc *player) {
-  int stats_y, stats_x;
-  getmaxyx(win, stats_y, stats_x);
+void refresh_stats(WINDOW *win, mob *player) {
+  //int stats_y, stats_x;
+  //getmaxyx(win, stats_y, stats_x);
 
   wclear(win);
   // later we will color code the mana and hp depending on status (red green)
-  mvwprintw(win, stats_y * 0, stats_x / 20,
+  mvwprintw(win, 0, 0,
   "Name: %s | XP: %d | Lvl: %d  -|-  Coin: %d | HP: %d | Mana: %d",
   player->name, player->xp, player->lvl, player->coin, player->cur_hp, player->cur_mana);
   wrefresh(win);
+}
+
+void draw_cartwheel(WINDOW *win) {
+  int frame_y, frame_x, start_y, start_x, win_y, win_x;
+
+  getmaxyx(win, win_y, win_x);  // grab window size
+
+  // where to start printing the frames - later, make these arguments
+  frame_y = win_y - 3;//(win_y / 2) + 3;
+  frame_x = win_x - win_x + 10; // start at left, later send starting coordinates (upper left corner of frame)
+
+  // loop a few times so player cartwheels across the screen
+  for (int sequence = 0; sequence < 5; sequence++) {
+    // Iterate over frames and print the frame
+    for (int frame = 0; frame < CART_WHEEL_FRAMES - 1; frame++) {
+      for (int i = 0; i < 3; i++) {
+        start_y         = frame_y + i;
+        for (int j = 0; j < 6; j++) {
+          start_x = frame_x + j;
+          mvwaddch(win, start_y, start_x, cartwheel[frame][i][j]);
+        }
+      }
+      wrefresh(win);
+      napms(150);
+      wclear(win); // change this to only clear the bottom part of the window
+      frame_x+=1;
+    }
+  }
+}
+
+void celebrate(WINDOW *win) {
+  //stars(win, 50);
+  bigly(win, DOOM, "YAY");
+  napms(500);
+  draw_cartwheel(win);
 }

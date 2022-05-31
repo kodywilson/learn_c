@@ -1,9 +1,11 @@
 #include "game_mechanics/dice.h"
-#include "entities/pc.h"
-#include "entities/npc.h"
+#include "entities/mob.h"                // generic structure for both npc and pc
+#include "entities/pc.h"                 // player characters
+#include "entities/npc.h"                // non player characters (usually monsters)
 #include "art/text.h"
 #include <ncurses.h>
 #include "art/letters.h"
+#include "art/assets.h"
 #include "art/graphics.h"
 #include "game_mechanics/choices.h"
 #include "game_mechanics/file.h"
