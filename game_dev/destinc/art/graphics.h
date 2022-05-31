@@ -90,3 +90,51 @@ void refresh_stats(WINDOW *win, mob *player) {
   player->name, player->xp, player->lvl, player->coin, player->cur_hp, player->cur_mana);
   wrefresh(win);
 }
+
+void draw_cartwheel(WINDOW *win) {
+  int ch, frame_y, frame_x, start_y, start_x, frame_width, win_y, win_x;
+
+  getmaxyx(win, win_y, win_x);  // grab window size
+
+  // where to start printing the frames - later, make these arguments
+  frame_y = win_y - 3;//(win_y / 2) + 3;
+  frame_x = 1; // start at left, later send starting coordinates (upper left corner of frame)
+
+  // loop a few times so player cartwheels across the screen
+  for (int sequence = 0; sequence < 3; sequence++) {
+    // Iterate over frames and print the frame
+    for (int frame = 0; frame < CART_WHEEL_FRAMES; frame++) {
+      for (int i = 0; i < 3; i++) {
+        start_y         = frame_y + i;
+        for (int j = 0; j < 6; j++) {
+          start_x = frame_x + j;
+          mvwaddch(win, start_y, start_x, cartwheel[frame][i][j]);
+        }
+      }
+      wrefresh(win);
+      napms(250);
+      wclear(win); // change this to only clear the bottom part of the window
+      frame_x+=2;
+    }
+  }
+  // for (int let = 0; text[let] != '\0'; let++) {
+  //   ch            = text[let];
+  //   letter_width  = fonts[font].width[!is_capital(ch)][letter_position(ch)];
+  //   start         = letter_start(ch, fonts[font]);
+  //   for (int i = start; i < start + letter_width; i++) {
+  //     text_y = (win_y / 2 - 5) / 2;
+  //     for (int j = 0; j < fonts[font].height[!is_capital(ch)]; j++) { // j < height
+  //       if (is_capital(ch)) mvaddch(text_y, text_x, fonts[font].up[j][i]);
+  //       //else mvaddch(text_y, text_x, fonts[font].low[j][i + letter_width]); // need to add lowercase to font first
+  //       text_y++;
+  //     }
+  //     text_x++;
+  //   }
+  //   text_x++; // accounts for space between each character
+}
+
+void celebrate(WINDOW *win) {
+  //stars(win, 50);
+  bigly(win, DOOM, "YAY");
+  draw_cartwheel(win);
+}

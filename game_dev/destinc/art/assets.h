@@ -3,6 +3,7 @@
 
 #define FRAME_HEIGHT 7
 #define FRAME_WIDTH  12
+#define CART_WHEEL_FRAMES 11
 
 typedef char frame[FRAME_HEIGHT][FRAME_WIDTH];
 typedef char three_by_six[3][6];
@@ -29,36 +30,36 @@ frame wizard_frames[2] = {
   }
 };
 
-three_by_six cartwheel[11] = {
+three_by_six cartwheel[CART_WHEEL_FRAMES] = {
   {
     "  o   ",
-    " /|\  ",
-    " / \  "
+    " /|\\  ",
+    " / \\  "
   },
   {
-    "\ o / ",
+    "\\ o / ",
     "  |   ",
-    " / \  "
+    " / \\  "
   },
   {
     " _ o  ",
-    "  /\  ",
-    " | \  "
+    "  /\\  ",
+    " | \\  "
   },
   {
     "      ",
-    " ___\o",
+    " ___\\o",
     "/)  | "
   },
   {
     "__|   ",
-    "  \o  ",
-    "  ( \ "
+    "  \\o  ",
+    "  ( \\ "
   },
   {
-    " \ /  ",
+    " \\ /  ",
     "  |   ",
-    " /o\  "
+    " /o\\  "
   },
   {
     "   |__",
@@ -68,22 +69,22 @@ three_by_six cartwheel[11] = {
   {
     "      ",
     "o/__  ",
-    "|  (\ "
+    "|  (\\ "
   },
   {
     " o _  ",
-    " /\   ",
+    " /\\   ",
     " / |  "
   },
   {
-    "\ o / ",
+    "\\ o / ",
     "  |   ",
-    " / \  "
+    " / \\  "
   },
   {
     "  o   ",
-    " /|\  ",
-    " / \  "
+    " /|\\  ",
+    " / \\  "
   }
 };
 
