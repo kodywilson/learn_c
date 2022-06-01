@@ -97,13 +97,15 @@ void draw_cartwheel(WINDOW *win) {
   getmaxyx(win, win_y, win_x);  // grab window size
 
   // where to start printing the frames - later, make these arguments
+  // it might look cool to have the animation start off screen and then go all the way across...
   frame_y = win_y - 3;//(win_y / 2) + 3;
   frame_x = win_x - win_x + 10; // start at left, later send starting coordinates (upper left corner of frame)
 
   // loop a few times so player cartwheels across the screen
-  for (int sequence = 0; sequence < 5; sequence++) {
+  // add way for player to hit spacebar or something to get out of animation more quickly
+  for (int sequence = 0; sequence < 6; sequence++) {
     // Iterate over frames and print the frame
-    for (int frame = 0; frame < CART_WHEEL_FRAMES - 1; frame++) {
+    for (int frame = 1; frame < CART_WHEEL_FRAMES - 2; frame++) {
       for (int i = 0; i < 3; i++) {
         start_y         = frame_y + i;
         for (int j = 0; j < 6; j++) {
@@ -112,11 +114,13 @@ void draw_cartwheel(WINDOW *win) {
         }
       }
       wrefresh(win);
-      napms(150);
+      if ((frame <= 1) && (sequence == 0)) napms(500);  // slight pause before we start cartwheeling
+      else napms(100);
       wclear(win); // change this to only clear the bottom part of the window
-      frame_x+=1;
+      frame_x+=2;
     }
   }
+  // napms(1000); // only pause if we display final frames. Maybe play frames one and two then pause on frame with arms up?
 }
 
 void celebrate(WINDOW *win) {
