@@ -99,7 +99,7 @@ void draw_cartwheel(WINDOW *win) {
   // where to start printing the frames - later, make these arguments
   // it might look cool to have the animation start off screen and then go all the way across...
   frame_y = win_y - 3;//(win_y / 2) + 3;
-  frame_x = win_x - win_x + 10; // start at left, later send starting coordinates (upper left corner of frame)
+  frame_x = win_x - win_x + 1; // start at left, later send starting coordinates (upper left corner of frame)
 
   // loop a few times so player cartwheels across the screen
   // add way for player to hit spacebar or something to get out of animation more quickly
@@ -116,7 +116,8 @@ void draw_cartwheel(WINDOW *win) {
       wrefresh(win);
       if ((frame <= 1) && (sequence == 0)) napms(500);  // slight pause before we start cartwheeling
       else napms(100);
-      wclear(win); // change this to only clear the bottom part of the window
+      mvwaddch(win, frame_y, 0, ' '); // move cursor to left position so we can clear to bottom
+      wclrtobot(win);
       frame_x+=2;
     }
   }
@@ -125,7 +126,7 @@ void draw_cartwheel(WINDOW *win) {
 
 void celebrate(WINDOW *win) {
   //stars(win, 50);
-  bigly(win, DOOM, "YAY");
-  napms(500);
+  //bigly(win, DOOM, "YAY");
+  //napms(500);
   draw_cartwheel(win);
 }

@@ -367,11 +367,16 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     }
   }
   wclear(game_text);
-  celebrate(game_text);
+  bigly(game_text, DOOM, "YAY");
+  napms(500);
+  wclear(game_text);
+  //celebrate(game_text);
   mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");
   if (distance > 0) { // later, tailor message to how much the player earned while exploring the dungeon
     mvwprintw(game_text, 2, 0, "%s, you traveled %d squares, earned %d coin(s), %d XP, and defeated %d monster(s) and %d boss(es)...", player->name, distance, player->coin - start_coin, player->xp - start_xp, mob_count, boss_count);
   }
+  wrefresh(game_text);
+  celebrate(game_text);
   // Remove player buffs
   if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
     mvwaddstr(game_text, 7, 0, "Drako wishes you well and fades away, ready to help another day.");
