@@ -256,7 +256,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
     };
     refresh_stats(stats, player); // update stats window
-    mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
+    //mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]); // DEBUG
     wrefresh(game_text);
     //getch(); // DEBUG
     // clear previous list of choices - this could probably be a function
