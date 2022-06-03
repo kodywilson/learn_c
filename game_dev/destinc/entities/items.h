@@ -30,7 +30,7 @@ typedef struct Item {
 } item;
 
 char *armors_names[ALL_ARMOR] = {"clothes", "padded"};
-char *armors_descs[ALL_ARMOR] = {"Simple clothing, better than nothing.", "Stiffly padded clothing. Slightly better than plain clothes."};
+char *armors_descs[ALL_ARMOR] = {"Simple clothing, better than nothing.", "Stiffly padded clothing. Slightly more armor than plain clothes."};
 
 item armors[ALL_ARMOR] = {
   // No armor, just plain clothes
