@@ -5,8 +5,8 @@
 
 // shared struct for items
 typedef struct Item {
-  int  name;          // item name - connect to name table (this is the index) so weapon_name[0] might be "longsword"
-  int  desc;          // item description - connect to description table (this is the index) so weapon_desc[0] might be "A beautiful blade"
+  char name[32];      // item name - connect to name table (this is the index) so weapon_name[0] might be "longsword"
+  char desc[256];     // item description - connect to description table (this is the index) so weapon_desc[0] might be "A beautiful blade"
   int  category;      // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
   int  type;          // item type: 0 = light, 1 = heavy, 2 = ring, 3 = earring, 4 = bracer, 5 = necklace
   int  group;         // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry)
@@ -35,8 +35,8 @@ char *armors_descs[ALL_ARMOR] = {"Simple clothing, better than nothing.", "Stiff
 item armors[ALL_ARMOR] = {
   // No armor, just plain clothes
   {
-    0,                  // item name - connect to name table (this is the index) so weapon_name[0] might be "longsword"
-    0,                  // item description - connect to description table (this is the index) so weapon_desc[0] might be "A beautiful blade"
+    "clothes",          // item name - connect to name table (this is the index) so weapon_name[0] might be "longsword"
+    "Simple clothing, better than nothing.", // item description
     4,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
     6,                  // item type: 0 = light, 1 = heavy, 2 = ring, 3 = earring, 4 = bracer, 5 = necklace, 6 = outfit
     3,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
@@ -60,8 +60,8 @@ item armors[ALL_ARMOR] = {
   },
   // Padded armor
   {
-    1,                  // item name - connect to name table (this is the index) so weapon_name[0] might be "longsword"
-    1,                  // item description - connect to description table (this is the index) so weapon_desc[0] might be "A beautiful blade"
+    "padded",           // item name - connect to name table (this is the index) so weapon_name[0] might be "longsword"
+    "Stiffly padded clothing. Slightly more armor than plain clothes.", // item description
     0,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
     0,                  // item type: 0 = light, 1 = heavy, 2 = ring, 3 = earring, 4 = bracer, 5 = necklace, 6 = outfit
     0,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
