@@ -61,7 +61,9 @@ int main()
         printf("Name: %s \n", wizard.name);
         printf("Description: %s \n", wizard.desc);
         printf("Coin: %d \n", wizard.coin);
-        //for (int i = 0; )
+        printf("Buffs: ");
+        for (int i = 0; i < MAX_BUFFS; i++) printf("Slot %d: %d | ", i, wizard.buffs[i]);
+        printf("\n");
         //printf("Salary: %.2f \n\n", emp.salary);
     }
 
