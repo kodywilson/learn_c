@@ -39,6 +39,7 @@ int main()
 
     printf("We found %d employee records.\n", count);
     printf("Name of first employee was %s\n", emps[0].designation);
+    printf("Name of second employee was %s\n", emps[1].designation);
 
     fclose(fp);
     return 0;
