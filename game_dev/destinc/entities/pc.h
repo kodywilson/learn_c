@@ -102,7 +102,7 @@ mob player_classes[PCS] = {
     12,           // wis       - wisdom
     12,           // cha       - charisma
     0,            // dmg       - innate damage bonus
-    1,            // armor     - innate armor (defense) bonus
+    0,            // armor     - innate armor (defense) bonus
     7,            // max_hp    - max hp earned per level (1d8 + Con modifier)
     7,            // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge

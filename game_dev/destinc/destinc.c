@@ -2,6 +2,8 @@
 // C port of original game written in Ruby
 // by Kody Wilson
 
+#define DEBUG 0 // set to 1 for additional messages during gameplay
+
 #include "includes.h"
 
 #define INPUT_MAX 33
