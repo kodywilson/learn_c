@@ -76,7 +76,7 @@ mob player_classes[PCS] = {
     16,           // wis       - wisdom
     14,           // cha       - charisma
     0,            // dmg       - innate damage bonus (this is going to be more of a proficiency bonus)
-    5,            // armor     - armor class - AC (defense) = Chain shirt + shield
+    0,            // armor     - armor class - AC (defense) = Chain shirt + shield
     10,           // max_hp    - max hp earned per level (1d8 + Con modifier)
     10,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -134,7 +134,7 @@ mob player_classes[PCS] = {
     12,           // wis       - wisdom
     14,           // cha       - charisma
     1,            // dmg       - innate damage bonus
-    1,            // armor     - armor (defense) - leather armor gives +1 AC
+    0,            // armor     - armor (defense) - leather armor gives +1 AC
     9,            // max_hp    - max hp earned per level (1d8 + Con modifier)
     9,            // cur_hp    - current hp
     2,            // dodge     - innate bonus to dodge   - might drop this at some point
