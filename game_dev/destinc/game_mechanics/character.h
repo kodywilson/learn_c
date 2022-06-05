@@ -170,8 +170,26 @@ int load_saves() {
   return count;
 }
 
-void choose_save(WINDOW *game_text, WINDOW *select, mob *player) {
-  
+
+
+void choose_save(WINDOW *game_text, WINDOW *select, mob *player, int saves) {
+  int choice, num_choices = 0;
+
+  for (int i = 0; i < MAX_CHOICES; i++) {
+    memset(choices[i], 0, MAX_CHOICE_LEN);    // "null" array
+    choice_key[i] = 99;                       // "null" array
+  }
+
+  for (int i = 0; i < saves; i++) {
+    char save_text[96];
+    snprintf(save_text, 95, "Slot: %d | Name: %s | Class: %s | Level: %d", i + 1, saved_games[i].name, saved_games[i].role, saved_games[i].lvl);
+    strncpy(choices[num_choices], save_text, MAX_CHOICE_LEN);
+    choice_key[num_choices] = 0;
+    num_choices++;
+  }
+
+  choice = choose(select, num_choices, "Please choose a saved game to load: "); 
+
 }
 
 int check_saves() {

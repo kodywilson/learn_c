@@ -12,7 +12,7 @@ int main() {
   srand(time(0)); // seed rand using time
   int choice, max_y, max_x;
   // last four of next line are oft used offsets
-  int game_text_y, game_text_x, main_loop, y_high, x_high, y_low, x_low;
+  int game_text_y, game_text_x, main_loop, saves, y_high, x_high, y_low, x_low;
   mob player; // create player struct
 
   WINDOW *game_text_border, *select_border, *stats_border;
@@ -80,14 +80,15 @@ int main() {
 
   // check for existing save
   if (file_there(save_file)) {
-    if (check_saves()) {
+    saves = check_saves();
+    if (saves > 0) {
       mvwaddstr(game_text, y_high, x_high, "I noticed you already have a saved game going. Welcome back to Destiny!");
       wrefresh(game_text);
       reset_choices();
       num_choices = y_n();
       choice = choose(select, num_choices, "Choose (Yes) to load a save, (No) to create a new game.");
       if (choice_key[choice] == 0) {
-        choose_save(game_text, select, &player);
+        choose_save(game_text, select, &player, saves);
       }
       else {
         wclear(game_text);
