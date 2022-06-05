@@ -25,21 +25,6 @@ int file_there(char filepath[FILE_PATH_MAX]) {
   } else return 0;
 }
 
-int check_saves() {
-  char linefromfile[512];
-  FILE *fp;
-  int numfound = 1; // fix this!!
-
-  // loop through the file and look for Name 
-  if ((fp = fopen(save_file, "r")) != NULL) {
-    while ((fgets(linefromfile, 512, fp)) != NULL )
-      if ((strstr(linefromfile, "name:")) != NULL) numfound++;
-    fclose(fp);
-  }
-
-  return numfound;
-}
-
 void trunc_file(char filepath[FILE_PATH_MAX]) {
   FILE *fp;
 

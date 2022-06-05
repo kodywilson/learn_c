@@ -124,9 +124,9 @@ void update_character(int token, char val[BUFF], mob *player) {
 
 // load character data into player struct
 // future: load all saves and then let player choose one
-void load_game(mob *player) {
+int load_game(mob *player) {
   FILE *fp;
-  //int counter = 0;
+  int count = 0;
   mob save;
 
   if (file_there(save_file)) {
@@ -160,9 +160,20 @@ void load_game(mob *player) {
       player->type      = save.type;
       player->alignment = save.alignment;
       for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = save.buffs[i];
-      //count++;
+      count++;
     }
   }
+
+  return count;
+}
+
+int check_saves() {
+  int numfound = 0;
+  mob save_check;
+
+  numfound = load_game(&save_check);
+
+  return numfound;
 }
 
 // write player data to save file
