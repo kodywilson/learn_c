@@ -170,7 +170,37 @@ int load_saves() {
   return count;
 }
 
+// load saved game into player struct
+void load_save(int slot, mob *player) {
 
+  strncpy(player->name, saved_games[slot].name, 32);
+  strncpy(player->role, saved_games[slot].role, 16);
+  strncpy(player->desc, saved_games[slot].desc, 256);
+  player->str       = saved_games[slot].str;
+  player->dex       = saved_games[slot].dex;
+  player->con       = saved_games[slot].con;
+  player->intel     = saved_games[slot].intel;
+  player->wis       = saved_games[slot].wis;
+  player->cha       = saved_games[slot].cha;
+  player->dmg       = saved_games[slot].dmg;
+  player->armor     = saved_games[slot].armor;
+  player->max_hp    = saved_games[slot].max_hp;
+  player->cur_hp    = saved_games[slot].cur_hp;
+  player->dodge     = saved_games[slot].dodge;
+  player->max_hp    = saved_games[slot].max_hp;
+  player->max_mana  = saved_games[slot].max_mana;
+  player->cur_mana  = saved_games[slot].cur_mana;
+  player->xp        = saved_games[slot].xp;
+  player->lvl       = saved_games[slot].lvl;
+  player->coin      = saved_games[slot].coin;
+  player->to_hit    = saved_games[slot].to_hit;
+  player->dice_dam  = saved_games[slot].dice_dam;
+  player->dice_num  = saved_games[slot].dice_num;
+  player->is_pc     = saved_games[slot].is_pc;
+  player->type      = saved_games[slot].type;
+  player->alignment = saved_games[slot].alignment;
+  for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = saved_games[slot].buffs[i];
+}
 
 void choose_save(WINDOW *game_text, WINDOW *select, mob *player, int saves) {
   int choice, num_choices = 0;
@@ -183,18 +213,18 @@ void choose_save(WINDOW *game_text, WINDOW *select, mob *player, int saves) {
   for (int i = 0; i < saves; i++) {
     char save_text[96];
     snprintf(save_text, 95, "Slot: %d | Name: %s | Class: %s | Level: %d", i + 1, saved_games[i].name, saved_games[i].role, saved_games[i].lvl);
-    strncpy(choices[num_choices], save_text, MAX_CHOICE_LEN);
+    strncpy(choices[num_choices], save_text, 96);
     choice_key[num_choices] = 0;
     num_choices++;
   }
 
-  choice = choose(select, num_choices, "Please choose a saved game to load: "); 
+  choice = choose(select, num_choices, "Please choose a saved game to load: ");
 
+  load_save(choice, player);
 }
 
 int check_saves() {
   int numfound = 0;
-  mob save_check;
 
   numfound = load_saves();
 

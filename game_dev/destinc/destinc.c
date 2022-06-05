@@ -110,10 +110,10 @@ int main() {
           save_game(player);
         } else {
           wclear(game_text);
-          mvwaddstr(game_text, y_high, x_high, "Ok, fair enough. Let's load the last saved game.");
+          mvwaddstr(game_text, y_high, x_high, "Ok, fair enough. Let's load a saved game.");
           wrefresh(game_text);
           napms(2000);
-          load_game(&player);
+          choose_save(game_text, select, &player, saves);
         }
       }
     } else {
