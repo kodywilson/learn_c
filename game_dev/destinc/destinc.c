@@ -85,8 +85,10 @@ int main() {
       wrefresh(game_text);
       reset_choices();
       num_choices = y_n();
-      choice = choose(select, num_choices, "Choose (Yes) to load last save, (No) to create a new game.");
-      if (choice_key[choice] == 0) load_game(&player);
+      choice = choose(select, num_choices, "Choose (Yes) to load a save, (No) to create a new game.");
+      if (choice_key[choice] == 0) {
+        choose_save(game_text, select, &player);
+      }
       else {
         wclear(game_text);
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");

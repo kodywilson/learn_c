@@ -1,6 +1,9 @@
 // Functions for creating and working with players
 
 #define BUFF 256  // maximum size of character buffer
+#define SAVE_SLOTS 4
+
+mob saved_games[SAVE_SLOTS];
 
 int class_choices() {
   int num_choices = 0;
@@ -122,44 +125,44 @@ void update_character(int token, char val[BUFF], mob *player) {
   }
 }
 
-// load character data into player struct
-// future: load all saves and then let player choose one
-int load_game(mob *player) {
+// load character data into saved games array
+int load_saves() {
   FILE *fp;
   int count = 0;
   mob save;
 
   if (file_there(save_file)) {
     fp = fopen(save_file, "rb");
+    // Add all saves to array of saved games
     while(fread(&save, sizeof(mob), 1, fp) == 1)
     {
-      strncpy(player->name, save.name, 32);
-      strncpy(player->role, save.role, 16);
-      strncpy(player->desc, save.desc, 256);
-      player->str       = save.str;
-      player->dex       = save.dex;
-      player->con       = save.con;
-      player->intel     = save.intel;
-      player->wis       = save.wis;
-      player->cha       = save.cha;
-      player->dmg       = save.dmg;
-      player->armor     = save.armor;
-      player->max_hp    = save.max_hp;
-      player->cur_hp    = save.cur_hp;
-      player->dodge     = save.dodge;
-      player->max_hp    = save.max_hp;
-      player->max_mana  = save.max_mana;
-      player->cur_mana  = save.cur_mana;
-      player->xp        = save.xp;
-      player->lvl       = save.lvl;
-      player->coin      = save.coin;
-      player->to_hit    = save.to_hit;
-      player->dice_dam  = save.dice_dam;
-      player->dice_num  = save.dice_num;
-      player->is_pc     = save.is_pc;
-      player->type      = save.type;
-      player->alignment = save.alignment;
-      for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = save.buffs[i];
+      strncpy(saved_games[count].name, save.name, 32);
+      strncpy(saved_games[count].role, save.role, 16);
+      strncpy(saved_games[count].desc, save.desc, 256);
+      saved_games[count].str       = save.str;
+      saved_games[count].dex       = save.dex;
+      saved_games[count].con       = save.con;
+      saved_games[count].intel     = save.intel;
+      saved_games[count].wis       = save.wis;
+      saved_games[count].cha       = save.cha;
+      saved_games[count].dmg       = save.dmg;
+      saved_games[count].armor     = save.armor;
+      saved_games[count].max_hp    = save.max_hp;
+      saved_games[count].cur_hp    = save.cur_hp;
+      saved_games[count].dodge     = save.dodge;
+      saved_games[count].max_hp    = save.max_hp;
+      saved_games[count].max_mana  = save.max_mana;
+      saved_games[count].cur_mana  = save.cur_mana;
+      saved_games[count].xp        = save.xp;
+      saved_games[count].lvl       = save.lvl;
+      saved_games[count].coin      = save.coin;
+      saved_games[count].to_hit    = save.to_hit;
+      saved_games[count].dice_dam  = save.dice_dam;
+      saved_games[count].dice_num  = save.dice_num;
+      saved_games[count].is_pc     = save.is_pc;
+      saved_games[count].type      = save.type;
+      saved_games[count].alignment = save.alignment;
+      for (int i = 0; i < MAX_BUFFS; i++) saved_games[count].buffs[i] = save.buffs[i];
       count++;
     }
   }
@@ -167,11 +170,15 @@ int load_game(mob *player) {
   return count;
 }
 
+void choose_save(WINDOW *game_text, WINDOW *select, mob *player) {
+  
+}
+
 int check_saves() {
   int numfound = 0;
   mob save_check;
 
-  numfound = load_game(&save_check);
+  numfound = load_saves();
 
   return numfound;
 }
