@@ -154,22 +154,11 @@ void load_game(mob *player) {
 // write player data to save file
 void save_game(mob player) {
   FILE *fp;
-  //int ch, pos = 0;
+  //int count = 0;
 
   if (file_there(save_file)) {
-    fp = fopen(save_file, "w");
-    // eventually this will support multiple saves
-    // will need to read in all the data and rewrite it all - use array of structs with token parser
-    /*while ((ch = fgetc(fp)) != EOF) {
-      pos++;
-      if (ch == '+' || ch == '\n') break;
-    }
-    fseek(fp, pos, SEEK_SET);*/
-    fprintf(fp,
-    "=name:%s,role:%s,desc:%s,str:%d,dex:%d,con:%d,intel:%d,wis:%d,cha:%d,dmg:%d,armor:%d,max_hp:%d,cur_hp:%d,dodge:%d,max_mana:%d,cur_mana:%d,xp:%d,lvl:%d,coin:%d,to_hit:%d,dice_dam:%d,dice_num:%d,is_pc:%d,type:%d,alignment:%d,_",
-    player.name, player.role, player.desc, player.str, player.dex, player.con, player.intel, player.wis, player.cha,
-    player.dmg, player.armor, player.max_hp, player.cur_hp, player.dodge, player.max_mana, player.cur_mana, player.xp,
-    player.lvl, player.coin, player.to_hit, player.dice_dam, player.dice_num, player.is_pc, player.type, player.alignment);
+    fp = fopen(save_file, "wb");
+    fwrite(&player, sizeof(mob), 1, fp);
     fclose(fp);
   }
 }

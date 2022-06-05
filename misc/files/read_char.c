@@ -44,6 +44,7 @@ mob wizard;
 
 int main()
 {
+  int count = 0;
     FILE *fp;
 
     fp = fopen("wizard.txt", "rb");
@@ -58,6 +59,7 @@ int main()
 
     while( fread(&wizard, sizeof(wizard), 1, fp) == 1 )
     {
+      count++;
         printf("Name: %s \n", wizard.name);
         printf("Description: %s \n", wizard.desc);
         printf("Coin: %d \n", wizard.coin);
@@ -66,6 +68,8 @@ int main()
         printf("\n");
         //printf("Salary: %.2f \n\n", emp.salary);
     }
+
+    printf("There are %d classes to choose from\n", count);
 
     fclose(fp);
     return 0;
