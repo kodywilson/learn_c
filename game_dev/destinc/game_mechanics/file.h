@@ -28,7 +28,7 @@ int file_there(char filepath[FILE_PATH_MAX]) {
 int check_saves() {
   char linefromfile[512];
   FILE *fp;
-  int numfound = 0;
+  int numfound = 1; // fix this!!
 
   // loop through the file and look for Name 
   if ((fp = fopen(save_file, "r")) != NULL) {

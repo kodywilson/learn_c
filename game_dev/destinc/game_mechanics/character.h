@@ -123,31 +123,45 @@ void update_character(int token, char val[BUFF], mob *player) {
 }
 
 // load character data into player struct
-// future: send name and load that particular character
+// future: load all saves and then let player choose one
 void load_game(mob *player) {
   FILE *fp;
-  int ch, counter = 0, pos = 0, token = 0;
-  char buffer[BUFF];
+  //int counter = 0;
+  mob save;
 
   if (file_there(save_file)) {
-    fp = fopen(save_file, "r");
-    while ((ch = fgetc(fp)) != EOF) {
-      pos++; // might use this if I end up using fseek
-      if (ch == ':') {  // very, very crude token parser
-        while ((ch = fgetc(fp)) != ',') {
-          if (ch == '_') break;
-          buffer[counter] = ch;
-          counter++;
-        }
-        buffer[counter] = '\0';
-        update_character(token, buffer, player);
-        token++;
-        // send save info to struct
-        for (int i = 0; i < BUFF; i++) buffer[i] = '\0'; // clear buffer for next token
-        counter = 0; // reset counter for next buffer fill
-      }
+    fp = fopen(save_file, "rb");
+    while(fread(&save, sizeof(mob), 1, fp) == 1)
+    {
+      strncpy(player->name, save.name, 32);
+      strncpy(player->role, save.role, 16);
+      strncpy(player->desc, save.desc, 256);
+      player->str       = save.str;
+      player->dex       = save.dex;
+      player->con       = save.con;
+      player->intel     = save.intel;
+      player->wis       = save.wis;
+      player->cha       = save.cha;
+      player->dmg       = save.dmg;
+      player->armor     = save.armor;
+      player->max_hp    = save.max_hp;
+      player->cur_hp    = save.cur_hp;
+      player->dodge     = save.dodge;
+      player->max_hp    = save.max_hp;
+      player->max_mana  = save.max_mana;
+      player->cur_mana  = save.cur_mana;
+      player->xp        = save.xp;
+      player->lvl       = save.lvl;
+      player->coin      = save.coin;
+      player->to_hit    = save.to_hit;
+      player->dice_dam  = save.dice_dam;
+      player->dice_num  = save.dice_num;
+      player->is_pc     = save.is_pc;
+      player->type      = save.type;
+      player->alignment = save.alignment;
+      for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = save.buffs[i];
+      //count++;
     }
-    for (int i = 0; i < 4; i++) player->buffs[i] = 0;
   }
 }
 
