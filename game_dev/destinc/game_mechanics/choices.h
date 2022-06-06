@@ -1,7 +1,7 @@
 // functions for handling player selections
 
 #define MAX_CHOICES 10
-#define MAX_CHOICE_LEN 32
+#define MAX_CHOICE_LEN 96
 #define Y_N 2
 
 // globals

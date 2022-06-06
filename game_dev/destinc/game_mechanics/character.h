@@ -174,18 +174,15 @@ void load_save(int slot, mob *player) {
 // choose a saved game from the list of saves
 int choose_save(WINDOW *game_text, WINDOW *select, int saves) {
   int choice, num_choices = 0;
+  char save_text[96];
 
-  for (int i = 0; i < MAX_CHOICES; i++) {
-    memset(choices[i], 0, MAX_CHOICE_LEN);    // "null" array
-    choice_key[i] = 99;                       // "null" array
-  }
+  reset_choices();
 
   for (int i = 0; i < saves; i++) {
-    char save_text[96];
     snprintf(save_text, 95, "Slot: %d | Name: %s | Class: %s | Level: %d", i + 1, saved_games[i].name, saved_games[i].role, saved_games[i].lvl);
     strncpy(choices[num_choices], save_text, 96);
-    choice_key[num_choices] = 0;
     num_choices++;
+    memset(save_text, 0, 96);
   }
 
   choice = choose(select, num_choices, "Please choose a saved game to load: \n");
@@ -206,8 +203,8 @@ void update_saved_games(int slot, mob player) {
 
   // zap the strings before copying new data
   memset(saved_games[slot].name, 0, 32);  // zap name
-  memset(saved_games[slot].role, 0, 16);  // zap name
-  memset(saved_games[slot].desc, 0, 256);  // zap name
+  memset(saved_games[slot].role, 0, 16);  // zap role
+  memset(saved_games[slot].desc, 0, 256);  // zap description
   // Now update everything
   strncpy(saved_games[slot].name, player.name, 32);
   strncpy(saved_games[slot].role, player.role, 16);
