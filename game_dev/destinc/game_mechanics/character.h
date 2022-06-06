@@ -134,37 +134,38 @@ int load_saves() {
   if (file_there(save_file)) {
     fp = fopen(save_file, "rb");
     // Add all saves to array of saved games
-    while(fread(&save, sizeof(mob), 1, fp) == 1)
-    {
-      strncpy(saved_games[count].name, save.name, 32);
-      strncpy(saved_games[count].role, save.role, 16);
-      strncpy(saved_games[count].desc, save.desc, 256);
-      saved_games[count].str       = save.str;
-      saved_games[count].dex       = save.dex;
-      saved_games[count].con       = save.con;
-      saved_games[count].intel     = save.intel;
-      saved_games[count].wis       = save.wis;
-      saved_games[count].cha       = save.cha;
-      saved_games[count].dmg       = save.dmg;
-      saved_games[count].armor     = save.armor;
-      saved_games[count].max_hp    = save.max_hp;
-      saved_games[count].cur_hp    = save.cur_hp;
-      saved_games[count].dodge     = save.dodge;
-      saved_games[count].max_hp    = save.max_hp;
-      saved_games[count].max_mana  = save.max_mana;
-      saved_games[count].cur_mana  = save.cur_mana;
-      saved_games[count].xp        = save.xp;
-      saved_games[count].lvl       = save.lvl;
-      saved_games[count].coin      = save.coin;
-      saved_games[count].to_hit    = save.to_hit;
-      saved_games[count].dice_dam  = save.dice_dam;
-      saved_games[count].dice_num  = save.dice_num;
-      saved_games[count].is_pc     = save.is_pc;
-      saved_games[count].type      = save.type;
-      saved_games[count].alignment = save.alignment;
-      for (int i = 0; i < MAX_BUFFS; i++) saved_games[count].buffs[i] = save.buffs[i];
-      count++;
-    }
+    count = fread(saved_games, sizeof(mob), SAVE_SLOTS, fp);
+    // while(fread(&save, sizeof(mob), 1, fp) == 1)
+    // {
+    //   strncpy(saved_games[count].name, save.name, 32);
+    //   strncpy(saved_games[count].role, save.role, 16);
+    //   strncpy(saved_games[count].desc, save.desc, 256);
+    //   saved_games[count].str       = save.str;
+    //   saved_games[count].dex       = save.dex;
+    //   saved_games[count].con       = save.con;
+    //   saved_games[count].intel     = save.intel;
+    //   saved_games[count].wis       = save.wis;
+    //   saved_games[count].cha       = save.cha;
+    //   saved_games[count].dmg       = save.dmg;
+    //   saved_games[count].armor     = save.armor;
+    //   saved_games[count].max_hp    = save.max_hp;
+    //   saved_games[count].cur_hp    = save.cur_hp;
+    //   saved_games[count].dodge     = save.dodge;
+    //   saved_games[count].max_hp    = save.max_hp;
+    //   saved_games[count].max_mana  = save.max_mana;
+    //   saved_games[count].cur_mana  = save.cur_mana;
+    //   saved_games[count].xp        = save.xp;
+    //   saved_games[count].lvl       = save.lvl;
+    //   saved_games[count].coin      = save.coin;
+    //   saved_games[count].to_hit    = save.to_hit;
+    //   saved_games[count].dice_dam  = save.dice_dam;
+    //   saved_games[count].dice_num  = save.dice_num;
+    //   saved_games[count].is_pc     = save.is_pc;
+    //   saved_games[count].type      = save.type;
+    //   saved_games[count].alignment = save.alignment;
+    //   for (int i = 0; i < MAX_BUFFS; i++) saved_games[count].buffs[i] = save.buffs[i];
+    //   count++;
+    // }
   }
 
   return count;
@@ -231,22 +232,26 @@ int check_saves() {
 
   return numfound;
 }
-save_game(game_text, select, player, saves);
+
 // write player data to save file
-void save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
+int save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
   int save_slot;
   FILE *fp;
   //int count = 0;
 
-  if (saves >= SAVE_SLOTS) {
-    save_slot = choose_save(game_text, select, &player, saves);
-  } else {
-    save_slot = saves + 1;  // use next available slot
-  }
+  // if (saves >= SAVE_SLOTS) {
+  //   save_slot = choose_save(game_text, select, &player, saves);
+  // } else {
+  //   saves++;
+  //   save_slot = saves;  // use next available slot
+  // }
   
   if (file_there(save_file)) {
     fp = fopen(save_file, "wb");
-    fwrite(&player, sizeof(mob), 1, fp);
+    fwrite(saved_games, sizeof(mob), SAVE_SLOTS, fp);
+    //fwrite(&player, sizeof(mob), 1, fp);
     fclose(fp);
   }
+
+  return saves;
 }
