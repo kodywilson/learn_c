@@ -185,7 +185,7 @@ int choose_save(WINDOW *game_text, WINDOW *select, int saves) {
     memset(save_text, 0, 96);
   }
 
-  choice = choose(select, num_choices, "Please choose a saved game to load: \n");
+  choice = choose(select, num_choices, "Please choose a saved game: \n");
 
   return choice;
 }

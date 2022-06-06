@@ -257,6 +257,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     };
     refresh_stats(stats, player); // update stats window
     //mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]); // DEBUG
+    //mvwprintw(game_text, 9, 1, "Food Buff: %d | Drink Buff: %d | Class Buff: %d", player->buffs[0], player->buffs[1], player->buffs[2]); // DEBUG
     wrefresh(game_text);
     //getch(); // DEBUG
     // clear previous list of choices - this could probably be a function
