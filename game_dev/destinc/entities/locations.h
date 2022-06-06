@@ -1,14 +1,14 @@
 // game locations - town, dungeon, tavern, etc.
 // each location will start with a list of options
 
-#define TOWN 3              // number of options in town
+#define TOWN 4              // number of options in town
 #define TAVERN 4            // number of options in tavern
 #define MAP_Y 12            // size of dungeon in rows
 #define MAP_X 12            // size of dungeon in columns
 
 // These lists are used with the xxxxxx_choices() functions to build menus
 // Town
-char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "Exit Game"};
+char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "View Character", "Exit Game"};
 
 // ## Tavern
 // base list, later add options depending on class, quest, etc.
@@ -425,7 +425,8 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
               dungeon(game_text, select, stats, player);
               break;
       case 1: tavern(game_text, select, stats, player); break;
-      case 2: wclear(game_text);
+      case 2: character_sheet(game_text, select, stats, player); break;
+      case 3: wclear(game_text);
               mvwaddstr(game_text, 1, 1, "Thanks for playing, see you next time!");
               done = 0; break;
       default: break;

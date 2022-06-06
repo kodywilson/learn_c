@@ -90,39 +90,28 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
   
 }
 
-// update character - name, role, stats, etc.
-// tokens indicate what is being updated
-// another valid approach would be to have two functions, one for
-// strings and one for ints
-void update_character(int token, char val[BUFF], mob *player) {
-  switch (token) {
-    case 0: strncpy(player->name, val, 32); break;
-    case 1: strncpy(player->role, val, 16); break;
-    case 2: strncpy(player->desc, val, 256); break;
-    case 3:  player->str       = atoi(val); break;
-    case 4:  player->dex       = atoi(val); break;
-    case 5:  player->con       = atoi(val); break;
-    case 6:  player->intel     = atoi(val); break;
-    case 7:  player->wis       = atoi(val); break;
-    case 8:  player->cha       = atoi(val); break;
-    case 9:  player->dmg       = atoi(val); break;
-    case 10: player->armor     = atoi(val); break;
-    case 11: player->max_hp    = atoi(val); break;
-    case 12: player->cur_hp    = atoi(val); break;
-    case 13: player->dodge     = atoi(val); break;
-    case 14: player->max_mana  = atoi(val); break;
-    case 15: player->cur_mana  = atoi(val); break;
-    case 16: player->xp        = atoi(val); break;
-    case 17: player->lvl       = atoi(val); break;
-    case 18: player->coin      = atoi(val); break;
-    case 19: player->to_hit    = atoi(val); break;
-    case 20: player->dice_dam  = atoi(val); break;
-    case 21: player->dice_num  = atoi(val); break;
-    case 22: player->is_pc     = atoi(val); break;
-    case 23: player->type      = atoi(val); break;
-    case 24: player->alignment = atoi(val); break;
-    default: break;
-  }
+// Show character sheet - ability scores, etc.
+// calculate AC
+void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+  char buff_string[64];
+
+  wclear(game_text);
+  mvwprintw(game_text, 0, 0, "---==| %s's Character Sheet |==---", player->name);
+  mvwaddstr(game_text, 1, 0, "          ");
+  mvwprintw(game_text, 2, 0, "Strength: %d", player->str);
+  mvwprintw(game_text, 3, 0, "Dexterity: %d", player->str);
+  mvwprintw(game_text, 4, 0, "Constitution: %d", player->str);
+  mvwprintw(game_text, 5, 0, "Intelligence: %d", player->str);
+  mvwprintw(game_text, 6, 0, "Wisdom: %d", player->str);
+  mvwprintw(game_text, 7, 0, "Charisma: %d", player->str);
+  snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
+  mvwaddstr(game_text, 8, 0, buff_string);
+  wrefresh(game_text);
+
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // load all saved character data into saved games array
