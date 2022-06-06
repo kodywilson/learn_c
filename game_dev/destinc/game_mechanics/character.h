@@ -129,43 +129,11 @@ void update_character(int token, char val[BUFF], mob *player) {
 int load_saves() {
   FILE *fp;
   int count = 0;
-  mob save;
 
   if (file_there(save_file)) {
     fp = fopen(save_file, "rb");
     // Add all saves to array of saved games
     count = fread(saved_games, sizeof(mob), SAVE_SLOTS, fp);
-    // while(fread(&save, sizeof(mob), 1, fp) == 1)
-    // {
-    //   strncpy(saved_games[count].name, save.name, 32);
-    //   strncpy(saved_games[count].role, save.role, 16);
-    //   strncpy(saved_games[count].desc, save.desc, 256);
-    //   saved_games[count].str       = save.str;
-    //   saved_games[count].dex       = save.dex;
-    //   saved_games[count].con       = save.con;
-    //   saved_games[count].intel     = save.intel;
-    //   saved_games[count].wis       = save.wis;
-    //   saved_games[count].cha       = save.cha;
-    //   saved_games[count].dmg       = save.dmg;
-    //   saved_games[count].armor     = save.armor;
-    //   saved_games[count].max_hp    = save.max_hp;
-    //   saved_games[count].cur_hp    = save.cur_hp;
-    //   saved_games[count].dodge     = save.dodge;
-    //   saved_games[count].max_hp    = save.max_hp;
-    //   saved_games[count].max_mana  = save.max_mana;
-    //   saved_games[count].cur_mana  = save.cur_mana;
-    //   saved_games[count].xp        = save.xp;
-    //   saved_games[count].lvl       = save.lvl;
-    //   saved_games[count].coin      = save.coin;
-    //   saved_games[count].to_hit    = save.to_hit;
-    //   saved_games[count].dice_dam  = save.dice_dam;
-    //   saved_games[count].dice_num  = save.dice_num;
-    //   saved_games[count].is_pc     = save.is_pc;
-    //   saved_games[count].type      = save.type;
-    //   saved_games[count].alignment = save.alignment;
-    //   for (int i = 0; i < MAX_BUFFS; i++) saved_games[count].buffs[i] = save.buffs[i];
-    //   count++;
-    // }
   }
 
   return count;
@@ -204,7 +172,7 @@ void load_save(int slot, mob *player) {
 }
 
 // choose a saved game from the list of saves
-void choose_save(WINDOW *game_text, WINDOW *select, mob *player, int saves) {
+int choose_save(WINDOW *game_text, WINDOW *select, int saves) {
   int choice, num_choices = 0;
 
   for (int i = 0; i < MAX_CHOICES; i++) {
@@ -222,7 +190,7 @@ void choose_save(WINDOW *game_text, WINDOW *select, mob *player, int saves) {
 
   choice = choose(select, num_choices, "Please choose a saved game to load: \n");
 
-  load_save(choice, player);
+  return choice;
 }
 
 int check_saves() {
@@ -233,22 +201,65 @@ int check_saves() {
   return numfound;
 }
 
+// put current player data into saved_games in chosen save slot
+void update_saved_games(int slot, mob player) {
+
+  // zap the strings before copying new data
+  memset(saved_games[slot].name, 0, 32);  // zap name
+  memset(saved_games[slot].role, 0, 16);  // zap name
+  memset(saved_games[slot].desc, 0, 256);  // zap name
+  // Now update everything
+  strncpy(saved_games[slot].name, player.name, 32);
+  strncpy(saved_games[slot].role, player.role, 16);
+  strncpy(saved_games[slot].desc, player.desc, 256);
+  saved_games[slot].str       = player.str;
+  saved_games[slot].dex       = player.dex;
+  saved_games[slot].con       = player.con;
+  saved_games[slot].intel     = player.intel;
+  saved_games[slot].wis       = player.wis;
+  saved_games[slot].cha       = player.cha;
+  saved_games[slot].dmg       = player.dmg;
+  saved_games[slot].armor     = player.armor;
+  saved_games[slot].max_hp    = player.max_hp;
+  saved_games[slot].cur_hp    = player.cur_hp;
+  saved_games[slot].dodge     = player.dodge;
+  saved_games[slot].max_hp    = player.max_hp;
+  saved_games[slot].max_mana  = player.max_mana;
+  saved_games[slot].cur_mana  = player.cur_mana;
+  saved_games[slot].xp        = player.xp;
+  saved_games[slot].lvl       = player.lvl;
+  saved_games[slot].coin      = player.coin;
+  saved_games[slot].to_hit    = player.to_hit;
+  saved_games[slot].dice_dam  = player.dice_dam;
+  saved_games[slot].dice_num  = player.dice_num;
+  saved_games[slot].is_pc     = player.is_pc;
+  saved_games[slot].type      = player.type;
+  saved_games[slot].alignment = player.alignment;
+  for (int i = 0; i < MAX_BUFFS; i++) saved_games[slot].buffs[i] = player.buffs[i];
+}
+
 // write player data to save file
 int save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
-  int save_slot;
+  int save_slot = 0;
   FILE *fp;
-  //int count = 0;
 
-  // if (saves >= SAVE_SLOTS) {
-  //   save_slot = choose_save(game_text, select, &player, saves);
-  // } else {
-  //   saves++;
-  //   save_slot = saves;  // use next available slot
-  // }
+  // determine if we need to overwrite a saved game
+  if (saves >= SAVE_SLOTS) {
+    save_slot = choose_save(game_text, select, saves);
+  } else {
+    if ((saves >= 0) && (saves < SAVE_SLOTS)) {
+      saves++;
+      save_slot = saves - 1; // index properly into array
+    }
+  }
+
+  // now update array of structs using save_slot
+  update_saved_games(save_slot, player);
   
+  // write out saved_games array to our save file
   if (file_there(save_file)) {
     fp = fopen(save_file, "wb");
-    fwrite(saved_games, sizeof(mob), SAVE_SLOTS, fp);
+    fwrite(saved_games, sizeof(mob), saves, fp);
     //fwrite(&player, sizeof(mob), 1, fp);
     fclose(fp);
   }
