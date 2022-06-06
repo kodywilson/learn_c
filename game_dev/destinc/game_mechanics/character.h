@@ -231,12 +231,19 @@ int check_saves() {
 
   return numfound;
 }
-
+save_game(game_text, select, player, saves);
 // write player data to save file
-void save_game(mob player) {
+void save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
+  int save_slot;
   FILE *fp;
   //int count = 0;
 
+  if (saves >= SAVE_SLOTS) {
+    save_slot = choose_save(game_text, select, &player, saves);
+  } else {
+    save_slot = saves + 1;  // use next available slot
+  }
+  
   if (file_there(save_file)) {
     fp = fopen(save_file, "wb");
     fwrite(&player, sizeof(mob), 1, fp);
