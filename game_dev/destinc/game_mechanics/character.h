@@ -99,13 +99,14 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
   mvwprintw(game_text, 0, 0, "---==| %s's Character Sheet |==---", player->name);
   mvwaddstr(game_text, 1, 0, "          ");
   mvwprintw(game_text, 2, 0, "Strength: %d", player->str);
-  mvwprintw(game_text, 3, 0, "Dexterity: %d", player->str);
-  mvwprintw(game_text, 4, 0, "Constitution: %d", player->str);
-  mvwprintw(game_text, 5, 0, "Intelligence: %d", player->str);
-  mvwprintw(game_text, 6, 0, "Wisdom: %d", player->str);
-  mvwprintw(game_text, 7, 0, "Charisma: %d", player->str);
+  mvwprintw(game_text, 3, 0, "Dexterity: %d", player->dex);
+  mvwprintw(game_text, 4, 0, "Constitution: %d", player->con);
+  mvwprintw(game_text, 5, 0, "Intelligence: %d", player->intel);
+  mvwprintw(game_text, 6, 0, "Wisdom: %d", player->wis);
+  mvwprintw(game_text, 7, 0, "Charisma: %d", player->cha);
+  mvwaddstr(game_text, 8, 0, "          ");
   snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
-  mvwaddstr(game_text, 8, 0, buff_string);
+  mvwaddstr(game_text, 9, 0, buff_string);
   wrefresh(game_text);
 
   wclear(select);
