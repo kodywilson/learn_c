@@ -125,7 +125,7 @@ void update_character(int token, char val[BUFF], mob *player) {
   }
 }
 
-// load character data into saved games array
+// load all saved character data into saved games array
 int load_saves() {
   FILE *fp;
   int count = 0;
@@ -170,7 +170,7 @@ int load_saves() {
   return count;
 }
 
-// load saved game into player struct
+// load chosen saved game into player struct
 void load_save(int slot, mob *player) {
 
   strncpy(player->name, saved_games[slot].name, 32);
@@ -202,6 +202,7 @@ void load_save(int slot, mob *player) {
   for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = saved_games[slot].buffs[i];
 }
 
+// choose a saved game from the list of saves
 void choose_save(WINDOW *game_text, WINDOW *select, mob *player, int saves) {
   int choice, num_choices = 0;
 
@@ -218,7 +219,7 @@ void choose_save(WINDOW *game_text, WINDOW *select, mob *player, int saves) {
     num_choices++;
   }
 
-  choice = choose(select, num_choices, "Please choose a saved game to load: ");
+  choice = choose(select, num_choices, "Please choose a saved game to load: \n");
 
   load_save(choice, player);
 }
