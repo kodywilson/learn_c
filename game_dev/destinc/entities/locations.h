@@ -1,25 +1,34 @@
 // game locations - town, dungeon, tavern, etc.
 // each location will start with a list of options
 
-#define TOWN 4              // number of options in town
+#define ARMORY 4            // number of options in armory
+#define TOWN 5              // number of options in town
 #define TAVERN 4            // number of options in tavern
 #define MAP_Y 12            // size of dungeon in rows
 #define MAP_X 12            // size of dungeon in columns
 
 // These lists are used with the xxxxxx_choices() functions to build menus
 // Town
-char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "View Character", "Exit Game"};
+char *town_list[TOWN] = {"The Armory", "Ye Olde Tavern", "The Dungeon", "View Character", "Exit Game"};
 
-// ## Tavern
+// Tavern
 // base list, later add options depending on class, quest, etc.
-char *tavern_list[TAVERN] = {
-  "Order some food",
-  "Buy a drink",
-  "Rest",
-  "Leave the tavern"
-};
+char *tavern_list[TAVERN] = {"Order some food", "Buy a drink", "Rest", "Leave the tavern"};
+
+// Armory
+char *armory_list[ARMORY] = {"Look at armor", "Look at weapons", "Look at shields", "Leave the armory"};
 
 // these functions use the lists above to present options to the player
+int armory_choices() {
+  int num_choices = 0;
+
+  for (int i = 0; i < ARMORY; i++) {
+    strncpy(choices[num_choices], armory_list[i], MAX_CHOICE_LEN); choice_key[num_choices] = num_choices; num_choices++;
+  }
+
+  return num_choices;
+}
+
 int town_choices() {
   int num_choices = 0;
 
@@ -38,6 +47,52 @@ int tavern_choices() {
   }
 
   return num_choices;
+}
+
+// you are visiting the armory
+void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+  int choice;
+  char armory_prompt[96];
+
+  snprintf(armory_prompt, 95, "What gear would you like to view, %s?", player->name);
+
+  wclear(game_text);
+  mvwaddstr(game_text, 0, 0, "You enter Owen's Armory. The loud clanging from the back of the shop stops and then Owen appears from the back.");
+  mvwaddstr(game_text, 1, 0, "Owen wipes his hands on a rag and asks 'How can I help you?'");
+  wrefresh(game_text);
+  while(1) {
+    //getch(); // DEBUG
+    reset_choices();
+    num_choices = armory_choices();
+    choice = choose(select, num_choices, armory_prompt);
+    wclear(game_text);
+    switch (choice) {
+      case 0: wclear(game_text);
+              mvwprintw(game_text, 0, 0, "---==| %s's Armor Choices |==---", player->name);
+              mvwaddstr(game_text, 1, 0, "          ");
+              for (int i = 0; i < ALL_ARMOR; i++) {
+                mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, armors[i].name);
+              }
+              wrefresh(game_text);
+              wclear(select);
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              wrefresh(select);
+              getch();
+              break;
+      case 1: break;
+      case 2: break;
+      case 3: mvwaddstr(game_text, 1, 1, "You finish your business with Owen and head back to the town center."); break;
+      default: break;
+    }
+    refresh_stats(stats, player); // update stats window
+    wrefresh(game_text);
+    napms(250);
+    if (choice == 3) break; // end armory loop
+  }
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // you are visiting the tavern
@@ -413,7 +468,9 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     num_choices = town_choices();
     choice = choose(select, num_choices, "Please choose where you will head next:");
     switch (choice) {
-      case 0: wclear(game_text);
+      case 0: armory(game_text, select, stats, player); break; // maybe add some text about walking to the armory?
+      case 1: tavern(game_text, select, stats, player); break;
+      case 2: wclear(game_text);
               wclear(select);
               mvwaddstr(game_text, 1, 1, "You follow the eastern path toward the dungeon, stopping");
               mvwaddstr(game_text, 2, 1, "when you reach battered gates at the entrance.");
@@ -424,9 +481,8 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
               getch();
               dungeon(game_text, select, stats, player);
               break;
-      case 1: tavern(game_text, select, stats, player); break;
-      case 2: character_sheet(game_text, select, stats, player); break;
-      case 3: wclear(game_text);
+      case 3: character_sheet(game_text, select, stats, player); break;
+      case 4: wclear(game_text);
               mvwaddstr(game_text, 1, 1, "Thanks for playing, see you next time!");
               done = 0; break;
       default: break;
