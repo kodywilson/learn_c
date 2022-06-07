@@ -92,12 +92,38 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
 
 // Show Items in Backpack
 void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
-  // some stuff
+  wclear(game_text);
+  mvwprintw(game_text, 0, 0, "---==| %s's Worn Items |==---", player->name);
+  mvwaddstr(game_text, 1, 0, "          ");
+  mvwprintw(game_text, 2, 0, "Armor: %s", armors[player->worn_items[0]].name);
+  mvwprintw(game_text, 3, 0, "Main Hand: %s", "Club");
+  mvwprintw(game_text, 4, 0, "Off Hand: %s", "");
+  wrefresh(game_text);
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // Show Items Currently Being Worn
 void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
-  // some stuff
+  wclear(game_text);
+  mvwprintw(game_text, 0, 0, "---==| %s's Backpack |==---", player->name);
+  mvwaddstr(game_text, 1, 0, "          ");
+  // would it be better to have the arrays in each struct be arrays of item type instead of ints?
+  // then you could just iterate over the bag printing out the name of each item...player->backpack[i].name
+  // it would use a lot more memory, but that might not be too significant...
+  // for (int i = 0; i < BAG_SLOTS; i++) {
+  //   mvwprintw(game_text, 2, 0, "Slot: %s", armors[player->worn_items[0]].name);
+  // }
+  // mvwprintw(game_text, 2, 0, "Slot: %s", armors[player->worn_items[0]].name);
+  // mvwprintw(game_text, 3, 0, "Main Hand: %s", "Club");
+  // mvwprintw(game_text, 4, 0, "Off Hand: %s", "");
+  wrefresh(game_text);
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // Show character sheet - ability scores, etc.
