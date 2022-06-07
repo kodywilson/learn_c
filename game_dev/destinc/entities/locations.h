@@ -51,10 +51,14 @@ int tavern_choices() {
 
 // you are visiting the armory
 void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int choice;
-  char armory_prompt[96];
+  int choice, armor_limit; // these limits are how we tune what options appear for each player
+  char armory_prompt[96];  // for instance, a Knight will see all armors as available while a cleric only light and medium, etc.
 
   snprintf(armory_prompt, 95, "What gear would you like to view, %s?", player->name);
+  if (strcmp(player->role, "Wizard") == 0) armor_limit = 1;
+  if (strcmp(player->role, "Rogue") == 0) armor_limit = 4;
+  if (strcmp(player->role, "Cleric") == 0) armor_limit = 9;
+  if (strcmp(player->role, "Knight") == 0) armor_limit = ALL_ARMOR; // knights have no armor restrictions
 
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "You enter Owen's Armory. The loud clanging from the back of the shop stops and then Owen appears from the back.");
@@ -68,9 +72,9 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     wclear(game_text);
     switch (choice) {
       case 0: wclear(game_text);
-              mvwprintw(game_text, 0, 0, "---==| %s's Armor Choices |==---", player->name);
+              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available choices for a %s such as yourself.", player->name, player->role);
               mvwaddstr(game_text, 1, 0, "          ");
-              for (int i = 0; i < ALL_ARMOR; i++) {
+              for (int i = 0; i < armor_limit; i++) {
                 mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, armors[i].name);
               }
               wrefresh(game_text);
