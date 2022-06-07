@@ -90,29 +90,50 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
   
 }
 
+// Show Items in Backpack
+void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
+  // some stuff
+}
+
+// Show Items Currently Being Worn
+void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
+  // some stuff
+}
+
 // Show character sheet - ability scores, etc.
 // calculate AC
 void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+  int choice = 0, num_choices = 0;
   char buff_string[64];
 
-  wclear(game_text);
-  mvwprintw(game_text, 0, 0, "---==| %s's Character Sheet |==---", player->name);
-  mvwaddstr(game_text, 1, 0, "          ");
-  mvwprintw(game_text, 2, 0, "Strength: %d", player->str);
-  mvwprintw(game_text, 3, 0, "Dexterity: %d", player->dex);
-  mvwprintw(game_text, 4, 0, "Constitution: %d", player->con);
-  mvwprintw(game_text, 5, 0, "Intelligence: %d", player->intel);
-  mvwprintw(game_text, 6, 0, "Wisdom: %d", player->wis);
-  mvwprintw(game_text, 7, 0, "Charisma: %d", player->cha);
-  mvwaddstr(game_text, 8, 0, "          ");
-  snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
-  mvwaddstr(game_text, 9, 0, buff_string);
-  wrefresh(game_text);
+  while (choice != 2) {
+    wclear(game_text);
+    mvwprintw(game_text, 0, 0, "---==| %s's Character Sheet |==---", player->name);
+    mvwaddstr(game_text, 1, 0, "          ");
+    mvwprintw(game_text, 2, 0, "Strength: %d", player->str);
+    mvwprintw(game_text, 3, 0, "Dexterity: %d", player->dex);
+    mvwprintw(game_text, 4, 0, "Constitution: %d", player->con);
+    mvwprintw(game_text, 5, 0, "Intelligence: %d", player->intel);
+    mvwprintw(game_text, 6, 0, "Wisdom: %d", player->wis);
+    mvwprintw(game_text, 7, 0, "Charisma: %d", player->cha);
+    mvwaddstr(game_text, 8, 0, "          ");
+    snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
+    mvwaddstr(game_text, 9, 0, buff_string);
+    wrefresh(game_text);
 
-  wclear(select);
-  mvwaddstr(select, 0, 0, "Press any key to continue...");
-  wrefresh(select);
-  getch();
+    // Set up choices around viewing inventory
+    reset_choices();
+    strncpy(choices[num_choices], "View Worn Inventory", MAX_CHOICE_LEN); num_choices++;
+    strncpy(choices[num_choices], "View Backpack", MAX_CHOICE_LEN); num_choices++;
+    strncpy(choices[num_choices], "Back to Town", MAX_CHOICE_LEN); num_choices++;
+    choice = choose(select, num_choices, "Please choose: ");
+    switch (choice) {
+      case 0: view_worn(game_text, select, player); break;
+      case 1: view_pack(game_text, select, player); break;
+      case 2: break;
+      default: break;
+    }
+  }
 }
 
 // load all saved character data into saved games array
