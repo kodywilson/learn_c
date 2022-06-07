@@ -27,11 +27,13 @@ mob player_classes[PCS] = {
     2,            // modifier to chance to hit - proficiency bonus for players
     6,            // damage dice - 6 for mace
     1,            // number of damage dice. 1 for mace, so cleric can do 1d6 damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     1,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    0             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },              // 3 = true neutral, 4 = chaotic good
+    0,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {0}           // 20 backpack slots.
+  },
   // Knight
   {
     "Knight",     // name
@@ -56,11 +58,13 @@ mob player_classes[PCS] = {
     2,            // modifier to chance to hit - proficiency bonus for players
     8,            // damage dice - 8 for longsword
     1,            // number of damage dice. 1 for longsword, so knight can do 1d8 damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     1,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    0             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },              // 3 = true neutral, 4 = chaotic good
+    0,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {0}           // 20 backpack slots.
+  },
   // Rogue
   {
     "Rogue",     // name
@@ -85,11 +89,13 @@ mob player_classes[PCS] = {
     2,            // modifier to chance to hit - proficiency bonus for players
     8,            // damage dice - 8 for rapier
     1,            // number of damage dice. 1 for rapier, so rogue can do 1d8 damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     1,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    4             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },              // 3 = true neutral, 4 = chaotic good
+    4,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {0}           // 20 backpack slots.
+  },
   // Wizard
   {
     "Wizard",     // name
@@ -114,14 +120,13 @@ mob player_classes[PCS] = {
     2,            // modifier to chance to hit - proficiency bonus for players
     6,            // damage dice - 6 for quarterstaff
     1,            // number of damage dice. 1 for quarterstaff, so wizard can do 1d6 damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc. See below!
     1,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    3             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  }               // 3 = true neutral, 4 = chaotic good
+    3,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {0}           // 20 backpack slots.
+  }
 };
 
 char *class_list[PCS] = {"Cleric", "Knight", "Rogue", "Wizard"};
-
-// {0, 0, 0, 0}  =  {food_buff?, drink_buff?, class_buff?, etc.??}
-
