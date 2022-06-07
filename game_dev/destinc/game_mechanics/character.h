@@ -92,8 +92,8 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
   
 }
 
-// Show Items in Backpack
-void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
+// Show Items Currently Being Worn
+void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
   wclear(game_text);
   mvwprintw(game_text, 0, 0, "---==| %s's Worn Items |==---", player->name);
   mvwaddstr(game_text, 1, 0, "          ");
@@ -107,8 +107,8 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
   getch();
 }
 
-// Show Items Currently Being Worn
-void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
+// Show Items in Backpack
+void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
   wclear(game_text);
   mvwprintw(game_text, 0, 0, "---==| %s's Backpack |==---", player->name);
   mvwaddstr(game_text, 1, 0, "          ");
@@ -134,8 +134,10 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
   int choice = 0, num_choices = 0;
   char buff_string[64];
 
-  while (choice != 2) {
+  while (1) {
     wclear(game_text);
+    // wclear(select);
+    // wrefresh(select);
     mvwprintw(game_text, 0, 0, "---==| %s's Character Sheet |==---", player->name);
     mvwaddstr(game_text, 1, 0, "          ");
     mvwprintw(game_text, 2, 0, "Strength: %d", player->str);
@@ -150,6 +152,7 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     wrefresh(game_text);
 
     // Set up choices around viewing inventory
+    choice = num_choices = 0;
     reset_choices();
     strncpy(choices[num_choices], "View Worn Inventory", MAX_CHOICE_LEN); num_choices++;
     strncpy(choices[num_choices], "View Backpack", MAX_CHOICE_LEN); num_choices++;
@@ -161,6 +164,7 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
       case 2: break;
       default: break;
     }
+    if (choice == 2) break; // head back to town choices
   }
 }
 
