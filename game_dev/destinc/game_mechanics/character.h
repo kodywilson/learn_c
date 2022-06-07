@@ -44,7 +44,9 @@ void build_character(char name[32], mob chosen_class, mob *player) {
   player->is_pc     = chosen_class.is_pc;
   player->type      = chosen_class.type;
   player->alignment = chosen_class.alignment;
-  for (int i = 0; i < 4; i++) player->buffs[i] = 0;
+  for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = 0;
+  for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = 0;
+  for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = 0;
 }
 
 // character selection
@@ -206,6 +208,8 @@ void load_save(int slot, mob *player) {
   player->type      = saved_games[slot].type;
   player->alignment = saved_games[slot].alignment;
   for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = saved_games[slot].buffs[i];
+  for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = saved_games[slot].worn_items[i];
+  for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = saved_games[slot].backpack[i];
 }
 
 // choose a saved game from the list of saves
@@ -270,6 +274,8 @@ void update_saved_games(int slot, mob player) {
   saved_games[slot].type      = player.type;
   saved_games[slot].alignment = player.alignment;
   for (int i = 0; i < MAX_BUFFS; i++) saved_games[slot].buffs[i] = player.buffs[i];
+  for (int i = 0; i < WORN_SLOTS; i++) saved_games[slot].worn_items[i] = player.worn_items[i];
+  for (int i = 0; i < BAG_SLOTS; i++) saved_games[slot].backpack[i] = player.backpack[i];
 }
 
 // write player data to save file
