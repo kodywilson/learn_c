@@ -46,7 +46,7 @@ void build_character(char name[32], mob chosen_class, mob *player) {
   player->alignment = chosen_class.alignment;
   for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = 0;
   for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = 0;
-  for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = 0;
+  //for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = 0;
 }
 
 // character selection

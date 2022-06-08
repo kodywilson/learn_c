@@ -429,7 +429,7 @@ item shields[ALL_SHIELDS] = {
     0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
     13,                 // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
     0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
-    2,                  // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
     0,                  // Ranged weapon? 0 = no, 1 = yes.
     2,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
     0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes

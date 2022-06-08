@@ -33,7 +33,7 @@ mob mobs[MOBS] = {
     3,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Kobold
   {
@@ -64,7 +64,7 @@ mob mobs[MOBS] = {
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Skeleton
   {
@@ -95,7 +95,7 @@ mob mobs[MOBS] = {
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Bandit
   {
@@ -126,7 +126,7 @@ mob mobs[MOBS] = {
     5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Goblin
   {
@@ -157,7 +157,7 @@ mob mobs[MOBS] = {
     5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Zombie
   {
@@ -188,7 +188,7 @@ mob mobs[MOBS] = {
     5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   }
 };
 
@@ -222,7 +222,7 @@ mob bosses[BOSS] = {
     6,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Hobgoblin
   {
@@ -253,7 +253,7 @@ mob bosses[BOSS] = {
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Gnoll
   {
@@ -284,7 +284,7 @@ mob bosses[BOSS] = {
     6,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   },
   // Bugbear
   {
@@ -315,6 +315,6 @@ mob bosses[BOSS] = {
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {0}           // 20 backpack slots.
+    {}            // 20 backpack slots.
   }
 };
