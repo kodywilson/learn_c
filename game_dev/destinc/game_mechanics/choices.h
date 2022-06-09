@@ -49,9 +49,17 @@ int choose(WINDOW *win, int num, char *text) {
       if ((i > 11) && (i < 18)) { // wrap selections over to new columns if needed
         y = i - 11;
         x = 48;
-      }if ((i > 17) && (i < 23)) { // wrap selections over to new columns if needed
+      }
+      if ((i > 17) && (i < 23)) { // wrap selections over to new columns if needed
         y = i - 17;
         x = 60;
+      }
+      // this needs to be looked at again. Too many choices and they will appear off the window.
+      // may need to either break this into categories (View which armors? Light, Medium, Heavy)
+      // or find a different way to scroll when browsing the list...
+      if ((i > 22) && (i < 29)) { // wrap selections over to new columns if needed
+        y = i - 22;
+        x = 84;
       }
       if (i == highlight) wattron(win, A_BOLD | COLOR_PAIR(6));
       mvwaddstr(win, y, x, choices[i]);
