@@ -72,7 +72,7 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     wclear(game_text);
     switch (choice) {
       case 0: wclear(game_text);
-              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available choices for a %s such as yourself.", player->name, player->role);
+              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available armors for a %s such as yourself.", player->name, player->role);
               mvwaddstr(game_text, 1, 0, "          ");
               for (int i = 0; i < armor_limit; i++) {
                 mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, armors[i].name);
@@ -83,8 +83,34 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
               wrefresh(select);
               getch();
               break;
-      case 1: break;
-      case 2: break;
+      case 1: wclear(game_text);
+              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available weapons for a %s such as yourself.", player->name, player->role);
+              mvwaddstr(game_text, 1, 0, "          ");
+              for (int i = 0; i < ALL_WEAPONS; i++) {
+                if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
+                if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, weapons[i].name);
+                //mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
+              }
+              wrefresh(game_text);
+              wclear(select);
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              wrefresh(select);
+              getch();
+              break;
+      case 2: wclear(game_text);
+              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available shields for a %s such as yourself.", player->name, player->role);
+              mvwaddstr(game_text, 1, 0, "          ");
+              for (int i = 0; i < ALL_SHIELDS; i++) {
+                if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, shields[i].name);
+                if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, shields[i].name);
+                //mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
+              }
+              wrefresh(game_text);
+              wclear(select);
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              wrefresh(select);
+              getch();
+              break;break;
       case 3: mvwaddstr(game_text, 1, 1, "You finish your business with Owen and head back to the town center."); break;
       default: break;
     }
