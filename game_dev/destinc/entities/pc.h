@@ -23,7 +23,7 @@ mob player_classes[PCS] = {
     12,           // cur_mana  - current mana
     0,            // xp        - experience points
     1,            // level     - current level
-    3,            // coin      - money
+    300,          // coin      - money
     2,            // modifier to chance to hit - proficiency bonus for players
     6,            // damage dice - 6 for mace
     1,            // number of damage dice. 1 for mace, so cleric can do 1d6 damage.
@@ -54,7 +54,7 @@ mob player_classes[PCS] = {
     8,            // cur_mana  - current mana
     0,            // xp        - experience points
     1,            // level     - current level
-    3,            // coin      - money
+    3000,         // coin      - money
     2,            // modifier to chance to hit - proficiency bonus for players
     8,            // damage dice - 8 for longsword
     1,            // number of damage dice. 1 for longsword, so knight can do 1d8 damage.
@@ -85,7 +85,7 @@ mob player_classes[PCS] = {
     6,            // cur_mana  - current mana
     0,            // xp        - experience points
     1,            // level     - current level
-    5,            // coin      - money
+    200,          // coin      - money
     2,            // modifier to chance to hit - proficiency bonus for players
     8,            // damage dice - 8 for rapier
     1,            // number of damage dice. 1 for rapier, so rogue can do 1d8 damage.
