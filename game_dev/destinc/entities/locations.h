@@ -74,10 +74,34 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       case 0: wclear(game_text);
               mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available armors for a %s such as yourself.", player->name, player->role);
               mvwaddstr(game_text, 1, 0, "          ");
+              num_choices = 0;
+              reset_choices();
+              strncpy(choices[num_choices], "Keep browsing...", MAX_CHOICE_LEN);
+              num_choices++;
               for (int i = 0; i < armor_limit; i++) {
                 mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, armors[i].name);
+                strncpy(choices[num_choices], armors[i].name, MAX_CHOICE_LEN);
+                choice_key[num_choices] = i;
+                num_choices++;
               }
               wrefresh(game_text);
+              if (num_choices > 1) {
+                choice = choose(select, num_choices, "Please choose: ");
+                if (choice == 0) {
+                  mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
+                } else {
+                  mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", armors[choice_key[choice]].name);
+                  for (int i = 0; i < BAG_SLOTS; i++) {
+                    if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+                      player->backpack[i] = armors[choice_key[choice]]; // move bought item to first open slot in backpack
+                      break; // exit loop
+                    }
+                  }
+                }
+              } else {
+                mvwprintw(game_text, 0, 0, "%s, it doesn't look like we have an armor option for you...", player->name);
+              }
+
               wclear(select);
               mvwaddstr(select, 0, 0, "Press any key to continue...");
               wrefresh(select);

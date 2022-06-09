@@ -99,7 +99,6 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
 void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, int slot_item) {
   int choice = 0, num_choices = 0;
 
-
   wclear(game_text);
   reset_choices();
   strncpy(choices[num_choices], "Keep current item...", MAX_CHOICE_LEN);
@@ -120,7 +119,7 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
       mvwprintw(game_text, 0, 0, "Equipping %s and moving %s to your backpack.", player->backpack[choice_key[choice]].name, player->worn_items[slot_worn].name);
       for (int i = 0; i < BAG_SLOTS; i++) {
         if (strcmp(player->backpack[i].name, "- empty -") == 0) {
-          player->backpack[i] = player->worn_items[slot_worn]; // move existing item to first slot in backpack
+          player->backpack[i] = player->worn_items[slot_worn]; // move existing item to first open slot in backpack
           break; // exit loop
         }
       }
