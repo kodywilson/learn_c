@@ -85,12 +85,14 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
                 num_choices++;
               }
               wrefresh(game_text);
+              wclear(game_text);
               if (num_choices > 1) {
                 choice = choose(select, num_choices, "Please choose: ");
                 if (choice == 0) {
                   mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
                 } else {
                   mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", armors[choice_key[choice]].name);
+                  player->coin-=armors[choice_key[choice]].cost;
                   for (int i = 0; i < BAG_SLOTS; i++) {
                     if (strcmp(player->backpack[i].name, "- empty -") == 0) {
                       player->backpack[i] = armors[choice_key[choice]]; // move bought item to first open slot in backpack
@@ -102,6 +104,7 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
                 mvwprintw(game_text, 0, 0, "%s, it doesn't look like we have an armor option for you...", player->name);
               }
 
+              wrefresh(game_text);
               wclear(select);
               mvwaddstr(select, 0, 0, "Press any key to continue...");
               wrefresh(select);
