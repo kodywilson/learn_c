@@ -2,7 +2,7 @@
 
 #define ALL_ARMOR 13
 #define ALL_SHIELDS 3
-#define ALL_WEAPONS 10
+#define ALL_WEAPONS 27
 
 // shared struct for items
 typedef struct Item {
@@ -532,7 +532,7 @@ item weapons[ALL_WEAPONS] = {
     0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
     0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
     0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
-    1,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
     20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
     0,                  // Ranged weapon? 0 = no, 1 = yes.
     1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
@@ -557,7 +557,7 @@ item weapons[ALL_WEAPONS] = {
     0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
     0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
     0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
-    1,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
     20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
     0,                  // Ranged weapon? 0 = no, 1 = yes.
     2,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
@@ -582,25 +582,375 @@ item weapons[ALL_WEAPONS] = {
     0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
     0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
     0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
-    1,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    2,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Quarterstaff
+  {
+    "Quarterstaff",     // item name
+    "Iron tipped, stout oak quarterstaff.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    0,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    1,                  // cost of the item in coin (later gold when the currency change goes live)
+    3,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    4,                  // Weight in pounds
+    6,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    2,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Sickle
+  {
+    "Sickle",             // item name
+    "A simple iron sickle with a gleaming, curved blade.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    0,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    0,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    1,                  // cost of the item in coin (later gold when the currency change goes live)
+    1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    2,                  // Weight in pounds
+    4,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Spear
+  {
+    "Spear",             // item name
+    "A simple wooden spear with a sharp iron tip.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    0,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    1,                  // cost of the item in coin (later gold when the currency change goes live)
+    3,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    3,                  // Weight in pounds
+    6,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
     20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
     0,                  // Ranged weapon? 0 = no, 1 = yes.
     3,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
     0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
     0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
   },
-  // Dagger
+  // Battleaxe
   {
-    "Dagger",             // item name
-    "A simple iron dagger with a leather wrapped grip.", // item description
+    "Battleaxe",        // item name
+    "A hefty iron axe designed for one or two hand use.", // item description
     1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
     1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
-    0,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
     0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
-    2,                  // cost of the item in coin (later gold when the currency change goes live)
+    10,                 // cost of the item in coin (later gold when the currency change goes live)
+    3,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    4,                  // Weight in pounds
+    8,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Flail
+  {
+    "Flail",            // item name
+    "A spiked, iron ball dangles from a chain connected to a stout handle.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    10,                 // cost of the item in coin (later gold when the currency change goes live)
     1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
-    1,                  // Weight in pounds
-    4,                  // range of roll, ie. d6
+    2,                  // Weight in pounds
+    8,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    2,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Glaive
+  {
+    "Glaive",           // item name
+    "A heavy, wicked looking blade.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    2,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    20,                 // cost of the item in coin (later gold when the currency change goes live)
+    2,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    6,                  // Weight in pounds
+    10,                 // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Greataxe
+  {
+    "Greataxe",         // item name
+    "This large, double sided greataxe looks like it could do some serious damage.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    2,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    30,                 // cost of the item in coin (later gold when the currency change goes live)
+    2,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    7,                  // Weight in pounds
+    12,                 // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Greatsword
+  {
+    "Greatsword",       // item name
+    "A huge, elegant iron blade made to swing with both hands.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    2,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    20,                 // cost of the item in coin (later gold when the currency change goes live)
+    2,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    6,                  // Weight in pounds
+    6,                  // range of roll, ie. d6
+    2,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Halberd
+  {
+    "Halberd",          // item name
+    "An iron battleaxe mounted on a long wooden pole.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    2,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    20,                 // cost of the item in coin (later gold when the currency change goes live)
+    2,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    6,                  // Weight in pounds
+    10,                 // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Lance
+  {
+    "Lance",           // item name
+    "Looks like a long spear with an extra large spearhead.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    20,                 // cost of the item in coin (later gold when the currency change goes live)
+    2,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    6,                  // Weight in pounds
+    12,                 // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    3,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Longsword
+  {
+    "Longsword",           // item name
+    "Polished iron blade with an ornately figured hilt.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    15,                 // cost of the item in coin (later gold when the currency change goes live)
+    3,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    3,                  // Weight in pounds
+    8,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Maul
+  {
+    "Maul",           // item name
+    "A huge, heavy hammer built to crush.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    2,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    10,                 // cost of the item in coin (later gold when the currency change goes live)
+    2,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    10,                 // Weight in pounds
+    6,                  // range of roll, ie. d6
+    2,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    2,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Morningstar
+  {
+    "Morningstar",      // item name
+    "A heavy mace with large iron spikes protruding from the head.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    15,                 // cost of the item in coin (later gold when the currency change goes live)
+    1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    4,                  // Weight in pounds
+    8,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    3,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Pike
+  {
+    "Pike",             // item name
+    "A long spear with a leaf shaped iron point.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    2,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    5,                  // cost of the item in coin (later gold when the currency change goes live)
+    2,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    18,                 // Weight in pounds
+    10,                 // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    3,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Rapier
+  {
+    "Rapier",           // item name
+    "A slender sword with an extremely sharp point.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    25,                 // cost of the item in coin (later gold when the currency change goes live)
+    1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    2,                  // Weight in pounds
+    8,                  // range of roll, ie. d6
     1,                  // How many dmg_dice? ie. 2d6
     0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
     0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
@@ -614,18 +964,43 @@ item weapons[ALL_WEAPONS] = {
     0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
     0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
   },
-  // Dagger
+  // Scimitar
   {
-    "Dagger",             // item name
-    "A simple iron dagger with a leather wrapped grip.", // item description
+    "Scimitar",           // item name
+    "A sword with a sharp, curved blade.", // item description
     1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
-    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
-    0,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
     0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
-    2,                  // cost of the item in coin (later gold when the currency change goes live)
+    25,                 // cost of the item in coin (later gold when the currency change goes live)
     1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
-    1,                  // Weight in pounds
-    4,                  // range of roll, ie. d6
+    3,                  // Weight in pounds
+    6,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    1,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Shortsword
+  {
+    "Shortsword",       // item name
+    "Somewhere between a long sword and a dagger lies the shortsword.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    0,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    10,                 // cost of the item in coin (later gold when the currency change goes live)
+    1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    2,                  // Weight in pounds
+    6,                  // range of roll, ie. d6
     1,                  // How many dmg_dice? ie. 2d6
     0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
     0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
@@ -639,17 +1014,92 @@ item weapons[ALL_WEAPONS] = {
     0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
     0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
   },
-  // Dagger
+  // Trident
   {
-    "Dagger",             // item name
-    "A simple iron dagger with a leather wrapped grip.", // item description
+    "Trident",          // item name
+    "A spear with three fishhook shaped tips.", // item description
     1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
     1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
-    0,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    5,                  // cost of the item in coin (later gold when the currency change goes live)
+    3,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    4,                  // Weight in pounds
+    6,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    3,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // War pick
+  {
+    "War pick",         // item name
+    "Similar to a mining pick, but designed for battle.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    5,                  // cost of the item in coin (later gold when the currency change goes live)
+    1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    2,                  // Weight in pounds
+    8,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    3,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Warhammer
+  {
+    "Warhammer",        // item name
+    "This hammer has been balanced and weighted for combat.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
+    0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
+    15,                 // cost of the item in coin (later gold when the currency change goes live)
+    3,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
+    2,                  // Weight in pounds
+    8,                  // range of roll, ie. d6
+    1,                  // How many dmg_dice? ie. 2d6
+    0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
+    0,                  // Bonus. +1, +2, etc. For armor adds to AC while weapons get + to hit and + damage
+    0,                  // Resistance? 0 = none, 1 = acid, 2 = poison, fire, cold resistance, etc. Use higher numbers for combos (acid plus fire resistance)
+    0,                  // Disadvantage on stealth rolls? 0 = no impact, 1 = disadvantage for stealth checks
+    0,                  // Minimum strength to equip. 0 = no requirement, 13, 15, etc.
+    0,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
+    20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
+    0,                  // Ranged weapon? 0 = no, 1 = yes.
+    2,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
+    0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
+  },
+  // Whip
+  {
+    "Whip",           // item name
+    "A long leather whip with metal blades sewn into the tip.", // item description
+    1,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
+    1,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
+    1,                  // item group: 0 = simple, 1 = martial, 2 = magical (for jewelry), 3 = plain clothes, 4 = costume
     0,                  // slot (where you can equip): 0 = main hand, 1 = off hand, 2 = armor, 3 = finger, 4 = neck
     2,                  // cost of the item in coin (later gold when the currency change goes live)
     1,                  // Versatility: 0 = not usable held, 1 = 1 hand only (weapons), 2 = 2 hand only (weapons), 3 = versatile, use either 1 or 2 handed
-    1,                  // Weight in pounds
+    3,                  // Weight in pounds
     4,                  // range of roll, ie. d6
     1,                  // How many dmg_dice? ie. 2d6
     0,                  // How much armor is added to the base AC. (2 for studded leather, etc.)
@@ -660,8 +1110,8 @@ item weapons[ALL_WEAPONS] = {
     1,                  // Finesse? 0 = no finesse, 1 = finesse (can use dex to hit and damage)
     20,                 // Max dex modifier. 0 = none at all (heavy armor), 2 (for medium armors), 20 for light armors
     0,                  // Ranged weapon? 0 = no, 1 = yes.
-    3,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
+    1,                  // Damage type: 0 = untyped, 1 = slash, 2 = bludgeon, 3 = pierce, 4 = fire, 5 = cold, etc.
     0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
     0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
-  },
+  }
 };
