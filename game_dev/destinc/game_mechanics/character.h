@@ -117,6 +117,7 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
     if (choice == 0) {
       mvwprintw(game_text, 0, 0, "Right on, %s, keeping %s on for now.", player->name, player->worn_items[slot_worn].name);
     } else {
+      mvwprintw(game_text, 0, 0, "Equipping %s and moving %s to your backpack.", player->backpack[choice_key[choice]].name, player->worn_items[slot_worn].name);
       for (int i = 0; i < BAG_SLOTS; i++) {
         if (strcmp(player->backpack[i].name, "- empty -") == 0) {
           player->backpack[i] = player->worn_items[slot_worn]; // move existing item to first slot in backpack
@@ -126,7 +127,15 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
       player->worn_items[slot_worn] = player->backpack[choice_key[choice]]; // move new item to worn slot
       player->backpack[choice_key[choice]] = empty_slot;                    // empty out slot with chosen item
     }
+  } else {
+    mvwprintw(game_text, 0, 0, "%s, it doesn't look like you have anything in your backpack that would work there...", player->name);
   }
+
+  wrefresh(game_text);
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // Show Items Currently Being Worn
@@ -150,7 +159,7 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
   strncpy(choices[num_choices], "Back to Character Sheet", MAX_CHOICE_LEN); num_choices++;
   choice = choose(select, num_choices, "Please choose: ");
   switch (choice) {
-    case 0: change_item(game_text, select, player, 0, 2); break;
+    case 0: change_item(game_text, select, player, 0, 2); break; // 0, 2 = first worn slot, item slot type 2 (armor)
     case 1: change_item(game_text, select, player, 1, 0); break;
     case 2: change_item(game_text, select, player, 2, 1); break;
     case 3: break;
@@ -170,8 +179,6 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
     if (i >= 10) mvwprintw(game_text, 2 + i - 10, 50, "[%d]: %s", i + 1, player->backpack[i].name);
   }
   wrefresh(game_text);
-
-  
   wclear(select);
   mvwaddstr(select, 0, 0, "Press any key to continue...");
   wrefresh(select);
