@@ -110,7 +110,7 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
 // Show Items in Backpack
 void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
   wclear(game_text);
-  mvwprintw(game_text, 0, 0, "---==| %s's Backpack |==---", player->name);
+  mvwprintw(game_text, 0, 0, "              ---==| %s's Backpack |==---", player->name);
   mvwaddstr(game_text, 1, 0, "          ");
   for (int i = 0; i < BAG_SLOTS; i++) {
     if (i < 10) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, player->backpack[i].name);
