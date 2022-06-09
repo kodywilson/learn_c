@@ -111,14 +111,20 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
       choice_key[num_choices] = i;
       num_choices++;
     }
-  } // player->backpack[i] = empty_slot;
+  }
   if (num_choices > 1) {
     choice = choose(select, num_choices, "Please choose: ");
     if (choice == 0) {
       mvwprintw(game_text, 0, 0, "Right on, %s, keeping %s on for now.", player->name, player->worn_items[slot_worn].name);
     } else {
-      player->worn_items[slot_worn] = player->backpack[choice_key[choice]];
-      player->backpack[choice_key[choice]] = empty_slot;
+      for (int i = 0; i < BAG_SLOTS; i++) {
+        if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+          player->backpack[i] = player->worn_items[slot_worn]; // move existing item to first slot in backpack
+          break; // exit loop
+        }
+      }
+      player->worn_items[slot_worn] = player->backpack[choice_key[choice]]; // move new item to worn slot
+      player->backpack[choice_key[choice]] = empty_slot;                    // empty out slot with chosen item
     }
   }
 }
