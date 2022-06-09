@@ -151,16 +151,41 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
               getch();
               break;
       case 2: wclear(game_text);
-              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available shields for a %s such as yourself.", player->name, player->role);
-              mvwaddstr(game_text, 1, 0, "          ");
-              num_choices = 0;
-              reset_choices();
-              strncpy(choices[num_choices], "Keep browsing...", MAX_CHOICE_LEN);
-              num_choices++;
-              for (int i = 0; i < ALL_SHIELDS; i++) {
-                if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, shields[i].name);
-                if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, shields[i].name);
-                //mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
+              if (strcmp(player->role, "Rogue") == 0 || strcmp(player->role, "Wizard") == 0) {
+                mvwprintw(game_text, 0, 0, "Sorry, %s, %s's cannot use shields.", player->name, player->role);
+              } else {
+                mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available shields for a %s such as yourself.", player->name, player->role);
+                mvwaddstr(game_text, 1, 0, "          ");
+                num_choices = 0;
+                reset_choices();
+                strncpy(choices[num_choices], "Keep browsing...", MAX_CHOICE_LEN);
+                num_choices++;
+                for (int i = 0; i < ALL_SHIELDS; i++) {
+                  if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, shields[i].name);
+                  if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, shields[i].name);
+                  strncpy(choices[num_choices], shields[i].name, MAX_CHOICE_LEN);
+                  choice_key[num_choices] = i;
+                  num_choices++;
+                }
+                wrefresh(game_text);
+                wclear(game_text);
+                if (num_choices > 1) {
+                  choice = choose(select, num_choices, "Please choose: ");
+                  if (choice == 0) {
+                    mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
+                  } else {
+                    mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", shields[choice_key[choice]].name);
+                    player->coin-=shields[choice_key[choice]].cost;
+                    for (int i = 0; i < BAG_SLOTS; i++) {
+                      if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+                        player->backpack[i] = shields[choice_key[choice]]; // move bought item to first open slot in backpack
+                        break; // exit loop
+                      }
+                    }
+                  }
+                } else {
+                  mvwprintw(game_text, 0, 0, "%s, it doesn't look like we have a shield option for you...", player->name);
+                }
               }
               wrefresh(game_text);
               wclear(select);

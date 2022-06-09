@@ -116,7 +116,11 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
     if (choice == 0) {
       mvwprintw(game_text, 0, 0, "Right on, %s, keeping %s on for now.", player->name, player->worn_items[slot_worn].name);
     } else {
-      mvwprintw(game_text, 0, 0, "Equipping %s and moving %s to your backpack.", player->backpack[choice_key[choice]].name, player->worn_items[slot_worn].name);
+      if (strcmp(player->worn_items[slot_worn].name, "- empty -") == 0) {
+        mvwprintw(game_text, 0, 0, "Equipping %s.", player->backpack[choice_key[choice]].name);
+      } else {
+        mvwprintw(game_text, 0, 0, "Equipping %s and moving %s to your backpack.", player->backpack[choice_key[choice]].name, player->worn_items[slot_worn].name);
+      }
       for (int i = 0; i < BAG_SLOTS; i++) {
         if (strcmp(player->backpack[i].name, "- empty -") == 0) {
           player->backpack[i] = player->worn_items[slot_worn]; // move existing item to first open slot in backpack
