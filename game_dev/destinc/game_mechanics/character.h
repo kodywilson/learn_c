@@ -45,7 +45,7 @@ void build_character(char name[32], mob chosen_class, mob *player) {
   player->type      = chosen_class.type;
   player->alignment = chosen_class.alignment;
   for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = 0;
-  for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = 0;
+  //for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = 0;
   //for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = 0;
 }
 
@@ -83,6 +83,9 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
       clear_box(input);
       // generate starting stats for the player
       build_character(name, player_classes[class_choice], player);
+      player->worn_items[0] = armors[0];
+      for (int i = 1; i < WORN_SLOTS; i++) player->worn_items[i] = empty_slot;
+      for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = empty_slot;
       break;
     } else {
       mvwaddstr(game_text, 5, 1, "Right on, please make another choice:");
@@ -97,9 +100,9 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
   wclear(game_text);
   mvwprintw(game_text, 0, 0, "---==| %s's Worn Items |==---", player->name);
   mvwaddstr(game_text, 1, 0, "          ");
-  mvwprintw(game_text, 2, 0, "Armor: %s", armors[player->worn_items[0]].name);
-  mvwprintw(game_text, 3, 0, "Main Hand: %s", weapons[player->worn_items[1]].name);
-  mvwprintw(game_text, 4, 0, "Off Hand: %s", weapons[player->worn_items[2]].name);
+  mvwprintw(game_text, 2, 0, "Armor: %s", player->worn_items[0].name);
+  mvwprintw(game_text, 3, 0, "Main Hand: %s", player->worn_items[1].name);
+  mvwprintw(game_text, 4, 0, "Off Hand: %s", player->worn_items[2].name);
   wrefresh(game_text);
   wclear(select);
   mvwaddstr(select, 0, 0, "Press any key to continue...");

@@ -32,6 +32,6 @@ typedef struct Mob {
   int  type;      // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
   int  alignment; // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
   int  buffs[MAX_BUFFS];  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-  int  worn_items[WORN_SLOTS]; // gear currently equipped - 0 = armor, 1 = main hand, 2  off hand (shield, etc.)
+  item worn_items[WORN_SLOTS]; // gear currently equipped - 0 = armor, 1 = main hand, 2  off hand (shield, etc.)
   item backpack[BAG_SLOTS];    // items in your backpack
 } mob;

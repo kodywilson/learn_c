@@ -31,7 +31,7 @@ mob player_classes[PCS] = {
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     0,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   },
   // Knight
@@ -62,7 +62,7 @@ mob player_classes[PCS] = {
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     0,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   },
   // Rogue
@@ -93,7 +93,7 @@ mob player_classes[PCS] = {
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     4,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   },
   // Wizard
@@ -124,7 +124,7 @@ mob player_classes[PCS] = {
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     3,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-    {0},          // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   }
 };
