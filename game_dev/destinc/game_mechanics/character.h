@@ -95,8 +95,38 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
   
 }
 
+// look in backpack for items compatible with desired slot
+void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, int slot_item) {
+  int choice = 0, num_choices = 0;
+
+
+  wclear(game_text);
+  reset_choices();
+  strncpy(choices[num_choices], "Keep current item...", MAX_CHOICE_LEN);
+  num_choices++;
+
+  for (int i = 0; i < BAG_SLOTS; i++) {
+    if (player->backpack[i].slot == slot_item) {
+      strncpy(choices[num_choices], player->backpack[i].name, MAX_CHOICE_LEN);
+      choice_key[num_choices] = i;
+      num_choices++;
+    }
+  } // player->backpack[i] = empty_slot;
+  if (num_choices > 1) {
+    choice = choose(select, num_choices, "Please choose: ");
+    if (choice == 0) {
+      mvwprintw(game_text, 0, 0, "Right on, %s, keeping %s on for now.", player->name, player->worn_items[slot_worn].name);
+    } else {
+      player->worn_items[slot_worn] = player->backpack[choice_key[choice]];
+      player->backpack[choice_key[choice]] = empty_slot;
+    }
+  }
+}
+
 // Show Items Currently Being Worn
 void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
+  int choice = 0, num_choices = 0;
+
   wclear(game_text);
   mvwprintw(game_text, 0, 0, "---==| %s's Worn Items |==---", player->name);
   mvwaddstr(game_text, 1, 0, "          ");
@@ -104,14 +134,28 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
   mvwprintw(game_text, 3, 0, "Main Hand: %s", player->worn_items[1].name);
   mvwprintw(game_text, 4, 0, "Off Hand: %s", player->worn_items[2].name);
   wrefresh(game_text);
-  wclear(select);
-  mvwaddstr(select, 0, 0, "Press any key to continue...");
-  wrefresh(select);
-  getch();
+  
+  // Set up choices around changing inventory
+  choice = num_choices = 0;
+  reset_choices();
+  strncpy(choices[num_choices], "Change Armor", MAX_CHOICE_LEN); num_choices++;
+  strncpy(choices[num_choices], "Change Main Hand Weapon", MAX_CHOICE_LEN); num_choices++;
+  strncpy(choices[num_choices], "Change Off Hand Weapon/Shield", MAX_CHOICE_LEN); num_choices++;
+  strncpy(choices[num_choices], "Back to Character Sheet", MAX_CHOICE_LEN); num_choices++;
+  choice = choose(select, num_choices, "Please choose: ");
+  switch (choice) {
+    case 0: change_item(game_text, select, player, 0, 2); break;
+    case 1: change_item(game_text, select, player, 1, 0); break;
+    case 2: change_item(game_text, select, player, 2, 1); break;
+    case 3: break;
+    default: break;
+  }
+  //if (choice == 3) break; // head back to character sheet
 }
 
 // Show Items in Backpack
 void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
+
   wclear(game_text);
   mvwprintw(game_text, 0, 0, "              ---==| %s's Backpack |==---", player->name);
   mvwaddstr(game_text, 1, 0, "          ");
@@ -120,6 +164,8 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
     if (i >= 10) mvwprintw(game_text, 2 + i - 10, 50, "[%d]: %s", i + 1, player->backpack[i].name);
   }
   wrefresh(game_text);
+
+  
   wclear(select);
   mvwaddstr(select, 0, 0, "Press any key to continue...");
   wrefresh(select);
@@ -145,8 +191,10 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     mvwprintw(game_text, 6, 0, "Wisdom: %d", player->wis);
     mvwprintw(game_text, 7, 0, "Charisma: %d", player->cha);
     mvwaddstr(game_text, 8, 0, "          ");
+    mvwprintw(game_text, 9, 0, "Armor Class (AC): %d", 10 + player->worn_items[0].armor_val + player->worn_items[1].armor_val + player->worn_items[2].armor_val);
     snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
-    mvwaddstr(game_text, 9, 0, buff_string);
+    mvwaddstr(game_text, 10, 0, "          ");
+    mvwaddstr(game_text, 11, 0, buff_string);
     wrefresh(game_text);
 
     // Set up choices around viewing inventory
