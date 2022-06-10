@@ -49,10 +49,49 @@ int tavern_choices() {
   return num_choices;
 }
 
+int view_and_buy(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
+  int choice, num_choices;
+
+  // First show item stats
+  wclear(game_text);
+  wattron(game_text, COLOR_PAIR(5) | A_BOLD);
+  mvwprintw(game_text, 0, 0, "---==| Viewing: %s |==---", viewing.name);
+  wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
+  wattron(game_text, COLOR_PAIR(6) | A_BOLD);
+  mvwprintw(game_text, 0, 7, "Viewing: %s", viewing.name);
+  wattroff(game_text, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(game_text, 1, 0, "          ");
+  wattron(game_text, COLOR_PAIR(5));  // later show certain things based on armor vs. weapon
+  mvwprintw(game_text, 2, 0, "Description:  %s", viewing.desc);
+  mvwaddstr(game_text, 3, 0, "          ");
+  mvwprintw(game_text, 4, 0, "Armor:  %d", viewing.armor_val);
+  mvwprintw(game_text, 5, 0, "Damage: %dd%d", viewing.dice_num, viewing.dmg_dice);
+  mvwaddstr(game_text, 6, 0, "          ");
+  mvwprintw(game_text, 7, 0, "Cost:  %d", viewing.cost);
+  wattroff(game_text, COLOR_PAIR(5));
+  wrefresh(game_text);
+  // determine if the player can afford the armor
+  if (coin >= viewing.cost) {
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to purchase this item?");
+  } else {
+    wrefresh(game_text);
+    wclear(select);
+    mvwaddstr(select, 0, 0, "Press any key to continue...");
+    wrefresh(select);
+    getch();
+    choice = 1;
+  }
+
+  return choice;
+}
+
 // you are visiting the armory
 void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   int choice, armor_limit; // these limits are how we tune what options appear for each player
   char armory_prompt[96];  // for instance, a Knight will see all armors as available while a cleric only light and medium, etc.
+  item viewing;
 
   snprintf(armory_prompt, 95, "What gear would you like to view, %s?", player->name);
   if (strcmp(player->role, "Wizard") == 0) armor_limit = 1;
@@ -66,6 +105,7 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   wrefresh(game_text);
   while(1) {
     //getch(); // DEBUG
+    viewing = empty_slot;
     reset_choices();
     num_choices = armory_choices();
     choice = choose(select, num_choices, armory_prompt);
@@ -91,13 +131,20 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
                 if (choice == 0) {
                   mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
                 } else {
-                  mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", armors[choice_key[choice]].name);
-                  player->coin-=armors[choice_key[choice]].cost;
-                  for (int i = 0; i < BAG_SLOTS; i++) {
-                    if (strcmp(player->backpack[i].name, "- empty -") == 0) {
-                      player->backpack[i] = armors[choice_key[choice]]; // move bought item to first open slot in backpack
-                      break; // exit loop
+                  viewing = armors[choice_key[choice]];
+                  if ((view_and_buy(game_text, select, player->coin, viewing)) == 0) {
+                    wclear(game_text);
+                    mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", viewing.name);
+                    player->coin-=viewing.cost;
+                    for (int i = 0; i < BAG_SLOTS; i++) {
+                      if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+                        player->backpack[i] = viewing; // move bought item to first open slot in backpack
+                        break; // exit loop
+                      }
                     }
+                  } else {
+                    wclear(game_text);
+                    mvwprintw(game_text, 0, 0, "Ok, how else can I help you, %s?", player->name);
                   }
                 }
               } else {
