@@ -153,11 +153,11 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
   mvwprintw(game_text, 0, 7, "%s's Worn Items", player->name);
   wattroff(game_text, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(game_text, 1, 0, "          ");
-  wattron(game_text, COLOR_PAIR(5) | A_BOLD);
-  mvwprintw(game_text, 2, 0, "Armor:     %s", player->worn_items[0].name);
-  mvwprintw(game_text, 3, 0, "Main Hand: %s", player->worn_items[1].name);
-  mvwprintw(game_text, 4, 0, "Off Hand:  %s", player->worn_items[2].name);
-  wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
+  wattron(game_text, COLOR_PAIR(5));
+  mvwprintw(game_text, 2, 0, "Armor:      %s", player->worn_items[0].name);
+  mvwprintw(game_text, 3, 0, "Main Hand:  %s", player->worn_items[1].name);
+  mvwprintw(game_text, 4, 0, "Off Hand:   %s", player->worn_items[2].name);
+  wattroff(game_text, COLOR_PAIR(5));
   wrefresh(game_text);
   
   // Set up choices around changing inventory
@@ -175,18 +175,35 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
     case 3: break;
     default: break;
   }
-  //if (choice == 3) break; // head back to character sheet
 }
 
 // Show Items in Backpack
 void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
 
   wclear(game_text);
+  wattron(game_text, COLOR_PAIR(5) | A_BOLD);
   mvwprintw(game_text, 0, 0, "              ---==| %s's Backpack |==---", player->name);
+  wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
+  wattron(game_text, COLOR_PAIR(6) | A_BOLD);
+  mvwprintw(game_text, 0, 21, "%s's Backpack", player->name);
+  wattroff(game_text, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(game_text, 1, 0, "          ");
   for (int i = 0; i < BAG_SLOTS; i++) {
-    if (i < 10) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, player->backpack[i].name);
-    if (i >= 10) mvwprintw(game_text, 2 + i - 10, 50, "[%d]: %s", i + 1, player->backpack[i].name);
+    if (i < 10) {
+      wattron(game_text, COLOR_PAIR(6));
+      mvwprintw(game_text, 2 + i, 0, "[%d]: ", i + 1);
+      wattroff(game_text, COLOR_PAIR(6));
+      wattron(game_text, COLOR_PAIR(5));
+      mvwprintw(game_text, 2 + i, 7, "%s", player->backpack[i].name);
+      wattroff(game_text, COLOR_PAIR(5));
+    } else {
+      wattron(game_text, COLOR_PAIR(6));
+      mvwprintw(game_text, 2 + i - 10, 50, "[%d]: ", i + 1);
+      wattroff(game_text, COLOR_PAIR(6));
+      wattron(game_text, COLOR_PAIR(5));
+      mvwprintw(game_text, 2 + i - 10, 57, "%s", player->backpack[i].name);
+      wattroff(game_text, COLOR_PAIR(5));
+    }
   }
   wrefresh(game_text);
   wclear(select);
@@ -197,9 +214,9 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
 
 // color stats according to level of bonus (or negative if relevant)
 void format_stat(WINDOW *win, char *text, int stat, int y_pos) {
-  wattron(win, COLOR_PAIR(5) | A_BOLD);
+  wattron(win, COLOR_PAIR(5));
   mvwaddstr(win, y_pos, 0, text);
-  wattroff(win, COLOR_PAIR(5) | A_BOLD);
+  wattroff(win, COLOR_PAIR(5));
   if (stat < 9) wattron(win, COLOR_PAIR(1) | A_BOLD);
   if ((stat >= 9) && (stat <= 11)) wattron(win, COLOR_PAIR(5) | A_BOLD);
   if (stat > 11) wattron(win, COLOR_PAIR(7) | A_BOLD);
@@ -229,12 +246,12 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     format_stat(game_text, "Wisdom: ", player->wis, 6);
     format_stat(game_text, "Charisma: ", player->cha, 7);
     mvwaddstr(game_text, 8, 0, "          ");
-    wattron(game_text, COLOR_PAIR(5) | A_BOLD);
+    wattron(game_text, COLOR_PAIR(5));
     mvwprintw(game_text, 9, 0, "Armor Class (AC): %d", 10 + player->worn_items[0].armor_val + player->worn_items[1].armor_val + player->worn_items[2].armor_val);
     snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
     mvwaddstr(game_text, 10, 0, "          ");
     mvwaddstr(game_text, 11, 0, buff_string);
-    wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
+    wattroff(game_text, COLOR_PAIR(5));
     wrefresh(game_text);
 
     // Set up choices around viewing inventory
@@ -242,7 +259,7 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     reset_choices();
     strncpy(choices[num_choices], "View Worn Inventory", MAX_CHOICE_LEN); num_choices++;
     strncpy(choices[num_choices], "View Backpack", MAX_CHOICE_LEN); num_choices++;
-    strncpy(choices[num_choices], "Back to Town", MAX_CHOICE_LEN); num_choices++;
+    strncpy(choices[num_choices], "Go back...", MAX_CHOICE_LEN); num_choices++;
     choice = choose(select, num_choices, "Please choose: ");
     switch (choice) {
       case 0: view_worn(game_text, select, player); break;
