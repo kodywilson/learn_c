@@ -196,9 +196,12 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
 
   while (1) {
     wclear(game_text);
-    // wclear(select);
-    // wrefresh(select);
+    wattron(game_text, COLOR_PAIR(5) | A_BOLD);
     mvwprintw(game_text, 0, 0, "---==| %s's Character Sheet |==---", player->name);
+    wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
+    wattron(game_text, COLOR_PAIR(6) | A_BOLD);
+    mvwprintw(game_text, 0, 7, "%s's Character Sheet", player->name);
+    wattroff(game_text, COLOR_PAIR(6) | A_BOLD);
     mvwaddstr(game_text, 1, 0, "          ");
     mvwprintw(game_text, 2, 0, "Strength: %d", player->str);
     mvwprintw(game_text, 3, 0, "Dexterity: %d", player->dex);
