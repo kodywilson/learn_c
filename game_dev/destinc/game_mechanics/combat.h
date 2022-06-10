@@ -57,12 +57,17 @@ int attack(mob *attacker, mob *target) {
   // note - mob stat blocks include dex bonus (if any) in armor category
   // Determine if attacker is player or monster and then calculate outcome of attack
   if ( attacker->is_pc == 1 ) { // first we handle when attacker is pc
-    if (strcmp(attacker->role, "Rogue") == 0) {
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2);                                 // use dex to hit for rogue
-      damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg + ((attacker->dex - 10) / 2); // dex for damage for rogue
-    } else {
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit for everyone else
-      damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg + ((attacker->str - 10) / 2); // str for damage for non rogues
+    // check for finesse weapon and higher dex than str
+    if ((attacker->worn_items[1].finesse == 1) && (attacker->dex >= attacker->str)) {
+      roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2);                                 // use dex to hit for finesse
+      damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + attacker->dmg + ((attacker->dex - 10) / 2); // dex for damage for finesse
+    } else { // now go off strength and make sure they are holding a weapon!
+      roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit unless finesse
+      if (strcmp(attacker->worn_items[1].name, "- empty -") == 0) {
+        damage = dice(1, 2) + ((attacker->str - 10) / 2);                                                 // bare hands!
+      } else {
+        damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + attacker->dmg + ((attacker->str - 10) / 2); // str for damage unless finesse
+      }
     }
     if (attacker->buffs[2] == 1) {                          // check for player buff
       if ((strcmp(attacker->role, "Cleric") == 0) || (strcmp(attacker->role, "Knight") == 0)) {          // Cleric and Knight buff for praying
@@ -77,10 +82,18 @@ int attack(mob *attacker, mob *target) {
     ac = AC_BASE + target->armor;     // Base AC + armor for monsters // later may add mods
   } else { // monster is attacker, use different formulas
     roll = dice(1, 20) + attacker->to_hit;  // monster roll = d20 + to hit
-    if (strcmp(target->role, "Rogue") == 0 || strcmp(target->role, "Wizard") == 0) {
-      ac = AC_BASE + target->dodge + target->armor + ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
-    } else { // non rogue/wizard
-      ac = AC_BASE + target->dodge + target->armor;     // Base AC + dodge + armor
+    if ((target->worn_items[0].type == 0) || (target->worn_items[0].type == 6)) {                 // light or no armor
+      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val + ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
+    }
+    if (target->worn_items[0].type == 1) {                                                        // medium armor - max +2 dex bonus
+      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val + (((target->dex - 10) / 2) > 2) ? 2 : ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
+    }
+    if (target->worn_items[0].type == 2) {                             // heavy armor
+      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val;  // Base AC + dodge + armor
+    }
+    // check for shield
+    if (strcmp(target->worn_items[2].name, "- empty -") != 0) {
+      ac+=target->worn_items[2].armor_val;  // add shield AC
     }
     damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg; // number of dice, type of dice, +dmg
     // now handle buffs which may modify these numbers a bit
