@@ -146,11 +146,18 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
   int choice = 0, num_choices = 0;
 
   wclear(game_text);
+  wattron(game_text, COLOR_PAIR(5) | A_BOLD);
   mvwprintw(game_text, 0, 0, "---==| %s's Worn Items |==---", player->name);
+  wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
+  wattron(game_text, COLOR_PAIR(6) | A_BOLD);
+  mvwprintw(game_text, 0, 7, "%s's Worn Items", player->name);
+  wattroff(game_text, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(game_text, 1, 0, "          ");
-  mvwprintw(game_text, 2, 0, "Armor: %s", player->worn_items[0].name);
+  wattron(game_text, COLOR_PAIR(5) | A_BOLD);
+  mvwprintw(game_text, 2, 0, "Armor:     %s", player->worn_items[0].name);
   mvwprintw(game_text, 3, 0, "Main Hand: %s", player->worn_items[1].name);
-  mvwprintw(game_text, 4, 0, "Off Hand: %s", player->worn_items[2].name);
+  mvwprintw(game_text, 4, 0, "Off Hand:  %s", player->worn_items[2].name);
+  wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
   wrefresh(game_text);
   
   // Set up choices around changing inventory
@@ -188,6 +195,7 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
   getch();
 }
 
+// color stats according to level of bonus (or negative if relevant)
 void format_stat(WINDOW *win, char *text, int stat, int y_pos) {
   wattron(win, COLOR_PAIR(5) | A_BOLD);
   mvwaddstr(win, y_pos, 0, text);
@@ -221,10 +229,12 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     format_stat(game_text, "Wisdom: ", player->wis, 6);
     format_stat(game_text, "Charisma: ", player->cha, 7);
     mvwaddstr(game_text, 8, 0, "          ");
+    wattron(game_text, COLOR_PAIR(5) | A_BOLD);
     mvwprintw(game_text, 9, 0, "Armor Class (AC): %d", 10 + player->worn_items[0].armor_val + player->worn_items[1].armor_val + player->worn_items[2].armor_val);
     snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
     mvwaddstr(game_text, 10, 0, "          ");
     mvwaddstr(game_text, 11, 0, buff_string);
+    wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
     wrefresh(game_text);
 
     // Set up choices around viewing inventory
