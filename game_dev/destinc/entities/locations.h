@@ -228,13 +228,20 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
                   if (choice == 0) {
                     mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
                   } else {
-                    mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", shields[choice_key[choice]].name);
-                    player->coin-=shields[choice_key[choice]].cost;
-                    for (int i = 0; i < BAG_SLOTS; i++) {
-                      if (strcmp(player->backpack[i].name, "- empty -") == 0) {
-                        player->backpack[i] = shields[choice_key[choice]]; // move bought item to first open slot in backpack
-                        break; // exit loop
+                    viewing = shields[choice_key[choice]];
+                    if ((view_and_buy(game_text, select, player->coin, viewing)) == 0) {
+                      wclear(game_text);
+                      mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", viewing.name);
+                      player->coin-=viewing.cost;
+                      for (int i = 0; i < BAG_SLOTS; i++) {
+                        if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+                          player->backpack[i] = viewing; // move bought item to first open slot in backpack
+                          break; // exit loop
+                        }
                       }
+                    } else {
+                      wclear(game_text);
+                      mvwprintw(game_text, 0, 0, "Ok, how else can I help you, %s?", player->name);
                     }
                   }
                 } else {
