@@ -50,24 +50,29 @@ int tavern_choices() {
 }
 
 int view_and_buy(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
-  int choice, num_choices;
+  int choice, num_choices, y_pos = 0;
 
   // First show item stats
   wclear(game_text);
   wattron(game_text, COLOR_PAIR(5) | A_BOLD);
-  mvwprintw(game_text, 0, 0, "---==| Viewing: %s |==---", viewing.name);
+  mvwprintw(game_text, y_pos, 0, "---==| Viewing: %s |==---", viewing.name);
   wattroff(game_text, COLOR_PAIR(5) | A_BOLD);
   wattron(game_text, COLOR_PAIR(6) | A_BOLD);
-  mvwprintw(game_text, 0, 7, "Viewing: %s", viewing.name);
+  mvwprintw(game_text, y_pos, 7, "Viewing: %s", viewing.name);
   wattroff(game_text, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(game_text, 1, 0, "          ");
+  mvwaddstr(game_text, ++y_pos, 0, "          ");
   wattron(game_text, COLOR_PAIR(5));  // later show certain things based on armor vs. weapon
-  mvwprintw(game_text, 2, 0, "Description:  %s", viewing.desc);
-  mvwaddstr(game_text, 3, 0, "          ");
-  mvwprintw(game_text, 4, 0, "Armor:  %d", viewing.armor_val);
-  mvwprintw(game_text, 5, 0, "Damage: %dd%d", viewing.dice_num, viewing.dmg_dice);
-  mvwaddstr(game_text, 6, 0, "          ");
-  mvwprintw(game_text, 7, 0, "Cost:  %d", viewing.cost);
+  mvwprintw(game_text, ++y_pos, 0, "Description:  %s", viewing.desc);
+  mvwaddstr(game_text, ++y_pos, 0, "          ");
+  if (viewing.armor_val > 0) mvwprintw(game_text, ++y_pos, 0, "Armor:  %d", viewing.armor_val);
+  if (viewing.dmg_dice > 0) {
+    mvwprintw(game_text, ++y_pos, 0, "Damage: %dd%d", viewing.dice_num, viewing.dmg_dice);
+    mvwprintw(game_text, ++y_pos, 0, "1h/2h:  %s", item_versas[viewing.versa]);
+  }
+  mvwaddstr(game_text, ++y_pos, 0, "          ");
+  mvwprintw(game_text, ++y_pos, 0, "Type:   %s", item_types[viewing.type]);
+  mvwprintw(game_text, ++y_pos, 0, "Group:  %s", item_groups[viewing.group]);
+  mvwprintw(game_text, ++y_pos, 0, "Cost:   %d", viewing.cost);
   wattroff(game_text, COLOR_PAIR(5));
   wrefresh(game_text);
   // determine if the player can afford the armor

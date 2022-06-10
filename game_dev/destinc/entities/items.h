@@ -3,6 +3,14 @@
 #define ALL_ARMOR 13
 #define ALL_SHIELDS 3
 #define ALL_WEAPONS 27
+#define ITEM_TYPES 7
+#define ITEM_GROUPS 3
+#define ITEM_VERSAS 4
+
+// Lookup tables
+char *item_types[ITEM_TYPES] = {"light", "medium", "heavy", "ring", "earring", "bracer", "outfit"};
+char *item_groups[ITEM_GROUPS] = {"simple", "martial", "magical jewelry"};
+char *item_versas[ITEM_VERSAS] = {"not usable held", "one hand only", "two hand only", "one or two hands"};
 
 // shared struct for items
 typedef struct Item {
