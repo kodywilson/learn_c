@@ -2,6 +2,8 @@
 // C port of original game written in Ruby
 // by Kody Wilson
 
+#define DEBUG 0 // set to 1 for additional messages during gameplay
+
 #include "includes.h"
 
 #define INPUT_MAX 33
@@ -10,7 +12,7 @@ int main() {
   srand(time(0)); // seed rand using time
   int choice, max_y, max_x;
   // last four of next line are oft used offsets
-  int game_text_y, game_text_x, main_loop, y_high, x_high, y_low, x_low;
+  int game_text_y, game_text_x, main_loop, saves, y_high, x_high, y_low, x_low;
   mob player; // create player struct
 
   WINDOW *game_text_border, *select_border, *stats_border;
@@ -78,45 +80,57 @@ int main() {
 
   // check for existing save
   if (file_there(save_file)) {
-    if (check_saves()) {
+    saves = check_saves();
+    if (saves > 0) {
       mvwaddstr(game_text, y_high, x_high, "I noticed you already have a saved game going. Welcome back to Destiny!");
       wrefresh(game_text);
       reset_choices();
       num_choices = y_n();
-      choice = choose(select, num_choices, "Choose (Yes) to load last save, (No) to create a new game.");
-      if (choice_key[choice] == 0) load_game(&player);
-      else {
+      choice = choose(select, num_choices, "Load a save? Choose (Yes) to load a save, (No) to create a new game.");
+      if (choice_key[choice] == 0) {
+        choice = choose_save(game_text, select, saves);
+        load_save(choice, &player);
+      } else {
         wclear(game_text);
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
-        wattron(game_text, COLOR_PAIR(1) | A_BOLD);
-        mvwaddstr(game_text, y_low, x_low, "Please note, this will remove the current save game.");
-        wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
-        wattron(game_text, COLOR_PAIR(4));
-        wrefresh(game_text);
-        reset_choices();
-        num_choices = y_n();
-        choice = choose(select, num_choices, "Are you sure?");
-        if (choice_key[choice] == 0) {
-          trunc_file(save_file);
+        if (saves >= SAVE_SLOTS) {
+          wattron(game_text, COLOR_PAIR(1) | A_BOLD);
+          mvwprintw(game_text, y_low, x_low, "Please note: only %d saves are supported. You are at the limit and will need to overwrite one save to create a new game.", saves);
+          wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
+          wattron(game_text, COLOR_PAIR(4));
+          wrefresh(game_text);
+          reset_choices();
+          num_choices = y_n();
+          choice = choose(select, num_choices, "Do you want to continue?");
+          if (choice_key[choice] == 0) {
+            wclear(game_text);
+            mvwaddstr(game_text, y_high, x_high, "Right on, let's create a new character.");
+            wrefresh(game_text);
+            create_character(game_text, select, input, &player);
+            //save_game(game_text, select, player, saves);
+          } else {
+            wclear(game_text);
+            mvwaddstr(game_text, y_high, x_high, "Ok, fair enough. Let's load a saved game.");
+            wrefresh(game_text);
+            napms(1000);
+            choice = choose_save(game_text, select, saves);
+            load_save(choice, &player);
+          }
+        } else {
           wclear(game_text);
           mvwaddstr(game_text, y_high, x_high, "Right on, let's create a new character.");
           wrefresh(game_text);
           create_character(game_text, select, input, &player);
-          save_game(player);
-        } else {
-          wclear(game_text);
-          mvwaddstr(game_text, y_high, x_high, "Ok, fair enough. Let's load the last saved game.");
-          wrefresh(game_text);
-          napms(2000);
-          load_game(&player);
+          //save_game(game_text, select, player, saves);
         }
+        wrefresh(game_text);
       }
     } else {
       mvwaddstr(game_text, y_high, x_high, "No saved games found. Let's create a character!");
       wrefresh(game_text);
-      napms(2000);
+      napms(1000);
       create_character(game_text, select, input, &player);
-      save_game(player);
+      //save_game(game_text, select, player, saves);
     }
   } else {   // this needs to be updated to create file if missing
     mvwaddstr(game_text, y_high, x_high, "There is no save game file!");
@@ -158,7 +172,7 @@ int main() {
     napms(250);
   }
 
-  save_game(player);
+  save_game(game_text, select, player, saves);
 
   //printf("Test text is %s \n", rand_move_text[dice(1, MOVE_TEXT) - 1]);
 

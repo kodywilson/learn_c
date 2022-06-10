@@ -28,11 +28,13 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     4,            // damage dice - 4 for rat
     1,            // number of damage dice. 1 for rat, so rat can do 1d4 +2 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     1,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    3             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
+    3,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
   // Kobold
   {
     "kobold",     // name
@@ -57,11 +59,13 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     4,            // damage dice - 4 for kobold
     1,            // number of damage dice. 1 for kobold, so kobold can do 1d4 +2 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    2             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
+    2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
   // Skeleton
   {
     "skeleton",     // name
@@ -86,11 +90,13 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     6,            // damage dice - 6 for skeleton
     1,            // number of damage dice. 1 for skeleton, so skeleton can do 1d6 +2 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     2,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    2             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
+    2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
   // Bandit
   {
     "bandit",     // name
@@ -115,11 +121,13 @@ mob mobs[MOBS] = {
     3,            // modifier to chance to hit
     6,            // damage dice - 8 for bandit
     1,            // number of damage dice. 1 for bandit, so bandit can do 1d6 +1 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    5             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
+    5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
   // Goblin
   {
     "goblin",     // name
@@ -144,11 +152,13 @@ mob mobs[MOBS] = {
     4,            // modifier to chance to hit
     6,            // damage dice - 8 for goblin
     1,            // number of damage dice. 2 for goblin, so goblin can do 1d6 +2 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    5             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
+    5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
   // Zombie
   {
     "zombie",     // name
@@ -173,11 +183,13 @@ mob mobs[MOBS] = {
     3,            // modifier to chance to hit
     6,            // damage dice - 6 for zombie
     1,            // number of damage dice. 2 for zombie, so zombie can do 2d8 +2 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    5             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  }               // 3 = true neutral, 4 = chaotic good
+    5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  }
 };
 
 mob bosses[BOSS] = {
@@ -205,11 +217,13 @@ mob bosses[BOSS] = {
     5,            // modifier to chance to hit
     12,           // damage dice - 12 for orc
     1,            // number of damage dice. 1 for orc, so orc can do 1d12 +3 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     1,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    6             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
+    6,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
   // Hobgoblin
   {
     "hobgoblin",     // name
@@ -234,11 +248,13 @@ mob bosses[BOSS] = {
     3,            // modifier to chance to hit
     8,            // damage dice - 8 for hobgoblin
     1,            // number of damage dice. 1 for hobgoblin, so hobgoblin can do 1d8 +1 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    2             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
+    2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
   // Gnoll
   {
     "gnoll",     // name
@@ -263,12 +279,14 @@ mob bosses[BOSS] = {
     4,            // modifier to chance to hit
     6,            // damage dice - 6 for gnoll
     1,            // number of damage dice. 1 for gnoll, so gnoll can do 1d6 +2 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    6             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  },               // 3 = true neutral, 4 = chaotic good
-  // Bugbear -- this guy is way too tough, needs to be moved to boss section
+    6,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  },
+  // Bugbear
   {
     "bugbear",     // name
     "bugbear",     // role
@@ -292,9 +310,11 @@ mob bosses[BOSS] = {
     4,            // modifier to chance to hit
     8,            // damage dice - 8 for bugbear
     2,            // number of damage dice. 2 for bugbear, so bugbear can do 2d8 +2 (from dmg) damage.
-    {0, 0, 0, 0}, // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     0,            // is this a player character? combat calculations vary a bit so we need to know
     3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
-    2             // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  }               // 3 = true neutral, 4 = chaotic good
+    2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
+    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
+    {}            // 20 backpack slots.
+  }
 };

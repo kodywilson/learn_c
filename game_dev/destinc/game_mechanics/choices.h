@@ -1,7 +1,7 @@
 // functions for handling player selections
 
-#define MAX_CHOICES 10
-#define MAX_CHOICE_LEN 32
+#define MAX_CHOICES 30
+#define MAX_CHOICE_LEN 96
 #define Y_N 2
 
 // globals
@@ -40,11 +40,26 @@ int choose(WINDOW *win, int num, char *text) {
     for (int i = 0; i < num; i++) {
       if (i < 6) {
         y = i + 1;
-        x = 1;
+        x = 0;
       }
-      if (i > 5) { // wrap selections over to new column if there are more than 5 (should be 4?)
-        y = i - 3;
-        x = 16;
+      if ((i > 5) && (i < 12)) { // wrap selections over to new columns if needed
+        y = i - 5;
+        x = 24;
+      }
+      if ((i > 11) && (i < 18)) { // wrap selections over to new columns if needed
+        y = i - 11;
+        x = 48;
+      }
+      if ((i > 17) && (i < 23)) { // wrap selections over to new columns if needed
+        y = i - 17;
+        x = 60;
+      }
+      // this needs to be looked at again. Too many choices and they will appear off the window.
+      // may need to either break this into categories (View which armors? Light, Medium, Heavy)
+      // or find a different way to scroll when browsing the list...
+      if ((i > 22) && (i < 29)) { // wrap selections over to new columns if needed
+        y = i - 22;
+        x = 84;
       }
       if (i == highlight) wattron(win, A_BOLD | COLOR_PAIR(6));
       mvwaddstr(win, y, x, choices[i]);

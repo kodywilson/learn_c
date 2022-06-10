@@ -1,25 +1,34 @@
 // game locations - town, dungeon, tavern, etc.
 // each location will start with a list of options
 
-#define TOWN 3              // number of options in town
+#define ARMORY 4            // number of options in armory
+#define TOWN 5              // number of options in town
 #define TAVERN 4            // number of options in tavern
 #define MAP_Y 12            // size of dungeon in rows
 #define MAP_X 12            // size of dungeon in columns
 
 // These lists are used with the xxxxxx_choices() functions to build menus
 // Town
-char *town_list[TOWN] = {"The Dungeon", "Ye Olde Tavern", "Exit Game"};
+char *town_list[TOWN] = {"The Armory", "Ye Olde Tavern", "The Dungeon", "View Character", "Exit Game"};
 
-// ## Tavern
+// Tavern
 // base list, later add options depending on class, quest, etc.
-char *tavern_list[TAVERN] = {
-  "Order some food",
-  "Buy a drink",
-  "Rest",
-  "Leave the tavern"
-};
+char *tavern_list[TAVERN] = {"Order some food", "Buy a drink", "Rest", "Leave the tavern"};
+
+// Armory
+char *armory_list[ARMORY] = {"Look at armor", "Look at weapons", "Look at shields", "Leave the armory"};
 
 // these functions use the lists above to present options to the player
+int armory_choices() {
+  int num_choices = 0;
+
+  for (int i = 0; i < ARMORY; i++) {
+    strncpy(choices[num_choices], armory_list[i], MAX_CHOICE_LEN); choice_key[num_choices] = num_choices; num_choices++;
+  }
+
+  return num_choices;
+}
+
 int town_choices() {
   int num_choices = 0;
 
@@ -38,6 +47,164 @@ int tavern_choices() {
   }
 
   return num_choices;
+}
+
+// you are visiting the armory
+void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+  int choice, armor_limit; // these limits are how we tune what options appear for each player
+  char armory_prompt[96];  // for instance, a Knight will see all armors as available while a cleric only light and medium, etc.
+
+  snprintf(armory_prompt, 95, "What gear would you like to view, %s?", player->name);
+  if (strcmp(player->role, "Wizard") == 0) armor_limit = 1;
+  if (strcmp(player->role, "Rogue") == 0) armor_limit = 4;
+  if (strcmp(player->role, "Cleric") == 0) armor_limit = 9;
+  if (strcmp(player->role, "Knight") == 0) armor_limit = ALL_ARMOR; // knights have no armor restrictions
+
+  wclear(game_text);
+  mvwaddstr(game_text, 0, 0, "You enter Owen's Armory. The loud clanging from the back of the shop stops and then Owen appears from the back.");
+  mvwaddstr(game_text, 1, 0, "Owen wipes his hands on a rag and asks 'How can I help you?'");
+  wrefresh(game_text);
+  while(1) {
+    //getch(); // DEBUG
+    reset_choices();
+    num_choices = armory_choices();
+    choice = choose(select, num_choices, armory_prompt);
+    wclear(game_text);
+    switch (choice) {
+      case 0: wclear(game_text);
+              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available armors for a %s such as yourself.", player->name, player->role);
+              mvwaddstr(game_text, 1, 0, "          ");
+              num_choices = 0;
+              reset_choices();
+              strncpy(choices[num_choices], "Keep browsing...", MAX_CHOICE_LEN);
+              num_choices++;
+              for (int i = 0; i < armor_limit; i++) {
+                mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, armors[i].name);
+                strncpy(choices[num_choices], armors[i].name, MAX_CHOICE_LEN);
+                choice_key[num_choices] = i;
+                num_choices++;
+              }
+              wrefresh(game_text);
+              wclear(game_text);
+              if (num_choices > 1) {
+                choice = choose(select, num_choices, "Please choose: ");
+                if (choice == 0) {
+                  mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
+                } else {
+                  mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", armors[choice_key[choice]].name);
+                  player->coin-=armors[choice_key[choice]].cost;
+                  for (int i = 0; i < BAG_SLOTS; i++) {
+                    if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+                      player->backpack[i] = armors[choice_key[choice]]; // move bought item to first open slot in backpack
+                      break; // exit loop
+                    }
+                  }
+                }
+              } else {
+                mvwprintw(game_text, 0, 0, "%s, it doesn't look like we have an armor option for you...", player->name);
+              }
+
+              wrefresh(game_text);
+              wclear(select);
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              wrefresh(select);
+              getch();
+              break;
+      case 1: wclear(game_text);
+              mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available weapons for a %s such as yourself.", player->name, player->role);
+              mvwaddstr(game_text, 1, 0, "          ");
+              num_choices = 0;
+              reset_choices();
+              strncpy(choices[num_choices], "Keep browsing...", MAX_CHOICE_LEN);
+              num_choices++;
+              for (int i = 0; i < ALL_WEAPONS; i++) {
+                if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
+                if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, weapons[i].name);
+                // later fix this to only show weapons the player class can actually use
+                strncpy(choices[num_choices], weapons[i].name, MAX_CHOICE_LEN);
+                choice_key[num_choices] = i;
+                num_choices++;
+              }
+              wrefresh(game_text);
+              wclear(game_text);
+              if (num_choices > 1) {
+                choice = choose(select, num_choices, "Please choose: ");
+                if (choice == 0) {
+                  mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
+                } else {
+                  mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", weapons[choice_key[choice]].name);
+                  player->coin-=weapons[choice_key[choice]].cost;
+                  for (int i = 0; i < BAG_SLOTS; i++) {
+                    if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+                      player->backpack[i] = weapons[choice_key[choice]]; // move bought item to first open slot in backpack
+                      break; // exit loop
+                    }
+                  }
+                }
+              } else {
+                mvwprintw(game_text, 0, 0, "%s, it doesn't look like we have a weapon option for you...", player->name);
+              }
+              wrefresh(game_text);
+              wclear(select);
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              wrefresh(select);
+              getch();
+              break;
+      case 2: wclear(game_text);
+              if (strcmp(player->role, "Rogue") == 0 || strcmp(player->role, "Wizard") == 0) {
+                mvwprintw(game_text, 0, 0, "Sorry, %s, %s's cannot use shields.", player->name, player->role);
+              } else {
+                mvwprintw(game_text, 0, 0, "Excellent, %s, these are the available shields for a %s such as yourself.", player->name, player->role);
+                mvwaddstr(game_text, 1, 0, "          ");
+                num_choices = 0;
+                reset_choices();
+                strncpy(choices[num_choices], "Keep browsing...", MAX_CHOICE_LEN);
+                num_choices++;
+                for (int i = 0; i < ALL_SHIELDS; i++) {
+                  if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, shields[i].name);
+                  if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, shields[i].name);
+                  strncpy(choices[num_choices], shields[i].name, MAX_CHOICE_LEN);
+                  choice_key[num_choices] = i;
+                  num_choices++;
+                }
+                wrefresh(game_text);
+                wclear(game_text);
+                if (num_choices > 1) {
+                  choice = choose(select, num_choices, "Please choose: ");
+                  if (choice == 0) {
+                    mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
+                  } else {
+                    mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", shields[choice_key[choice]].name);
+                    player->coin-=shields[choice_key[choice]].cost;
+                    for (int i = 0; i < BAG_SLOTS; i++) {
+                      if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+                        player->backpack[i] = shields[choice_key[choice]]; // move bought item to first open slot in backpack
+                        break; // exit loop
+                      }
+                    }
+                  }
+                } else {
+                  mvwprintw(game_text, 0, 0, "%s, it doesn't look like we have a shield option for you...", player->name);
+                }
+              }
+              wrefresh(game_text);
+              wclear(select);
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              wrefresh(select);
+              getch();
+              break;break;
+      case 3: mvwaddstr(game_text, 1, 1, "You finish your business with Owen and head back to the town center."); break;
+      default: break;
+    }
+    refresh_stats(stats, player); // update stats window
+    wrefresh(game_text);
+    napms(250);
+    if (choice == 3) break; // end armory loop
+  }
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // you are visiting the tavern
@@ -256,7 +423,8 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
     };
     refresh_stats(stats, player); // update stats window
-    mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]);
+    //mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]); // DEBUG
+    //mvwprintw(game_text, 9, 1, "Food Buff: %d | Drink Buff: %d | Class Buff: %d", player->buffs[0], player->buffs[1], player->buffs[2]); // DEBUG
     wrefresh(game_text);
     //getch(); // DEBUG
     // clear previous list of choices - this could probably be a function
@@ -367,11 +535,16 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     }
   }
   wclear(game_text);
-  celebrate(game_text);
+  bigly(game_text, DOOM, "YAY");
+  napms(500);
+  wclear(game_text);
+  //celebrate(game_text);
   mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");
   if (distance > 0) { // later, tailor message to how much the player earned while exploring the dungeon
     mvwprintw(game_text, 2, 0, "%s, you traveled %d squares, earned %d coin(s), %d XP, and defeated %d monster(s) and %d boss(es)...", player->name, distance, player->coin - start_coin, player->xp - start_xp, mob_count, boss_count);
   }
+  wrefresh(game_text);
+  celebrate(game_text);
   // Remove player buffs
   if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
     mvwaddstr(game_text, 7, 0, "Drako wishes you well and fades away, ready to help another day.");
@@ -407,7 +580,9 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     num_choices = town_choices();
     choice = choose(select, num_choices, "Please choose where you will head next:");
     switch (choice) {
-      case 0: wclear(game_text);
+      case 0: armory(game_text, select, stats, player); break; // maybe add some text about walking to the armory?
+      case 1: tavern(game_text, select, stats, player); break;
+      case 2: wclear(game_text);
               wclear(select);
               mvwaddstr(game_text, 1, 1, "You follow the eastern path toward the dungeon, stopping");
               mvwaddstr(game_text, 2, 1, "when you reach battered gates at the entrance.");
@@ -418,8 +593,8 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
               getch();
               dungeon(game_text, select, stats, player);
               break;
-      case 1: tavern(game_text, select, stats, player); break;
-      case 2: wclear(game_text);
+      case 3: character_sheet(game_text, select, stats, player); break;
+      case 4: wclear(game_text);
               mvwaddstr(game_text, 1, 1, "Thanks for playing, see you next time!");
               done = 0; break;
       default: break;

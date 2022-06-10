@@ -1,8 +1,7 @@
-// functions and data for all character types (mobs)
+#include<stdio.h>
+#include<stdlib.h>
 
 #define MAX_BUFFS 4
-#define WORN_SLOTS 3
-#define BAG_SLOTS 20
 
 // shared struct for all mobs, pc and npc
 typedef struct Mob {
@@ -28,10 +27,50 @@ typedef struct Mob {
   int  to_hit;    // modifier to chance to hit
   int  dice_dam;  // damage dice. 6 for 1d6, 12 for 1d12, etc.  -- used with dice_num (1d6) = (dice_num x dice_dam)
   int  dice_num;  // number of damage dice. 2 for 2d6, 1 for 1d8, etc. -- used with dice_dam
+  int  buffs[MAX_BUFFS];  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   int  is_pc;     // is this a player character? combat calculations vary a bit so we need to know
   int  type;      // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
   int  alignment; // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  int  buffs[MAX_BUFFS];  // start with 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-  item worn_items[WORN_SLOTS]; // gear currently equipped - 0 = armor, 1 = main hand, 2  off hand (shield, etc.)
-  item backpack[BAG_SLOTS];    // items in your backpack
-} mob;
+} mob;            // 3 = true neutral, 4 = chaotic good
+
+mob wizard;
+// struct employee
+// {
+//     char name[50];
+//     char designation[50];
+//     int age;
+//     float salary;
+// } employee;
+
+int main()
+{
+  int count = 0;
+    FILE *fp;
+
+    fp = fopen("wizard.txt", "rb");
+
+    if(fp == NULL)
+    {
+        printf("Error opening file\n");
+        exit(1);
+    }
+
+    printf("Testing fread() function: \n\n");
+
+    while( fread(&wizard, sizeof(wizard), 1, fp) == 1 )
+    {
+      count++;
+        printf("Name: %s \n", wizard.name);
+        printf("Description: %s \n", wizard.desc);
+        printf("Coin: %d \n", wizard.coin);
+        printf("Buffs: ");
+        for (int i = 0; i < MAX_BUFFS; i++) printf("Slot %d: %d | ", i, wizard.buffs[i]);
+        printf("\n");
+        //printf("Salary: %.2f \n\n", emp.salary);
+    }
+
+    printf("There are %d classes to choose from\n", count);
+
+    fclose(fp);
+    return 0;
+}
