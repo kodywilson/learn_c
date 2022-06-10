@@ -188,6 +188,17 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
   getch();
 }
 
+void format_stat(WINDOW *win, char *text, int stat, int y_pos) {
+  wattron(win, COLOR_PAIR(5) | A_BOLD);
+  mvwaddstr(win, y_pos, 0, text);
+  wattroff(win, COLOR_PAIR(5) | A_BOLD);
+  if (stat < 9) wattron(win, COLOR_PAIR(1) | A_BOLD);
+  if ((stat >= 9) && (stat <= 11)) wattron(win, COLOR_PAIR(5) | A_BOLD);
+  if (stat > 11) wattron(win, COLOR_PAIR(7) | A_BOLD);
+  mvwprintw(win, y_pos, 14, "%d", stat);
+  wattroff(win, COLOR_PAIR(5) | COLOR_PAIR(1) | COLOR_PAIR(7) | A_BOLD);
+}
+
 // Show character sheet - ability scores, etc.
 // calculate AC
 void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
@@ -203,12 +214,12 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     mvwprintw(game_text, 0, 7, "%s's Character Sheet", player->name);
     wattroff(game_text, COLOR_PAIR(6) | A_BOLD);
     mvwaddstr(game_text, 1, 0, "          ");
-    mvwprintw(game_text, 2, 0, "Strength: %d", player->str);
-    mvwprintw(game_text, 3, 0, "Dexterity: %d", player->dex);
-    mvwprintw(game_text, 4, 0, "Constitution: %d", player->con);
-    mvwprintw(game_text, 5, 0, "Intelligence: %d", player->intel);
-    mvwprintw(game_text, 6, 0, "Wisdom: %d", player->wis);
-    mvwprintw(game_text, 7, 0, "Charisma: %d", player->cha);
+    format_stat(game_text, "Strength: ", player->str, 2);
+    format_stat(game_text, "Dexterity: ", player->dex, 3);
+    format_stat(game_text, "Constitution: ", player->con, 4);
+    format_stat(game_text, "Intelligence: ", player->intel, 5);
+    format_stat(game_text, "Wisdom: ", player->wis, 6);
+    format_stat(game_text, "Charisma: ", player->cha, 7);
     mvwaddstr(game_text, 8, 0, "          ");
     mvwprintw(game_text, 9, 0, "Armor Class (AC): %d", 10 + player->worn_items[0].armor_val + player->worn_items[1].armor_val + player->worn_items[2].armor_val);
     snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
