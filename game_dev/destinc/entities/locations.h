@@ -1,7 +1,7 @@
 // game locations - town, dungeon, tavern, etc.
 // each location will start with a list of options
 
-#define ARMORY 4            // number of options in armory
+#define ARMORY 5            // number of options in armory
 #define TOWN 5              // number of options in town
 #define TAVERN 4            // number of options in tavern
 #define MAP_Y 12            // size of dungeon in rows
@@ -16,7 +16,7 @@ char *town_list[TOWN] = {"The Armory", "Ye Olde Tavern", "The Dungeon", "View Ch
 char *tavern_list[TAVERN] = {"Order some food", "Buy a drink", "Rest", "Leave the tavern"};
 
 // Armory
-char *armory_list[ARMORY] = {"Look at armor", "Look at weapons", "Look at shields", "Leave the armory"};
+char *armory_list[ARMORY] = {"Look at armor", "Look at weapons", "Look at shields", "Sell items", "Leave the armory"};
 
 // these functions use the lists above to present options to the player
 int armory_choices() {
@@ -94,7 +94,7 @@ int view_and_buy(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
 
 // you are visiting the armory
 void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
-  int choice, armor_limit; // these limits are how we tune what options appear for each player
+  int choice, count, armor_limit; // these limits are how we tune what options appear for each player
   char armory_prompt[96];  // for instance, a Knight will see all armors as available while a cleric only light and medium, etc.
   item viewing;
 
@@ -258,14 +258,65 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
               mvwaddstr(select, 0, 0, "Press any key to continue...");
               wrefresh(select);
               getch();
-              break;break;
-      case 3: mvwaddstr(game_text, 1, 1, "You finish your business with Owen and head back to the town center."); break;
+              break;
+      case 3: wclear(game_text);
+              count = 0;
+              mvwprintw(game_text, 0, 0, "Ok, %s, these are the available items in your backpack.", player->name);
+              mvwaddstr(game_text, 1, 0, "          ");
+              num_choices = 0;
+              reset_choices();
+              strncpy(choices[num_choices], "Go back...", MAX_CHOICE_LEN);
+              num_choices++;
+              for (int i = 0; i < BAG_SLOTS; i++) {
+                if (strcmp(player->backpack[i].name, "- empty -") != 0) {
+                  count++;
+                  if (i < 10) {
+                    wattron(game_text, COLOR_PAIR(6));
+                    mvwprintw(game_text, 2 + count, 0, "[%d]: ", count);
+                    wattroff(game_text, COLOR_PAIR(6));
+                    wattron(game_text, COLOR_PAIR(5));
+                    mvwprintw(game_text, 2 + count, 7, "%s", player->backpack[i].name);
+                    wattroff(game_text, COLOR_PAIR(5));
+                  } else {
+                    wattron(game_text, COLOR_PAIR(6));
+                    mvwprintw(game_text, 2 + count - 10, 50, "[%d]: ", count);
+                    wattroff(game_text, COLOR_PAIR(6));
+                    wattron(game_text, COLOR_PAIR(5));
+                    mvwprintw(game_text, 2 + count - 10, 57, "%s", player->backpack[i].name);
+                    wattroff(game_text, COLOR_PAIR(5));
+                  }
+                  strncpy(choices[num_choices], player->backpack[i].name, MAX_CHOICE_LEN);
+                  choice_key[num_choices] = i;
+                  num_choices++;
+                }
+              }
+              wrefresh(game_text);
+              wclear(game_text);
+              if (num_choices <= 1) {
+                mvwaddstr(game_text, 2, 0, "Looks like you don't have anything to sell...");
+              } else {
+                choice = choose(select, num_choices, "Please choose: ");
+                if (choice > 0) {
+                  mvwprintw(game_text, 2, 0, "%s, Owen gives you %d gold for that %s", player->name, player->backpack[choice_key[choice]].cost / 2, player->backpack[choice_key[choice]].name);
+                  player->coin+=player->backpack[choice_key[choice]].cost / 2; // gear sells for half value
+                  player->backpack[choice_key[choice]] = empty_slot;           // empty out slot with sold item
+                } else {
+                  mvwaddstr(game_text, 2, 0, "That's fine, maybe next time."); break;
+                }
+              }
+              wrefresh(game_text);
+              wclear(select);
+              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              wrefresh(select);
+              getch();
+              break;
+      case 4: mvwaddstr(game_text, 1, 1, "You finish your business with Owen and head back to the town center."); break;
       default: break;
     }
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
     napms(250);
-    if (choice == 3) break; // end armory loop
+    if (choice == 4) break; // end armory loop
   }
   wclear(select);
   mvwaddstr(select, 0, 0, "Press any key to continue...");
