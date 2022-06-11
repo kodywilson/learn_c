@@ -89,7 +89,8 @@ int main() {
       choice = choose(select, num_choices, "Load a save? Choose (Yes) to load a save, (No) to create a new game.");
       if (choice_key[choice] == 0) {
         choice = choose_save(game_text, select, saves);
-        load_save(choice, &player);
+        player = saved_games[choice];
+        //load_save(choice, &player);
       } else {
         wclear(game_text);
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
@@ -114,7 +115,7 @@ int main() {
             wrefresh(game_text);
             napms(1000);
             choice = choose_save(game_text, select, saves);
-            load_save(choice, &player);
+            player = saved_games[choice];
           }
         } else {
           wclear(game_text);

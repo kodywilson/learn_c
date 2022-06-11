@@ -285,41 +285,6 @@ int load_saves() {
   return count;
 }
 
-// load chosen saved game into player struct
-void load_save(int slot, mob *player) {
-
-  // player = saved_games[slot];
-  strncpy(player->name, saved_games[slot].name, 32);
-  strncpy(player->role, saved_games[slot].role, 16);
-  strncpy(player->desc, saved_games[slot].desc, 256);
-  player->str       = saved_games[slot].str;
-  player->dex       = saved_games[slot].dex;
-  player->con       = saved_games[slot].con;
-  player->intel     = saved_games[slot].intel;
-  player->wis       = saved_games[slot].wis;
-  player->cha       = saved_games[slot].cha;
-  player->dmg       = saved_games[slot].dmg;
-  player->armor     = saved_games[slot].armor;
-  player->max_hp    = saved_games[slot].max_hp;
-  player->cur_hp    = saved_games[slot].cur_hp;
-  player->dodge     = saved_games[slot].dodge;
-  player->max_hp    = saved_games[slot].max_hp;
-  player->max_mana  = saved_games[slot].max_mana;
-  player->cur_mana  = saved_games[slot].cur_mana;
-  player->xp        = saved_games[slot].xp;
-  player->lvl       = saved_games[slot].lvl;
-  player->coin      = saved_games[slot].coin;
-  player->to_hit    = saved_games[slot].to_hit;
-  player->dice_dam  = saved_games[slot].dice_dam;
-  player->dice_num  = saved_games[slot].dice_num;
-  player->is_pc     = saved_games[slot].is_pc;
-  player->type      = saved_games[slot].type;
-  player->alignment = saved_games[slot].alignment;
-  for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = saved_games[slot].buffs[i];
-  for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = saved_games[slot].worn_items[i];
-  for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = saved_games[slot].backpack[i];
-}
-
 // choose a saved game from the list of saves
 int choose_save(WINDOW *game_text, WINDOW *select, int saves) {
   int choice, num_choices = 0;
@@ -402,7 +367,8 @@ int save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
   }
 
   // now update array of structs using save_slot
-  update_saved_games(save_slot, player);
+  //update_saved_games(save_slot, player);
+  saved_games[save_slot] = player;
   
   // write out saved_games array to our save file
   if (file_there(save_file)) {
