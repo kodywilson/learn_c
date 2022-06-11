@@ -15,40 +15,6 @@ int class_choices() {
   return num_choices;
 }
 
-// fill out character stats, name, source (chosen) class
-void build_character(char name[32], mob chosen_class, mob *player) {
-  
-  /*strncpy(player->name, name, 32);
-  strncpy(player->role, chosen_class.role, 16);
-  strncpy(player->desc, chosen_class.desc, 256);
-  player->str       = chosen_class.str;
-  player->dex       = chosen_class.dex;
-  player->con       = chosen_class.con;
-  player->intel     = chosen_class.intel;
-  player->wis       = chosen_class.wis;
-  player->cha       = chosen_class.cha;
-  player->dmg       = chosen_class.dmg;
-  player->armor     = chosen_class.armor;
-  player->max_hp    = chosen_class.max_hp;
-  player->cur_hp    = chosen_class.cur_hp;
-  player->dodge     = chosen_class.dodge;
-  player->max_hp    = chosen_class.max_hp;
-  player->max_mana  = chosen_class.max_mana;
-  player->cur_mana  = chosen_class.cur_mana;
-  player->xp        = chosen_class.xp;
-  player->lvl       = chosen_class.lvl;
-  player->coin      = chosen_class.coin;
-  player->to_hit    = chosen_class.to_hit;
-  player->dice_dam  = chosen_class.dice_dam;
-  player->dice_num  = chosen_class.dice_num;
-  player->is_pc     = chosen_class.is_pc;
-  player->type      = chosen_class.type;
-  player->alignment = chosen_class.alignment;
-  for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = 0;
-  //for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = 0;
-  //for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = 0;*/
-}
-
  // update player name
 void update_name(WINDOW *select, WINDOW *input, mob *player) {
   char name[32];
