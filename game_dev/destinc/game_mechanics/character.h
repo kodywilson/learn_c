@@ -288,6 +288,7 @@ int load_saves() {
 // load chosen saved game into player struct
 void load_save(int slot, mob *player) {
 
+  // player = saved_games[slot];
   strncpy(player->name, saved_games[slot].name, 32);
   strncpy(player->role, saved_games[slot].role, 16);
   strncpy(player->desc, saved_games[slot].desc, 256);

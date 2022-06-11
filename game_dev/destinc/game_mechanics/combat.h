@@ -86,7 +86,7 @@ int attack(mob *attacker, mob *target) {
       ac = AC_BASE + target->dodge + target->worn_items[0].armor_val + ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
     }
     if (target->worn_items[0].type == 1) {                                                        // medium armor - max +2 dex bonus
-      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val + (((target->dex - 10) / 2) > 2) ? 2 : ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
+      ac = (AC_BASE + target->dodge + target->worn_items[0].armor_val) + ((((target->dex - 10) / 2) > 2) ? 2 : ((target->dex - 10) / 2));  // Base AC + dodge + armor + dex bonus
     }
     if (target->worn_items[0].type == 2) {                             // heavy armor
       ac = AC_BASE + target->dodge + target->worn_items[0].armor_val;  // Base AC + dodge + armor
