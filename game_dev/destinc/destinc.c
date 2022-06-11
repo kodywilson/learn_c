@@ -107,7 +107,8 @@ int main() {
             wclear(game_text);
             mvwaddstr(game_text, y_high, x_high, "Right on, let's create a new character.");
             wrefresh(game_text);
-            create_character(game_text, select, input, &player);
+            player = player_classes[choose_class(game_text, select)];
+            update_name(select, input, &player);
             //save_game(game_text, select, player, saves);
           } else {
             wclear(game_text);
@@ -121,7 +122,8 @@ int main() {
           wclear(game_text);
           mvwaddstr(game_text, y_high, x_high, "Right on, let's create a new character.");
           wrefresh(game_text);
-          create_character(game_text, select, input, &player);
+          player = player_classes[choose_class(game_text, select)];
+          update_name(select, input, &player);
           //save_game(game_text, select, player, saves);
         }
         wrefresh(game_text);
@@ -130,7 +132,8 @@ int main() {
       mvwaddstr(game_text, y_high, x_high, "No saved games found. Let's create a character!");
       wrefresh(game_text);
       napms(1000);
-      create_character(game_text, select, input, &player);
+      player = player_classes[choose_class(game_text, select)];
+      update_name(select, input, &player);
       //save_game(game_text, select, player, saves);
     }
   } else {   // this needs to be updated to create file if missing
