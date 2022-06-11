@@ -173,9 +173,8 @@ int main() {
     napms(250);
   }
 
+  // Save game on exit. Later, add more places to save before player leaves the game.
   save_game(game_text, select, player, saves);
-
-  //printf("Test text is %s \n", rand_move_text[dice(1, MOVE_TEXT) - 1]);
 
   endwin();
   return 0;

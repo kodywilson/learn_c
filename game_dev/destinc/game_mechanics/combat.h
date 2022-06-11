@@ -318,10 +318,15 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
   // roll for foe - by environ (different mobs live in different places)
   // 0 is dungeon, etc.
   switch(environ) { // ok, I am cheating a bit here and leveraging the environ variable to differentiate between regular and boss mobs
-    case 0: monster_roll = dice(1, MOBS) - 1; build_character(mobs[monster_roll].name, mobs[monster_roll], &monster); break;// generate foe break;   // 4 choices, so roll 4 sided die       |  Need to fix later to support both
-    case 1: monster_roll = dice(1, BOSS) - 1; build_character(bosses[monster_roll].name, bosses[monster_roll], &monster); break;// generate foe break; 
+    case 0: monster_roll = dice(1, MOBS) - 1; monster = mobs[monster_roll]; break; // generate regular monster 
+    case 1: monster_roll = dice(1, BOSS) - 1; monster = bosses[monster_roll]; break; // generate boss monster 
     default: monster_roll = dice(1, MOBS) - 1; break;  // dice never return 0 so subtract one for proper array indexing
   }
+  // switch(environ) { // ok, I am cheating a bit here and leveraging the environ variable to differentiate between regular and boss mobs
+  //   case 0: monster_roll = dice(1, MOBS) - 1; build_character(mobs[monster_roll].name, mobs[monster_roll], &monster); break;// generate foe break;   // 4 choices, so roll 4 sided die       |  Need to fix later to support both
+  //   case 1: monster_roll = dice(1, BOSS) - 1; build_character(bosses[monster_roll].name, bosses[monster_roll], &monster); break;// generate foe break; 
+  //   default: monster_roll = dice(1, MOBS) - 1; break;  // dice never return 0 so subtract one for proper array indexing
+  // }
 
   wclear(select);
   wrefresh(select);

@@ -15,10 +15,10 @@ int class_choices() {
   return num_choices;
 }
 
-// fill out character stats, name, source (chosen) class, target player
-// could have looped and sent data to update_character...
+// fill out character stats, name, source (chosen) class
 void build_character(char name[32], mob chosen_class, mob *player) {
-  strncpy(player->name, name, 32);
+  
+  /*strncpy(player->name, name, 32);
   strncpy(player->role, chosen_class.role, 16);
   strncpy(player->desc, chosen_class.desc, 256);
   player->str       = chosen_class.str;
@@ -46,7 +46,7 @@ void build_character(char name[32], mob chosen_class, mob *player) {
   player->alignment = chosen_class.alignment;
   for (int i = 0; i < MAX_BUFFS; i++) player->buffs[i] = 0;
   //for (int i = 0; i < WORN_SLOTS; i++) player->worn_items[i] = 0;
-  //for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = 0;
+  //for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = 0;*/
 }
 
 // character selection
@@ -82,7 +82,9 @@ void create_character(WINDOW *game_text, WINDOW *select, WINDOW *input, mob *pla
       noecho();  // turn off key entry echo to terminal
       clear_box(input);
       // generate starting stats for the player
-      build_character(name, player_classes[class_choice], player);
+      player = &(player_classes[class_choice]);
+      //build_character(name, player_classes[class_choice], player);
+      strncpy(player->name, name, 32);
       player->worn_items[0] = armors[0];
       for (int i = 1; i < WORN_SLOTS; i++) player->worn_items[i] = empty_slot;
       for (int i = 0; i < BAG_SLOTS; i++) player->backpack[i] = empty_slot;
