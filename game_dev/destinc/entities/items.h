@@ -143,9 +143,9 @@ item armors[ALL_ARMOR] = {
     0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
     0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
   },
-  // Studded Leather Armor
+  // Studded Leather
   {
-    "Studded Leather Armor", // item name
+    "Studded Leather", // item name
     "Made from tough, flexible leather reinforced with metal studs.", // item description
     0,                  // item category: 0 = armor, 1 = weapon, 2 = shield, 3 = jewelry, 4 = adventure gear, 5 = treasure
     0,                  // item type: 0 = light, 1 = medium, 2 = heavy, 3 = ring, 4 = earring, 5 = bracer, 6 = outfit
