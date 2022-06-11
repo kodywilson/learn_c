@@ -49,10 +49,39 @@ int tavern_choices() {
   return num_choices;
 }
 
-int view_and_buy(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
-  int choice, num_choices, y_pos = 0;
+int afford_item(int coin, int cost) {
 
-  // First show item stats
+  // determine if the player can afford the item
+  return (coin >= cost) ? 1 : 0;
+}
+
+int buy_item(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
+  int choice, num_choices;
+
+  // determine if the player can afford the armor
+  if (afford_item(coin, viewing.cost)) {
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Would you like to purchase this item?");
+  } else {
+    wclear(game_text);
+    mvwprintw(game_text, 0, 0, "I'm sorry, but you cannot afford the %s...", viewing.name);
+    mvwprintw(game_text, 1, 0, "It costs %d and you only have %d gold.", viewing.cost, coin);
+    wrefresh(game_text);
+    wclear(select);
+    mvwaddstr(select, 0, 0, "Press any key to continue...");
+    wrefresh(select);
+    getch();
+    choice = 1;
+  }
+
+  return choice;
+}
+
+void view_item(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
+  int y_pos = 0;
+
+  // Show item information
   wclear(game_text);
   wattron(game_text, COLOR_PAIR(5) | A_BOLD);
   mvwprintw(game_text, y_pos, 0, "---==| Viewing: %s |==---", viewing.name);
@@ -75,21 +104,10 @@ int view_and_buy(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
   mvwprintw(game_text, ++y_pos, 0, "Cost:   %d", viewing.cost);
   wattroff(game_text, COLOR_PAIR(5));
   wrefresh(game_text);
-  // determine if the player can afford the armor
-  if (coin >= viewing.cost) {
-    reset_choices();
-    num_choices = y_n();
-    choice = choose(select, num_choices, "Would you like to purchase this item?");
-  } else {
-    wrefresh(game_text);
-    wclear(select);
-    mvwaddstr(select, 0, 0, "Press any key to continue...");
-    wrefresh(select);
-    getch();
-    choice = 1;
-  }
-
-  return choice;
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
 }
 
 // you are visiting the armory
@@ -137,7 +155,8 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
                   mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
                 } else {
                   viewing = armors[choice_key[choice]];
-                  if ((view_and_buy(game_text, select, player->coin, viewing)) == 0) {
+                  view_item(game_text, select, player->coin, viewing);
+                  if ((buy_item(game_text, select, player->coin, viewing)) == 0) {
                     wclear(game_text);
                     mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", viewing.name);
                     player->coin-=viewing.cost;
@@ -185,7 +204,8 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
                   mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
                 } else {
                   viewing = weapons[choice_key[choice]];
-                  if ((view_and_buy(game_text, select, player->coin, viewing)) == 0) {
+                  view_item(game_text, select, player->coin, viewing);
+                  if ((buy_item(game_text, select, player->coin, viewing)) == 0) {
                     wclear(game_text);
                     mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", viewing.name);
                     player->coin-=viewing.cost;
@@ -234,7 +254,8 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
                     mvwprintw(game_text, 0, 0, "Right on, %s, thanks for looking.", player->name);
                   } else {
                     viewing = shields[choice_key[choice]];
-                    if ((view_and_buy(game_text, select, player->coin, viewing)) == 0) {
+                    view_item(game_text, select, player->coin, viewing);
+                    if ((buy_item(game_text, select, player->coin, viewing)) == 0) {
                       wclear(game_text);
                       mvwprintw(game_text, 0, 0, "Buying %s and moving it to your backpack.", viewing.name);
                       player->coin-=viewing.cost;
@@ -689,9 +710,10 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
 
   while(done) {
     wclear(game_text);
-    mvwaddstr(game_text, 1, 1, "You walk into town, looking here and there.");
-    mvwaddstr(game_text, 3, 1, "Warmth and cheer emanate from an old tavern to the west.");
-    mvwaddstr(game_text, 5, 1, "To the east, a sign says 'dungeon this way'.");
+    mvwaddstr(game_text, 1, 1, "You walk into the center of town, looking here and there.");
+    mvwaddstr(game_text, 3, 1, "Warmth and cheer emanate from an old tavern to the west,");
+    mvwaddstr(game_text, 4, 1, "while loud clanging sounds ring out from Owen's Armory.");
+    mvwaddstr(game_text, 6, 1, "To the east, a sign says 'dungeon this way'.");
     wrefresh(game_text);
     reset_choices();
     num_choices = town_choices();
