@@ -185,8 +185,20 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
 }
 
 void level_up(WINDOW *game_text, WINDOW *select, mob *player) {
+  int can_level = 0;
+
   wclear(game_text);
-  mvwprintw(game_text, 0, 0, "Congratulations %s! You have enough xp to level up.", player->xp);
+  switch (player->lvl) {
+    case 1: if (player->xp >= 300) can_level = 1; break;
+    case 2: if (player->xp >= 900) can_level = 1; break;
+    case 3: if (player->xp >= 2700) can_level = 1; break;
+    default: break;
+  }
+  if (can_level > 0) {
+    mvwprintw(game_text, 0, 0, "Congratulations %s! You have enough xp to level up.", player->xp);
+  } else {
+    mvwprintw(game_text, 0, 0, "%s, you need a little more xp to level up.", player->xp);
+  }
   wrefresh(game_text);
   wclear(select);
   mvwaddstr(select, 0, 0, "Press any key to continue...");
