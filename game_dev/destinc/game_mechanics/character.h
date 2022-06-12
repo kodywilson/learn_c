@@ -195,9 +195,9 @@ void level_up(WINDOW *game_text, WINDOW *select, mob *player) {
     default: break;
   }
   if (can_level > 0) {
-    mvwprintw(game_text, 0, 0, "Congratulations %s! You have enough xp to level up.", player->xp);
+    mvwprintw(game_text, 0, 0, "Congratulations %s! You have enough xp to level up.", player->name);
   } else {
-    mvwprintw(game_text, 0, 0, "%s, you need a little more xp to level up.", player->xp);
+    mvwprintw(game_text, 0, 0, "%s, you need a little more xp to level up.", player->name);
   }
   wrefresh(game_text);
   wclear(select);
