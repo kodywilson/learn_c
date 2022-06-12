@@ -184,6 +184,16 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
   getch();
 }
 
+void level_up(WINDOW *game_text, WINDOW *select, mob *player) {
+  wclear(game_text);
+  mvwprintw(game_text, 0, 0, "Congratulations %s! You have enough xp to level up.", player->xp);
+  wrefresh(game_text);
+  wclear(select);
+  mvwaddstr(select, 0, 0, "Press any key to continue...");
+  wrefresh(select);
+  getch();
+}
+
 // color stats according to level of bonus (or negative if relevant)
 void format_stat(WINDOW *win, char *text, int stat, int y_pos) {
   wattron(win, COLOR_PAIR(5));
@@ -231,15 +241,17 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     reset_choices();
     strncpy(choices[num_choices], "View Worn Inventory", MAX_CHOICE_LEN); num_choices++;
     strncpy(choices[num_choices], "View Backpack", MAX_CHOICE_LEN); num_choices++;
+    strncpy(choices[num_choices], "Level up", MAX_CHOICE_LEN); num_choices++;
     strncpy(choices[num_choices], "Go back...", MAX_CHOICE_LEN); num_choices++;
     choice = choose(select, num_choices, "Please choose: ");
     switch (choice) {
       case 0: view_worn(game_text, select, player); break;
       case 1: view_pack(game_text, select, player); break;
-      case 2: break;
+      case 2: level_up(game_text, select, player); break;
+      case 3: break;
       default: break;
     }
-    if (choice == 2) break; // head back to town choices
+    if (choice == 3) break; // head back to town choices
   }
 }
 
