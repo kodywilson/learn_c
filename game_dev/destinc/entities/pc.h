@@ -16,6 +16,8 @@ mob player_classes[PCS] = {
     14,           // cha       - charisma
     0,            // dmg       - innate damage bonus (this is going to be more of a proficiency bonus)
     5,            // armor     - armor class - AC (defense) = Chain shirt + shield
+    8,            // hit_die   - how many HP you get per level
+    1,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     10,           // max_hp    - max hp earned per level (1d8 + Con modifier)
     10,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -34,11 +36,11 @@ mob player_classes[PCS] = {
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   },
-  // Knight
+  // Paladin (LoH at lvl 1, smite at lvl 2)
   {
-    "Knight",     // name
-    "Knight",     // role
-    "Knights are noble warriors, have the best armor and can smite their foes.",
+    "Paladin",     // name
+    "Paladin",     // role
+    "Paladins are noble warriors, have access to the best armor and can smite their foes.",
     16,           // str       - strength
     10,           // dex       - dexterity
     16,           // con       - constitution
@@ -47,6 +49,8 @@ mob player_classes[PCS] = {
     14,           // cha       - charisma
     0,            // dmg       - innate damage bonus -- May use this to tweak survivability
     6,            // armor     - armor (defense) - ring mail + shield
+    10,           // hit die   - how many HP you get per level
+    1,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     13,           // max_hp    - max hp earned per level (1d10 + Con modifier)
     13,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -78,6 +82,8 @@ mob player_classes[PCS] = {
     14,           // cha       - charisma
     1,            // dmg       - innate damage bonus
     1,            // armor     - armor (defense) - leather armor gives +1 AC
+    8,            // hit die   - how many HP you get per level
+    1,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     9,            // max_hp    - max hp earned per level (1d8 + Con modifier)
     9,            // cur_hp    - current hp
     2,            // dodge     - innate bonus to dodge   - might drop this at some point
@@ -109,6 +115,8 @@ mob player_classes[PCS] = {
     12,           // cha       - charisma
     0,            // dmg       - innate damage bonus
     0,            // armor     - innate armor (defense) bonus
+    6,            // hit die   - how many HP you get per level
+    1,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     7,            // max_hp    - max hp earned per level (1d8 + Con modifier)
     7,            // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge

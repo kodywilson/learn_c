@@ -15,6 +15,12 @@ int class_choices() {
   return num_choices;
 }
 
+int calc_mod(int stat) {
+  
+  return ((stat - 10) / 2);
+
+}
+
  // update player name
 void update_name(WINDOW *select, WINDOW *input, mob *player) {
   char name[32];
@@ -209,7 +215,7 @@ void level_up(WINDOW *game_text, WINDOW *select, mob *player) {
     default: break;
   }
   if (can_level > 0) {
-    mvwprintw(game_text, 0, 0, "Congratulations %s! You have enough xp to level up.", player->name);
+    mvwprintw(game_text, 0, 0, "Congratulations %s. You have enough xp to level up!", player->name);
   } else {
     mvwprintw(game_text, 0, 0, "%s, you need a little more xp to level up.", player->name);
   }
