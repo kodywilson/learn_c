@@ -207,11 +207,18 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
 void level_up(WINDOW *game_text, WINDOW *select, mob *player) {
   int can_level = 0;
 
-  wclear(game_text);
+  wclear(game_text); // better put a level cap here!
   switch (player->lvl) {
     case 1: if (player->xp >= 300) can_level = 1; break;
     case 2: if (player->xp >= 900) can_level = 1; break;
     case 3: if (player->xp >= 2700) can_level = 1; break;
+    case 4: if (player->xp >= 6500) can_level = 1; break;
+    case 5: if (player->xp >= 14000) can_level = 1; break;
+    case 6: if (player->xp >= 23000) can_level = 1; break;
+    case 7: if (player->xp >= 34000) can_level = 1; break;
+    case 8: if (player->xp >= 48000) can_level = 1; break;
+    case 9: if (player->xp >= 64000) can_level = 1; break;
+    case 10: if (player->xp >= 85000) can_level = 1; break;
     default: break;
   }
   if (can_level > 0) {
