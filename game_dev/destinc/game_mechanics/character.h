@@ -67,6 +67,17 @@ int choose_class(WINDOW *game_text, WINDOW *select) {
   return class_choice;
 }
 
+// send player and which item slot to unequip
+void next_pack_slot(mob *player, int slot_worn) {
+  for (int i = 0; i < BAG_SLOTS; i++) {
+    if (strcmp(player->backpack[i].name, "- empty -") == 0) {
+      player->backpack[i] = player->worn_items[slot_worn]; // move existing worn item to first open slot in backpack
+      player->worn_items[slot_worn] = empty_slot;          // empty out worn slot
+      break; // exit loop
+    }
+  }
+}
+
 // look in backpack for items compatible with desired slot
 void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, int slot_item) {
   int choice = 0, num_choices = 0;
@@ -93,17 +104,18 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
       } else {
         mvwprintw(game_text, 0, 0, "Equipping %s and moving %s to your backpack.", player->backpack[choice_key[choice]].name, player->worn_items[slot_worn].name);
       }
-      for (int i = 0; i < BAG_SLOTS; i++) {
-        if (strcmp(player->backpack[i].name, "- empty -") == 0) {
-          player->backpack[i] = player->worn_items[slot_worn]; // move existing item to first open slot in backpack
-          break; // exit loop
-        }
-      }
+      next_pack_slot(player, slot_worn); // put item in first available pack slot
       player->worn_items[slot_worn] = player->backpack[choice_key[choice]]; // move new item to worn slot
       player->backpack[choice_key[choice]] = empty_slot;                    // empty out slot with chosen item
     }
   } else {
     mvwprintw(game_text, 0, 0, "%s, it doesn't look like you have anything in your backpack that would work there...", player->name);
+    mvwprintw(game_text, 2, 0, "Would you like to unequip %s?", player->worn_items[slot_worn].name);
+    wrefresh(game_text);
+    reset_choices();
+    num_choices = y_n();
+    choice = choose(select, num_choices, "Remove item?");
+    if (choice == 0) next_pack_slot(player, slot_worn); // put item in first available pack slot
   }
 
   wrefresh(game_text);
