@@ -23,7 +23,7 @@ mob player_classes[PCS] = {
     0,            // dodge     - innate bonus to dodge
     12,           // max_mana  - max mana per level
     12,           // cur_mana  - current mana
-    0,            // xp        - experience points
+    3000,            // xp        - experience points
     1,            // level     - current level
     300,          // coin      - money
     2,            // modifier to chance to hit - proficiency bonus for players

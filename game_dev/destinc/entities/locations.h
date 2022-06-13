@@ -113,14 +113,14 @@ void view_item(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
 // you are visiting the armory
 void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   int choice, count, armor_limit; // these limits are how we tune what options appear for each player
-  char armory_prompt[96];  // for instance, a Knight will see all armors as available while a cleric only light and medium, etc.
+  char armory_prompt[96];  // for instance, a Paladin will see all armors as available while a cleric only light and medium, etc.
   item viewing;
 
   snprintf(armory_prompt, 95, "What gear would you like to view, %s?", player->name);
   if (strcmp(player->role, "Wizard") == 0) armor_limit = 1;
   if (strcmp(player->role, "Rogue") == 0) armor_limit = 4;
   if (strcmp(player->role, "Cleric") == 0) armor_limit = 9;
-  if (strcmp(player->role, "Knight") == 0) armor_limit = ALL_ARMOR; // knights have no armor restrictions
+  if (strcmp(player->role, "Paladin") == 0) armor_limit = ALL_ARMOR; // Paladins have no armor restrictions
 
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "You enter Owen's Armory. The loud clanging from the back of the shop stops and then Owen appears from the back.");
@@ -501,7 +501,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       player->cur_mana-=player->lvl*2;
     }
   }
-  if ((strcmp(player->role, "Knight") == 0) && (player->buffs[2] != 1)) {
+  if ((strcmp(player->role, "Paladin") == 0) && (player->buffs[2] != 1)) {
     mvwaddstr(game_text, 2, 0, "You've trained hard, but somehow you feel like you could use some help...");
     wrefresh(game_text);
     reset_choices();

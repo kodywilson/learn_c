@@ -22,8 +22,8 @@ int actions(mob *player) {
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
-      if (strcmp(player->role, "Knight") == 0) {
-        // set up options for Knights
+      if (strcmp(player->role, "Paladin") == 0) {
+        // set up options for Paladins
         if (player->cur_mana >= 4) {  // set second option as smite if player has enough mana
           strncpy(choices[num_choices], "Smite Foe", MAX_CHOICE_LEN);
           choice_key[num_choices] = 50;
@@ -75,7 +75,7 @@ int attack(mob *attacker, mob *target) {
       }
     }
     if (attacker->buffs[2] == 1) {                          // check for player buff
-      if ((strcmp(attacker->role, "Cleric") == 0) || (strcmp(attacker->role, "Knight") == 0)) {          // Cleric and Knight buff for praying
+      if ((strcmp(attacker->role, "Cleric") == 0) || (strcmp(attacker->role, "Paladin") == 0)) {          // Cleric and Paladin buff for praying
         roll+=1;                                                               // tiny boost to roll
         damage+=dice(1, 2);                                                    // minor damage boost
       }
@@ -107,7 +107,7 @@ int attack(mob *attacker, mob *target) {
         ac+=2;                                                               // + AC - maybe these scale later?
         damage-=dice(1, 2) + 1;                                              // small damage reduction
       }
-      if ((strcmp(target->role, "Cleric") == 0) || (strcmp(target->role, "Knight") == 0)) {       // Cleric and Knight buff for praying
+      if ((strcmp(target->role, "Cleric") == 0) || (strcmp(target->role, "Paladin") == 0)) {       // Cleric and Paladin buff for praying
         ac+=1;                                                               // + AC - maybe these scale later?
         damage-=dice(1, 2);                                                  // tiny damage reduction
       }

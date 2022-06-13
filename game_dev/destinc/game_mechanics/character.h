@@ -216,6 +216,12 @@ void level_up(WINDOW *game_text, WINDOW *select, mob *player) {
   }
   if (can_level > 0) {
     mvwprintw(game_text, 0, 0, "Congratulations %s. You have enough xp to level up!", player->name);
+    player->lvl++;
+    player->hit_die_num = player->lvl;
+    player->max_hp = (player->hit_die * player->lvl) + (calc_mod(player->con) * player->lvl);
+    player->cur_hp = player->max_hp;
+    player->max_mana+=4;
+    player->cur_mana = player->max_mana;
   } else {
     mvwprintw(game_text, 0, 0, "%s, you need a little more xp to level up.", player->name);
   }
@@ -283,6 +289,7 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
       case 3: break;
       default: break;
     }
+    refresh_stats(stats, player);
     if (choice == 3) break; // head back to town choices
   }
 }
