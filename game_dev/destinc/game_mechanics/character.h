@@ -84,9 +84,12 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
 
   wclear(game_text);
   reset_choices();
-  strncpy(choices[num_choices], "Keep current item...", MAX_CHOICE_LEN);
-  num_choices++;
-
+  if (strcmp(player->worn_items[slot_worn].name, "- empty -") != 0) {
+    strncpy(choices[num_choices], "Keep current item...", MAX_CHOICE_LEN); choice_key[num_choices] = 50; num_choices++;
+    strncpy(choices[num_choices], "Unequip current item...", MAX_CHOICE_LEN); choice_key[num_choices] = 51; num_choices++;
+  }
+  
+  // build item choices (if any)
   for (int i = 0; i < BAG_SLOTS; i++) {
     if (player->backpack[i].slot == slot_item) {
       strncpy(choices[num_choices], player->backpack[i].name, MAX_CHOICE_LEN);
@@ -94,11 +97,16 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
       num_choices++;
     }
   }
-  if (num_choices > 1) {
+  if (num_choices > 0) {
     choice = choose(select, num_choices, "Please choose: ");
-    if (choice == 0) {
+    if (choice_key[choice] == 50) {
       mvwprintw(game_text, 0, 0, "Right on, %s, keeping %s on for now.", player->name, player->worn_items[slot_worn].name);
-    } else {
+    }
+    if (choice_key[choice] == 51) {
+      mvwprintw(game_text, 0, 0, "Removing %s and placing in backpack.", player->worn_items[slot_worn].name);
+      next_pack_slot(player, slot_worn); // put item in first available pack slot
+    }
+    if (choice_key[choice] < BAG_SLOTS )  {
       if (strcmp(player->worn_items[slot_worn].name, "- empty -") == 0) {
         mvwprintw(game_text, 0, 0, "Equipping %s.", player->backpack[choice_key[choice]].name);
       } else {
@@ -110,12 +118,6 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
     }
   } else {
     mvwprintw(game_text, 0, 0, "%s, it doesn't look like you have anything in your backpack that would work there...", player->name);
-    mvwprintw(game_text, 2, 0, "Would you like to unequip %s?", player->worn_items[slot_worn].name);
-    wrefresh(game_text);
-    reset_choices();
-    num_choices = y_n();
-    choice = choose(select, num_choices, "Remove item?");
-    if (choice == 0) next_pack_slot(player, slot_worn); // put item in first available pack slot
   }
 
   wrefresh(game_text);
