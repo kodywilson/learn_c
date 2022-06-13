@@ -350,9 +350,9 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   int choice, drink_cost, food_cost, rest_cost;
   char tavern_prompt[96];
 
-  drink_cost = player->lvl * 1;  // tweak these at some point
-  food_cost  = player->lvl * 1;  // later this will give buff, for now restore health
-  rest_cost  = player->lvl * 2;  // later this will give buff, for now restore mana
+  drink_cost = player->lvl * 1;  // gives buff
+  food_cost  = player->lvl * 1;  // gives buff
+  rest_cost  = player->lvl * 2;  // restores all health and mana
 
   snprintf(tavern_prompt, 95, "What would you like to do in the tavern, %s?", player->name);
 
@@ -369,7 +369,7 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       case 0: if (player->coin >= food_cost) {
         mvwaddstr(game_text, 1, 1, tavern_table);
         player->cur_hp+= dice(2, (player->max_hp / 2)) * player->lvl; // food restores some health and adds buff
-        if (player->cur_hp > player->max_hp * player->lvl) player->cur_hp = player->max_hp * player->lvl;
+        if (player->cur_hp > player->max_hp) player->cur_hp = player->max_hp;
         player->buffs[0] = 1;  // this buff lasts through one dungeon trip - chance to restore health
         player->coin-=food_cost;  // pay for food
       } else {
@@ -378,17 +378,17 @@ void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       case 1: if (player->coin >= drink_cost) {
         mvwaddstr(game_text, 1, 1, tavern_bar);
         player->cur_mana+= dice(2, (player->max_mana / 2)) * player->lvl; // drink restores some mana and adds buff
-        if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
+        if (player->cur_mana > player->max_mana) player->cur_mana = player->max_mana;
         player->buffs[1] = 1;  // this buff lasts through one dungeon trip - chance to restore mana
         player->coin-=drink_cost;  // pay for drink
       } else {
         mvwaddstr(game_text, 1, 1, "You can't afford wine, you churl! Go to the dungeon and earn some money!");
       } break;
       case 2: if (player->coin >= rest_cost) {
-        if ((player->cur_hp < player->max_hp * player->lvl) || (player->cur_mana < player->max_mana * player->lvl)) {
+        if ((player->cur_hp < player->max_hp) || (player->cur_mana < player->max_mana)) {
           mvwaddstr(game_text, 1, 1, tavern_rest);
-          player->cur_hp = player->max_hp * player->lvl; // resting restores health
-          player->cur_mana = player->max_mana * player->lvl; // resting restores mana
+          player->cur_hp = player->max_hp; // resting restores health
+          player->cur_mana = player->max_mana; // resting restores mana
           player->coin-=rest_cost;  // pay for room
         } else {
           mvwaddstr(game_text, 1, 1, "You don't need to rest, your health and mana are already full...");
@@ -549,16 +549,16 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
     // random chance that food and drink buffs will restore some mana or health
     if (player->buffs[0] == 1) { // this is food buff
       if (dice(1, 20) > 15) player->cur_hp+= dice(1, 4); // tune this as needed
-      if (player->cur_hp > player->max_hp * player->lvl) player->cur_hp = player->max_hp * player->lvl;
+      if (player->cur_hp > player->max_hp) player->cur_hp = player->max_hp;
     }
     if (player->buffs[1] == 1) { // this is drink buff
       if (dice(1, 20) > 15) player->cur_mana+= dice(1, 4); // tune this as needed
-      if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
+      if (player->cur_mana > player->max_mana) player->cur_mana = player->max_mana;
     }
     // wizards rely exclusively on spells for damage (if they want to survive, lol) so let familiar help restore mana
     if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
       if (dice(1, 20) > 12) player->cur_mana+= dice(1, 2); // tune this as needed
-      if (player->cur_mana > player->max_mana * player->lvl) player->cur_mana = player->max_mana * player->lvl;
+      if (player->cur_mana > player->max_mana) player->cur_mana = player->max_mana;
     };
     refresh_stats(stats, player); // update stats window
     //mvwprintw(game_text, 9, 1, "Dungeon position: %c", dungeon_map[y_pos][x_pos]); // DEBUG
@@ -616,6 +616,8 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
         specials++;  // increment specials
       }
     }
+    // let player view character sheet while adventuring
+    strncpy(choices[num_choices], "View Character Sheet", MAX_CHOICE_LEN);  choice_key[num_choices] = 100; num_choices++;
     choice = choose(select, num_choices, dungeon_prompt); // make choice based on options built above where we test each direction
     // now add options for special squares
     // DEBUG
@@ -632,6 +634,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
       case 4: mvwaddstr(game_text, 0, 0, "You head up."); break; // 4 and 5 will be up and down for stairs and ladders
       case 5: mvwaddstr(game_text, 0, 0, "You head down."); break;
       case 7: mvwaddstr(game_text, 4, 0, "You carefully open the treasure chest and collect the coins inside."); player->coin+=dice(1, 4); break;
+      case 100: character_sheet(game_text, select, stats, player); break;
       default: break;
     }
     if (choice_key[choice] < 6) distance++;  // you explored another room
