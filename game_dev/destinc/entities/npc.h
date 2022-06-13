@@ -6,9 +6,9 @@
 mob mobs[MOBS] = {
   // Rat - giant
   {
-    "rat",     // name
-    "rat",     // role
-    "A smelly rat shrieks and races toward you!",
+    "giant rat",     // name
+    "giant rat",     // role
+    "A large, smelly rat shrieks and races toward you!",
     7,            // str       - strength
     15,           // dex       - dexterity
     11,           // con       - constitution
@@ -17,6 +17,8 @@ mob mobs[MOBS] = {
     4,            // cha       - charisma
     2,            // dmg       - innate damage bonus - should be used for mobs only probably - need to add "to hit" and pass monsters damage dice
     2,            // armor     - innate armor (defense) bonus                                - store it like 1d4, better than hard coding values
+    6,            // hit die   - how many HP you get per level - giant rat: 2d6
+    2,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     7,            // max_hp    - max hp earned per level
     7,            // cur_hp    - current hp
     2,            // dodge     - innate bonus to dodge
@@ -31,6 +33,7 @@ mob mobs[MOBS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     1,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     3,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .125,         // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
@@ -48,6 +51,8 @@ mob mobs[MOBS] = {
     8,            // cha       - charisma
     2,            // dmg       - innate damage bonus
     2,            // armor     - innate armor (defense) bonus
+    5,            // hit die   - how many HP you get per level
+    2,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     6,            // max_hp    - max hp earned per level
     6,            // cur_hp    - current hp
     1,            // dodge     - innate bonus to dodge
@@ -62,6 +67,7 @@ mob mobs[MOBS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .125,         // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
@@ -79,6 +85,8 @@ mob mobs[MOBS] = {
     5,            // cha       - charisma
     2,            // dmg       - innate damage bonus
     3,            // armor     - armor class - AC (defense) - armor scraps
+    4,            // hit die   - how many HP you get per level - skeleton: 2d8+4
+    5,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     13,           // max_hp    - max hp earned per level
     13,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -93,6 +101,7 @@ mob mobs[MOBS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     2,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .25,         // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
@@ -108,8 +117,10 @@ mob mobs[MOBS] = {
     10,           // intel     - intelligence
     10,           // wis       - wisdom
     10,           // cha       - charisma
-    1,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
-    2,            // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
+    1,            // dmg       - innate damage bonus
+    2,            // armor     - armor class - AC (defense) - studded leather
+    4,            // hit die   - how many HP you get per level
+    4,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     11,           // max_hp    - max hp earned per level
     11,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -124,6 +135,7 @@ mob mobs[MOBS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .25,         // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
@@ -139,8 +151,10 @@ mob mobs[MOBS] = {
     10,           // intel     - intelligence
     8,            // wis       - wisdom
     8,            // cha       - charisma
-    2,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
-    5,            // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
+    2,            // dmg       - innate damage bonus
+    5,            // armor     - armor class - AC (defense) - leather armor and shield
+    6,            // hit die   - how many HP you get per level
+    2,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     7,            // max_hp    - max hp earned per level
     7,            // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -155,11 +169,12 @@ mob mobs[MOBS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .25,          // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   },
-  // Zombie
+  // Zombie // later, add Zombie's Undead Fortitude ability!
   {
     "zombie",     // name
     "zombie",     // role
@@ -170,8 +185,10 @@ mob mobs[MOBS] = {
     3,            // intel     - intelligence
     6,            // wis       - wisdom
     5,            // cha       - charisma
-    1,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
-    -2,           // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
+    1,            // dmg       - innate damage bonus
+    -2,           // armor     - armor class - AC (defense)
+    3,            // hit die   - how many HP you get per level - zombie has 3d8+9
+    11,           // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     22,           // max_hp    - max hp earned per level
     22,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -186,11 +203,19 @@ mob mobs[MOBS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     5,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .25,         // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   }
 };
+
+// some notes on monsters
+// Later, we will need to sort by CR most likely to make this more dynamic
+// then you can randomly choose from within a CR range.
+// Also, named bosses are needed for each level of the dungeon to proceed to the next level...
+// monster hit points are normally dice rolls plus bonuses. I have adjusted the rolls to roughly
+// fit what you would get taking the bonuses into account. (ie. 2d8+4 becomes 5d4, etc.)
 
 mob bosses[BOSS] = {
   // orc
@@ -206,6 +231,8 @@ mob bosses[BOSS] = {
     10,           // cha       - charisma
     3,            // dmg       - innate damage bonus - should be used for mobs only probably - need to add "to hit" and pass monsters damage dice
     3,            // armor     - innate armor (defense) bonus                                - store it like 1d4, better than hard coding values
+    3,            // hit die   - how many HP you get per level - orc: 2d8+6
+    8,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     15,           // max_hp    - max hp earned per level
     15,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -220,6 +247,7 @@ mob bosses[BOSS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     1,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     6,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .5,           // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
@@ -237,6 +265,8 @@ mob bosses[BOSS] = {
     9,            // cha       - charisma
     1,            // dmg       - innate damage bonus
     8,            // armor     - innate armor (defense) bonus
+    5,            // hit die   - how many HP you get per level - hobgoblin: 2d8+2
+    4,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     11,           // max_hp    - max hp earned per level
     11,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -251,6 +281,7 @@ mob bosses[BOSS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .5,           // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
@@ -268,6 +299,8 @@ mob bosses[BOSS] = {
     7,            // cha       - charisma
     2,            // dmg       - innate damage bonus
     5,            // armor     - armor class - AC (defense) - armor scraps
+    8,            // hit die   - how many HP you get per level - gnoll: 5d8
+    5,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     22,           // max_hp    - max hp earned per level
     22,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -282,11 +315,12 @@ mob bosses[BOSS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     6,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    .5,           // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
   },
-  // Bugbear
+  // Bugbear // toughest of the random bosses
   {
     "bugbear",     // name
     "bugbear",     // role
@@ -299,6 +333,8 @@ mob bosses[BOSS] = {
     9,            // cha       - charisma
     2,            // dmg       - innate damage bonus // see notes above, need to add more stats - this guy will be rough in the meantime
     6,            // armor     - armor class - AC (defense) - hide armor + shield               - could make him a boss...
+    5,            // hit die   - how many HP you get per level - bugbear: 5d8+5
+    9,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     27,           // max_hp    - max hp earned per level
     27,           // cur_hp    - current hp
     0,            // dodge     - innate bonus to dodge
@@ -313,6 +349,7 @@ mob bosses[BOSS] = {
     0,            // is this a player character? combat calculations vary a bit so we need to know
     3,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     2,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
+    1.0,          // challenge rating. Not really relevant for players, but very much so for monsters...
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
     {}            // 20 backpack slots.
