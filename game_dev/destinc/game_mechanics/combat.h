@@ -4,19 +4,26 @@
 #define AC_BASE 10
 #define COMBAT_PROBABILITY 5 // dial it down for less monsters
 
+// build list of combat actions for the player
 int actions(mob *player) {
   int num_choices = 0;
+  char weapon[64];
 
+  // first option is to attack with whatever weapon (if any) is held in the main hand
+  if (strcmp(player->worn_items[1].name, "- empty -") != 0) {
+      snprintf(weapon, 64, "Attack with %s", player->worn_items[1].name);
+      strncpy(choices[num_choices], weapon, MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;
+  } else {
+    strncpy(choices[num_choices], "Attack with fists", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;
+  }
   if (strcmp(player->role, "Cleric") == 0) {
         // set up options for Clerics
-        strncpy(choices[num_choices], "Attack with mace", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++;// set first option as attack
         strncpy(choices[num_choices], "Heal and Attack", MAX_CHOICE_LEN); choice_key[num_choices] = 200; num_choices++; // set second option as heal and attack
         strncpy(choices[num_choices], "Flee", MAX_CHOICE_LEN); choice_key[num_choices] = 2; num_choices++;            // set third option as attempt to flee
       }
       // need to create key for actions, ie. 0 = attack, 2 = flee, 7 = cast spell, etc.
       if (strcmp(player->role, "Knight") == 0) {
         // set up options for Knights
-        strncpy(choices[num_choices], "Attack with sword", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
         if (player->cur_mana >= 4) {  // set second option as smite if player has enough mana
           strncpy(choices[num_choices], "Smite Foe", MAX_CHOICE_LEN);
           choice_key[num_choices] = 50;
@@ -26,7 +33,6 @@ int actions(mob *player) {
       }
       if (strcmp(player->role, "Rogue") == 0) {
         // set up options for Rogues
-        strncpy(choices[num_choices], "Attack with rapier", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
         if (player->cur_mana >= 3) {  // set second option as triple attack if player has enough mana
           strncpy(choices[num_choices], "Cunning Strike", MAX_CHOICE_LEN);
           choice_key[num_choices] = 55;
@@ -36,7 +42,6 @@ int actions(mob *player) {
       }
       if (strcmp(player->role, "Wizard") == 0) {
         // set up options for Wizards
-        strncpy(choices[num_choices], "Attack with quarterstaff", MAX_CHOICE_LEN); choice_key[num_choices] = 0; num_choices++; // set first option as attack
         if (player->cur_mana >= 4) {  // set second option as magic missile if player has enough mana
           strncpy(choices[num_choices], "Magic missle [3d4+3]", MAX_CHOICE_LEN);
           choice_key[num_choices] = 100;
