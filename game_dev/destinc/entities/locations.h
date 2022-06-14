@@ -119,7 +119,7 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
   snprintf(armory_prompt, 95, "What gear would you like to view, %s?", player->name);
   if (strcmp(player->role, "Wizard") == 0) armor_limit = 1;
   if (strcmp(player->role, "Rogue") == 0) armor_limit = 4;
-  if (strcmp(player->role, "Cleric") == 0) armor_limit = 9;
+  if (strcmp(player->role, "Cleric") == 0) armor_limit = ALL_ARMOR;  // Clerics in Destiny are using Life Domain
   if (strcmp(player->role, "Paladin") == 0) armor_limit = ALL_ARMOR; // Paladins have no armor restrictions
 
   wclear(game_text);

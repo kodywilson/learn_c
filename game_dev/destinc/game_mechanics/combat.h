@@ -226,7 +226,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, m
                 wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
               }
               break;
-    case 200: heal_amt = (dice(1, 8)) + (calc_mod(player->wis)); // later, allow this to scale with level for more mana!
+    case 200: heal_amt = (dice(1, 8)) + (calc_mod(player->wis)) + 2; // +2 from Life Domain. Later, also use higher level slots.
               //heal_amt = (dice(1, 8) * player->lvl) + ((player->wis - 10) / 2);
               wattron(game_text, COLOR_PAIR(7) | A_BOLD);
               mvwprintw(game_text, 2, 0, "Praying intently, you add %d health points as you prepare to strike.", heal_amt);
