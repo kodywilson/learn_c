@@ -274,10 +274,13 @@ void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *play
     format_stat(game_text, "Charisma: ", player->cha, 7);
     mvwaddstr(game_text, 8, 0, "          ");
     wattron(game_text, COLOR_PAIR(5));
-    mvwprintw(game_text, 9, 0, "Armor Class (AC): %d", 10 + player->worn_items[0].armor_val + player->worn_items[1].armor_val + player->worn_items[2].armor_val);
+    mvwprintw(game_text, 9, 0, "Current HP: %d  |  Max HP: %d", player->cur_hp, player->max_hp);
+    mvwprintw(game_text, 10, 0, "Current XP: %d", player->xp);
+    mvwaddstr(game_text, 11, 0, "          ");
+    mvwprintw(game_text, 12, 0, "Armor Class (AC): %d", 10 + player->worn_items[0].armor_val + player->worn_items[1].armor_val + player->worn_items[2].armor_val);
     snprintf(buff_string, 64, "Buffs - Food: %c | Drink: %c | Class: %c", (player->buffs[0] == 1) ? 'Y' : 'N', (player->buffs[1] == 1) ? 'Y' : 'N', (player->buffs[2] == 1) ? 'Y' : 'N');
-    mvwaddstr(game_text, 10, 0, "          ");
-    mvwaddstr(game_text, 11, 0, buff_string);
+    mvwaddstr(game_text, 13, 0, "          ");
+    mvwaddstr(game_text, 14, 0, buff_string);
     wattroff(game_text, COLOR_PAIR(5));
     wrefresh(game_text);
 
