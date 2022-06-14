@@ -189,12 +189,22 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
               strncpy(choices[num_choices], "Keep browsing...", MAX_CHOICE_LEN);
               num_choices++;
               for (int i = 0; i < ALL_WEAPONS; i++) {
-                if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
-                if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, weapons[i].name);
-                // later fix this to only show weapons the player class can actually use
-                strncpy(choices[num_choices], weapons[i].name, MAX_CHOICE_LEN);
-                choice_key[num_choices] = i;
-                num_choices++;
+                // clerics and wizards can only use simple weapons unless feat or race choice gives more options
+                if ((strcmp(player->role, "Cleric") == 0) || (strcmp(player->role, "Wizard") == 0)) {
+                  if (weapons[i].group == 0) {
+                    if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
+                    if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, weapons[i].name);
+                    strncpy(choices[num_choices], weapons[i].name, MAX_CHOICE_LEN);
+                    choice_key[num_choices] = i;
+                    num_choices++;
+                  }
+                } else {
+                  if (i < 14) mvwprintw(game_text, 2 + i, 0, "[%d]: %s", i + 1, weapons[i].name);
+                  if (i >= 14) mvwprintw(game_text, 2 + i - 14, 50, "[%d]: %s", i + 1, weapons[i].name);
+                  strncpy(choices[num_choices], weapons[i].name, MAX_CHOICE_LEN);
+                  choice_key[num_choices] = i;
+                  num_choices++;
+                }
               }
               wrefresh(game_text);
               wclear(game_text);
