@@ -147,9 +147,9 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
   mvwaddstr(game_text, 1, 0, "          ");
   wattron(game_text, COLOR_PAIR(5));
   mvwprintw(game_text, 2, 0, "Armor:      %s", player->worn_items[0].name);
-  mvwprintw(game_text, 2, 24, "  |  AC:   %d", player->worn_items[0].armor_val);
+  mvwprintw(game_text, 2, 28, "  -=|=-  AC:   %d", player->worn_items[0].armor_val);
   mvwprintw(game_text, 3, 0, "Main Hand:  %s", player->worn_items[1].name);
-  mvwprintw(game_text, 3, 24, "  |  Dice: %dd%d", player->worn_items[1].dice_num, player->worn_items[1].dmg_dice);
+  mvwprintw(game_text, 3, 28, "  -=|=-  Dice: %dd%d", player->worn_items[1].dice_num, player->worn_items[1].dmg_dice);
   mvwprintw(game_text, 4, 0, "Off Hand:   %s", player->worn_items[2].name);
   wattroff(game_text, COLOR_PAIR(5));
   wrefresh(game_text);
