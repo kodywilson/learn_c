@@ -352,6 +352,16 @@ int save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
   int save_slot = 0;
   FILE *fp;
 
+  // get time and store in player struct to show with list of saves
+  time_t unix_time = time(NULL);
+  if (unix_time == -1) {
+    waddstr(game_text, 0, 0, "The time() function failed, unable to record time with player save...");
+    wrefresh(game_text);
+    pause_text(select);
+  } else {
+    player->date_time = unix_time;
+  }
+
   // determine if we need to overwrite a saved game
   if (saves >= SAVE_SLOTS) {
     save_slot = choose_save(game_text, select, saves);

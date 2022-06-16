@@ -27,6 +27,14 @@ int y_n() {
   return num_choices;
 }
 
+// used to pause so text can be read from a window
+void pause_text(WINDOW *win) {
+  wclear(win);
+  mvwaddstr(win, 0, 0, "Press any key to continue...");
+  wrefresh(win);
+  getch();
+}
+
 // choose from num (number of) choices
 // Send window for menu, char[][] of choices, number of choices, and prompt text
 int choose(WINDOW *win, int num, char *text) {
