@@ -34,6 +34,7 @@ typedef struct Mob {
   int  type;          // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
   int  alignment;     // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
   float chal_rate;    // challenge rating. Not really relevant for players, but very much so for monsters...
+  char date_time[64]; // store datetime - use to track saves + later could be used for mob spawns
   int  buffs[MAX_BUFFS];       // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   item worn_items[WORN_SLOTS]; // gear currently equipped - 0 = armor, 1 = main hand, 2  off hand (shield, etc.)
   item backpack[BAG_SLOTS];    // items in your backpack
