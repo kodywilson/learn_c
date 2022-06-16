@@ -328,7 +328,8 @@ int choose_save(WINDOW *game_text, WINDOW *select, int saves) {
   reset_choices();
 
   for (int i = 0; i < saves; i++) {
-    snprintf(save_text, 95, "Slot: %d | Name: %s | Class: %s | Level: %d", i + 1, saved_games[i].name, saved_games[i].role, saved_games[i].lvl);
+    snprintf(save_text, 95, "Slot: %d | Name: %s | Class: %s | Level: %d | Time: %s", i + 1, saved_games[i].name, 
+    saved_games[i].role, saved_games[i].lvl, ctime(&(saved_games[i].date_time)));
     strncpy(choices[num_choices], save_text, 96);
     num_choices++;
     memset(save_text, 0, 96);
@@ -355,11 +356,11 @@ int save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
   // get time and store in player struct to show with list of saves
   time_t unix_time = time(NULL);
   if (unix_time == -1) {
-    waddstr(game_text, 0, 0, "The time() function failed, unable to record time with player save...");
+    mvwaddstr(game_text, 0, 0, "The time() function failed, unable to record time with player save...");
     wrefresh(game_text);
     pause_text(select);
   } else {
-    player->date_time = unix_time;
+    player.date_time = unix_time;
   }
 
   // determine if we need to overwrite a saved game

@@ -19,5 +19,12 @@ int main() {
   printf("The current date and time is: %d/%d/%d-%02d:%02d:%02d\n", ptm->tm_mon+1, ptm->tm_mday,
   ptm->tm_year+1900, ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
 
+    time_t curtime;
+
+    time(&curtime);
+
+    printf("Current time = %s", ctime(&curtime));
+
+
   return 0;
 }
