@@ -27,12 +27,9 @@ typedef struct Player {
   int  lvl;           // mob level, reflects relative power
   int  coin;          // money the player earns when mob is defeated or the amount a player has
   int  to_hit;        // modifier to chance to hit
-  int  dice_dam;      // damage dice. 6 for 1d6, 12 for 1d12, etc.  -- used with dice_num (1d6) = (dice_num x dice_dam)
-  int  dice_num;      // number of damage dice. 2 for 2d6, 1 for 1d8, etc. -- used with dice_dam
-  int  is_pc;         // is this a player character? combat calculations vary a bit so we need to know
+  int  prof_bonus;    // proficiency bonus (used to be to_hit, but for players applies to many things)
   int  type;          // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
   int  alignment;     // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-  float chal_rate;    // challenge rating. Not really relevant for players, but very much so for monsters...
   time_t date_time;   // store datetime - use to track saves + later could be used for mob spawns
   int  buffs[MAX_BUFFS];       // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
   item worn_items[WORN_SLOTS]; // gear currently equipped - 0 = armor, 1 = main hand, 2  off hand (shield, etc.)
