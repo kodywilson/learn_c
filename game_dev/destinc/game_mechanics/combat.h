@@ -65,13 +65,13 @@ int attack(mob *attacker, mob *target) {
     // check for finesse weapon and higher dex than str
     if ((attacker->worn_items[1].finesse == 1) && (attacker->dex >= attacker->str)) {
       roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2);                                 // use dex to hit for finesse
-      damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + attacker->dmg + ((attacker->dex - 10) / 2); // dex for damage for finesse
+      damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->dex - 10) / 2); // dex for damage for finesse
     } else { // now go off strength and make sure they are holding a weapon!
       roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit unless finesse
       if (strcmp(attacker->worn_items[1].name, "- empty -") == 0) {
         damage = dice(1, 2) + ((attacker->str - 10) / 2);                                                 // bare hands!
       } else {
-        damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + attacker->dmg + ((attacker->str - 10) / 2); // str for damage unless finesse
+        damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->str - 10) / 2); // str for damage unless finesse
       }
     }
     if (attacker->buffs[2] == 1) {                          // check for player buff
