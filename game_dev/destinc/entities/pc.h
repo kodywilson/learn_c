@@ -2,7 +2,7 @@
 
 #define PCS 4  // number of playable classes
 
-mob player_classes[PCS] = {
+pc player_classes[PCS] = {
   // Cleric
   {
     "Cleric",     // name
@@ -14,8 +14,6 @@ mob player_classes[PCS] = {
     10,           // intel     - intelligence
     16,           // wis       - wisdom
     14,           // cha       - charisma
-    0,            // dmg       - innate damage bonus (this is going to be more of a proficiency bonus)
-    5,            // armor     - armor class - AC (defense) = Chain shirt + shield
     8,            // hit_die   - how many HP you get per level
     1,            // hit_die_num  - how many Hit Dice (for players, will equal lvl)
     10,           // max_hp    - max hp earned per level (1d8 + Con modifier)
@@ -26,13 +24,10 @@ mob player_classes[PCS] = {
     3000,            // xp        - experience points
     1,            // level     - current level
     300,          // coin      - money
-    2,            // modifier to chance to hit - proficiency bonus for players
-    6,            // damage dice - 6 for mace
-    1,            // number of damage dice. 1 for mace, so cleric can do 1d6 damage.
+    2,            // proficiency bonus for players
     1,            // is this a player character? combat calculations vary a bit so we need to know
     0,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     0,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
-    1,            // challenge rating. Not really relevant for players, but very much so for monsters...
     0,            // store datetime - use to track saves + later could be used for mob spawns
     {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
     {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
