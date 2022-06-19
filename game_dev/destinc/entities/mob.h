@@ -17,12 +17,12 @@ typedef struct Player {
   int  wis;
   int  cha;           // End basic stat block =--
   int  hit_die;       // how many HP you get per level
-  int  hit_die_num;   // how many Hit Dice you have - for players, will equal level
+  int  hit_die_num;   // how many Hit Dice you have - for players, max will equal level
   int  max_hp;        // max hit points (hp) per level - class specific + Con bonus
   int  cur_hp;        // current hit points
-  int  dodge;         // class specific bonus to dodge -- may drop this at some point
+  int  dodge;         // dodge bonus to AC
   int  max_mana;      // max mana per level for spells and special attacks
-  int  cur_mana;      // current mana
+  int  cur_mana;      // current mana - later we will switch to spell slots with short and long rests available
   int  xp;            // Experience points - earned when mob is defeated or amount a player has
   int  lvl;           // mob level, reflects relative power
   int  coin;          // money the player earns when mob is defeated or the amount a player has

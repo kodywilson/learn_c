@@ -3,7 +3,7 @@
 #define BUFF 256  // maximum size of character buffer
 #define SAVE_SLOTS 4
 
-mob saved_games[SAVE_SLOTS];
+pc saved_games[SAVE_SLOTS];
 
 int class_choices() {
   int num_choices = 0;
@@ -22,7 +22,7 @@ int calc_mod(int stat) {
 }
 
  // update player name
-void update_name(WINDOW *select, WINDOW *input, mob *player) {
+void update_name(WINDOW *select, WINDOW *input, pc *player) {
   char name[32];
 
   wclear(select);
@@ -74,7 +74,7 @@ int choose_class(WINDOW *game_text, WINDOW *select) {
 }
 
 // send player and which item slot to unequip
-void next_pack_slot(mob *player, int slot_worn) {
+void next_pack_slot(pc *player, int slot_worn) {
   for (int i = 0; i < BAG_SLOTS; i++) {
     if (strcmp(player->backpack[i].name, "- empty -") == 0) {
       player->backpack[i] = player->worn_items[slot_worn]; // move existing worn item to first open slot in backpack
@@ -85,7 +85,7 @@ void next_pack_slot(mob *player, int slot_worn) {
 }
 
 // look in backpack for items compatible with desired slot
-void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, int slot_item) {
+void change_item(WINDOW *game_text, WINDOW *select, pc *player, int slot_worn, int slot_item) {
   int choice = 0, num_choices = 0;
 
   wclear(game_text);
@@ -134,7 +134,7 @@ void change_item(WINDOW *game_text, WINDOW *select, mob *player, int slot_worn, 
 }
 
 // Show Items Currently Being Worn
-void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
+void view_worn(WINDOW *game_text, WINDOW *select, pc *player) {
   int choice = 0, num_choices = 0;
 
   wclear(game_text);
@@ -172,7 +172,7 @@ void view_worn(WINDOW *game_text, WINDOW *select, mob *player) {
 }
 
 // Show Items in Backpack
-void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
+void view_pack(WINDOW *game_text, WINDOW *select, pc *player) {
 
   wclear(game_text);
   wattron(game_text, COLOR_PAIR(5) | A_BOLD);
@@ -206,7 +206,7 @@ void view_pack(WINDOW *game_text, WINDOW *select, mob *player) {
   getch();
 }
 
-void level_up(WINDOW *game_text, WINDOW *select, mob *player) {
+void level_up(WINDOW *game_text, WINDOW *select, pc *player) {
   int can_level = 0;
 
   wclear(game_text); // better put a level cap here!
@@ -255,7 +255,7 @@ void format_stat(WINDOW *win, char *text, int stat, int y_pos) {
 
 // Show character sheet - ability scores, etc.
 // calculate AC
-void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int choice = 0, num_choices = 0;
   char buff_string[64];
 
@@ -314,7 +314,7 @@ int load_saves() {
   if (file_there(save_file)) {
     fp = fopen(save_file, "rb");
     // Add all saves to array of saved games
-    count = fread(saved_games, sizeof(mob), SAVE_SLOTS, fp);
+    count = fread(saved_games, sizeof(pc), SAVE_SLOTS, fp);
   }
 
   return count;
@@ -349,7 +349,7 @@ int check_saves() {
 }
 
 // write player data to save file
-int save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
+int save_game(WINDOW *game_text, WINDOW *select, pc player, int saves) {
   int save_slot = 0;
   FILE *fp;
 
@@ -379,8 +379,8 @@ int save_game(WINDOW *game_text, WINDOW *select, mob player, int saves) {
   // write out saved_games array to our save file
   if (file_there(save_file)) {
     fp = fopen(save_file, "wb");
-    fwrite(saved_games, sizeof(mob), saves, fp);
-    //fwrite(&player, sizeof(mob), 1, fp);
+    fwrite(saved_games, sizeof(pc), saves, fp);
+    //fwrite(&player, sizeof(pc), 1, fp);
     fclose(fp);
   }
 
