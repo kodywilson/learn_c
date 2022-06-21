@@ -111,7 +111,7 @@ void view_item(WINDOW *game_text, WINDOW *select, int coin, item viewing) {
 }
 
 // you are visiting the armory
-void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int choice, count, armor_limit; // these limits are how we tune what options appear for each player
   char armory_prompt[96];  // for instance, a Paladin will see all armors as available while a cleric only light and medium, etc.
   item viewing;
@@ -356,7 +356,7 @@ void armory(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
 }
 
 // you are visiting the tavern
-void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+void tavern(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int choice, drink_cost, food_cost, rest_cost;
   char tavern_prompt[96];
 
@@ -476,7 +476,7 @@ int can_move(int y, int x, int direction) {
 }
 
 // you are visiting the dungeon
-void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int buff, choice, lucky_coin, num_choices, specials = 0, y_pos = 2, x_pos = 0; // starting position in the dungeon
   int distance, start_coin, start_xp, mob_count, boss_count, result;
   char dungeon_prompt[96];                       // later, make this something you pass in
@@ -718,7 +718,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
 }
 
 // you are visiting the town
-int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player) {
+int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int choice, done = 1;
 
   while(done) {

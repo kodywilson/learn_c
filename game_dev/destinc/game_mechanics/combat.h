@@ -352,7 +352,7 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int env
   getch();
   wclear(game_text);
   health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
-  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
+  health_bar(game_text, monster.cur_hp, monster.max_hp, 1, monster.name);
 
   init_mob = ((monster.dex - 10) / 2) + monster.dodge;
   init_player = ((player->dex - 10) / 2) + player->dodge; // tweak this later, wizard buffs, etc.
