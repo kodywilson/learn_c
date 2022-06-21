@@ -3,7 +3,7 @@
 #define MOBS 6     // number of mobs - change to monsters or something for now mobs and bosses
 #define BOSS 4     // number of boss type mobs
 
-mob mobs[MOBS] = {
+npc mobs[MOBS] = {
   // Rat - giant
   {
     "giant rat",     // name
@@ -25,19 +25,14 @@ mob mobs[MOBS] = {
     4,            // max_mana  - max mana per level
     4,            // cur_mana  - current mana
     25,           // xp        - experience points
-    1,            // level     - current level
     1,            // coin      - money
     4,            // modifier to chance to hit
     4,            // damage dice - 4 for rat
     1,            // number of damage dice. 1 for rat, so rat can do 1d4 +2 (from dmg) damage.
-    0,            // is this a player character? combat calculations vary a bit so we need to know
     1,            // 0 = humanoid, 1 = animal, 2 = undead, 3 = goblinoid, etc. Will use a look up table
     3,            // 0 = lawful, good, 1 = lawful, neutral, 2 = lawful, evil, etc. Use look up table
     .125,         // challenge rating. Not really relevant for players, but very much so for monsters...
-    0,            // store datetime - use to track saves + later could be used for mob spawns
-    {0},          // 4 buff slots. Use lookup table for int values. 1 in 0 index = food buff, etc.
-    {},           // 3 worn inventory slots. 1st is Armor, 2nd Main Hand, 3rd Off Hand
-    {}            // 20 backpack slots.
+    0             // store datetime - use to track saves + later could be used for mob spawns
   },
   // Kobold
   {
