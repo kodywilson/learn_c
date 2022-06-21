@@ -56,7 +56,7 @@ int actions(pc *player) {
 
 // calculate if a given attack hits, and if so, for how much
 // monsters are strong, so tweak as needed to make combat possible
-int monster_attack(mob *attacker, pc *target) {
+int monster_attack(npc *attacker, pc *target) {
   int ac, damage, roll;
 
   // note - mob stat blocks include dex bonus (if any) in armor category
@@ -96,7 +96,7 @@ int monster_attack(mob *attacker, pc *target) {
   return damage; // later, find a way to reflect damage absorption. For now, less than 1 means they missed
 }
 
-int player_attack(pc *attacker, mob *target) {
+int player_attack(pc *attacker, npc *target) {
   int ac, damage, roll;
 
   // check for finesse weapon and higher dex than str
@@ -172,7 +172,7 @@ void health_bar(WINDOW *win, int cur_hp, int max_hp, int is_pc, char name[32]) {
 }
 
 // handle player actions and battle choices, return choice
-int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, mob *monster, char *combat_prompt) {
+int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, npc *monster, char *combat_prompt) {
   int choice = 2, heal_amt = 0, player_damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
@@ -279,7 +279,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, mo
 
 // handle npc actions and battle choices, return choice
 // this will only return attack at first, but eventually will support other options
-int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, mob *monster) {
+int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, npc *monster) {
   int choice, damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
@@ -325,7 +325,7 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, mob *
 
 int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int environ) {
   int choice, init_mob, init_player, monster_roll, result = 2; // result 2: you fled  1: you won  13: you died
-  mob monster;        // create struct for monster
+  npc monster;        // create struct for monster
   char combat_prompt[96];
 
   snprintf(combat_prompt, 95, "What will you do now, %s?", player->name);
@@ -337,6 +337,7 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int env
     case 1: monster_roll = dice(1, BOSS) - 1; monster = bosses[monster_roll]; break; // generate boss monster 
     default: monster_roll = dice(1, MOBS) - 1; break;  // dice never return 0 so subtract one for proper array indexing
   }
+  // later, have the mobs hitpoints determined by hit die so there is some randomness.
   // switch(environ) { // ok, I am cheating a bit here and leveraging the environ variable to differentiate between regular and boss mobs
   //   case 0: monster_roll = dice(1, MOBS) - 1; build_character(mobs[monster_roll].name, mobs[monster_roll], &monster); break;// generate foe break;   // 4 choices, so roll 4 sided die       |  Need to fix later to support both
   //   case 1: monster_roll = dice(1, BOSS) - 1; build_character(bosses[monster_roll].name, bosses[monster_roll], &monster); break;// generate foe break; 
@@ -356,7 +357,7 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int env
 
   init_mob = ((monster.dex - 10) / 2) + monster.dodge;
   init_player = ((player->dex - 10) / 2) + player->dodge; // tweak this later, wizard buffs, etc.
-  if (player->buffs[2] == 1) init_player+=4;              // bonus for having class buff active - wizard is super squishy soloing
+  if (player->buffs[2] == 1) init_player+=2;              // bonus for having class buff active - wizard is super squishy soloing
                                                           // need to come up with better way to buff them
   while(1) { // battle loop
     // clear previous choices

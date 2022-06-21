@@ -47,9 +47,11 @@ typedef struct NonPlayer {
   int  intel;
   int  wis;
   int  cha;           // End basic stat block =--
-  int  dmg;           // add to damage roll for monsters
-  int  armor;         // armor - AC - only used for npcs - For monsters, includes any dex bonus...
-  int  max_hp;        // max hit points (hp) per level - class specific + Con bonus
+  int  dmg;           // innate damage bonus - mostly used for monsters
+  int  armor;         // armor - AC - only used for npcs
+  int  hit_die;       // how many HP you get per hit die
+  int  hit_die_num;   // how many Hit Dice npc has
+  int  max_hp;        // max hit points (hp) - convenience stat, result of Hit Die roll
   int  cur_hp;        // current hit points
   int  dodge;         // class specific bonus to dodge -- may drop this at some point
   int  max_mana;      // max mana per level for spells and special attacks
