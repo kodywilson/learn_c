@@ -178,7 +178,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, np
   wclear(game_text);  // clear the window and take the turn
   mvwprintw(game_text, 0, 0, "%s's turn...", player->name);
   health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
-  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
+  health_bar(game_text, monster->cur_hp, monster->max_hp, 0, monster->name);
   
   num_choices = actions(player);
   choice = choose(select, num_choices, combat_prompt);
@@ -267,7 +267,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, np
   }
   refresh_stats(stats, player); // update stats window
   health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
-  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
+  health_bar(game_text, monster->cur_hp, monster->max_hp, 0, monster->name);
   wrefresh(game_text);
   wclear(select);         // stop after turn is complete so player can see results of their turn
   mvwaddstr(select, 0, 0, "Press any key to continue...");
@@ -285,7 +285,7 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, npc *
   wclear(game_text);  // clear the window and take the turn
   mvwprintw(game_text, 0, 0, "%s's turn...", monster->name);
   health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
-  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
+  health_bar(game_text, monster->cur_hp, monster->max_hp, 0, monster->name);
   
   choice = dice(1, 6) * 0;
   switch (choice) {
@@ -355,7 +355,7 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int env
   getch();
   wclear(game_text);
   health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
-  health_bar(game_text, monster.cur_hp, monster.max_hp, 1, monster.name);
+  health_bar(game_text, monster.cur_hp, monster.max_hp, 0, monster.name);
 
   init_mob = ((monster.dex - 10) / 2) + monster.dodge;
   init_player = ((player->dex - 10) / 2) + player->dodge; // tweak this later, wizard buffs, etc.
