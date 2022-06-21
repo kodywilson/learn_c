@@ -22,6 +22,7 @@ int calc_mod(int stat) {
 }
 
  // update player name
+ // also initializes worn and bag slots
 void update_name(WINDOW *select, WINDOW *input, pc *player) {
   char name[32];
 
@@ -323,16 +324,16 @@ int load_saves() {
 // choose a saved game from the list of saves
 int choose_save(WINDOW *game_text, WINDOW *select, int saves) {
   int choice, num_choices = 0;
-  char save_text[96];
+  char save_text[MAX_CHOICE_LEN];
 
   reset_choices();
 
   for (int i = 0; i < saves; i++) {
-    snprintf(save_text, 95, "Slot: %d | Name: %s | Class: %s | Level: %d | Time: %s", i + 1, saved_games[i].name, 
+    snprintf(save_text, MAX_CHOICE_LEN, "Slot: %d | Name: %s | Class: %s | Level: %d | Time: %s", i + 1, saved_games[i].name, 
     saved_games[i].role, saved_games[i].lvl, ctime(&(saved_games[i].date_time)));
-    strncpy(choices[num_choices], save_text, 96);
+    strncpy(choices[num_choices], save_text, MAX_CHOICE_LEN);
     num_choices++;
-    memset(save_text, 0, 96);
+    memset(save_text, 0, MAX_CHOICE_LEN);
   }
 
   choice = choose(select, num_choices, "Please choose a saved game: \n");
