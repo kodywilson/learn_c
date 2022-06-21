@@ -56,61 +56,34 @@ int actions(pc *player) {
 
 // calculate if a given attack hits, and if so, for how much
 // monsters are strong, so tweak as needed to make combat possible
-int monster_attack(mob *attacker, mob *target) {
+int monster_attack(mob *attacker, pc *target) {
   int ac, damage, roll;
 
   // note - mob stat blocks include dex bonus (if any) in armor category
-  // Determine if attacker is player or monster and then calculate outcome of attack
-  if ( attacker->is_pc == 1 ) { // first we handle when attacker is pc
-    // check for finesse weapon and higher dex than str
-    if ((attacker->worn_items[1].finesse == 1) && (attacker->dex >= attacker->str)) {
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2);                                 // use dex to hit for finesse
-      damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->dex - 10) / 2); // dex for damage for finesse
-    } else { // now go off strength and make sure they are holding a weapon!
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit unless finesse
-      if (strcmp(attacker->worn_items[1].name, "- empty -") == 0) {
-        damage = dice(1, 2) + ((attacker->str - 10) / 2);                                                 // bare hands!
-      } else {
-        damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->str - 10) / 2); // str for damage unless finesse
-      }
+  roll = dice(1, 20) + attacker->to_hit;  // monster roll = d20 + to hit
+  if ((target->worn_items[0].type == 0) || (target->worn_items[0].type == 6)) {                 // light or no armor
+    ac = AC_BASE + target->dodge + target->worn_items[0].armor_val + ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
+  }
+  if (target->worn_items[0].type == 1) {                                                        // medium armor - max +2 dex bonus
+    ac = (AC_BASE + target->dodge + target->worn_items[0].armor_val) + ((((target->dex - 10) / 2) > 2) ? 2 : ((target->dex - 10) / 2));  // Base AC + dodge + armor + dex bonus
+  }
+  if (target->worn_items[0].type == 2) {                             // heavy armor
+    ac = AC_BASE + target->dodge + target->worn_items[0].armor_val;  // Base AC + dodge + armor
+  }
+  // check for shield
+  if (strcmp(target->worn_items[2].name, "- empty -") != 0) {
+    ac+=target->worn_items[2].armor_val;  // add shield AC
+  }
+  damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg; // number of dice, type of dice, +dmg
+  // now handle buffs which may modify these numbers a bit
+  if (target->buffs[2] == 1) {               // check for player buff
+    if ((strcmp(target->role, "Rogue") == 0) || (strcmp(target->role, "Wizard") == 0)) {        // Rogue and Wizard class buff
+      ac+=2;                                                               // + AC - maybe these scale later?
+      damage-=dice(1, 2) + 1;                                              // small damage reduction
     }
-    if (attacker->buffs[2] == 1) {                          // check for player buff
-      if ((strcmp(attacker->role, "Cleric") == 0) || (strcmp(attacker->role, "Paladin") == 0)) {          // Cleric and Paladin buff for praying
-        roll+=1;                                                               // tiny boost to roll
-        damage+=dice(1, 2);                                                    // minor damage boost
-      }
-      if (strcmp(attacker->role, "Rogue") == 0) {          // Rogues get a decent boost to combat
-        roll+=2;                                                               // boost to roll - tweak if too much!
-        damage+=dice(1, 4);                                                    // damage boost - tweak if too much!
-      }
-    }
-    ac = AC_BASE + target->armor;     // Base AC + armor for monsters // later may add mods
-  } else { // monster is attacker, use different formulas
-    roll = dice(1, 20) + attacker->to_hit;  // monster roll = d20 + to hit
-    if ((target->worn_items[0].type == 0) || (target->worn_items[0].type == 6)) {                 // light or no armor
-      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val + ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
-    }
-    if (target->worn_items[0].type == 1) {                                                        // medium armor - max +2 dex bonus
-      ac = (AC_BASE + target->dodge + target->worn_items[0].armor_val) + ((((target->dex - 10) / 2) > 2) ? 2 : ((target->dex - 10) / 2));  // Base AC + dodge + armor + dex bonus
-    }
-    if (target->worn_items[0].type == 2) {                             // heavy armor
-      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val;  // Base AC + dodge + armor
-    }
-    // check for shield
-    if (strcmp(target->worn_items[2].name, "- empty -") != 0) {
-      ac+=target->worn_items[2].armor_val;  // add shield AC
-    }
-    damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg; // number of dice, type of dice, +dmg
-    // now handle buffs which may modify these numbers a bit
-    if (target->buffs[2] == 1) {               // check for player buff
-      if ((strcmp(target->role, "Rogue") == 0) || (strcmp(target->role, "Wizard") == 0)) {        // Rogue and Wizard class buff
-        ac+=2;                                                               // + AC - maybe these scale later?
-        damage-=dice(1, 2) + 1;                                              // small damage reduction
-      }
-      if ((strcmp(target->role, "Cleric") == 0) || (strcmp(target->role, "Paladin") == 0)) {       // Cleric and Paladin buff for praying
-        ac+=1;                                                               // + AC - maybe these scale later?
-        damage-=dice(1, 2);                                                  // tiny damage reduction
-      }
+    if ((strcmp(target->role, "Cleric") == 0) || (strcmp(target->role, "Paladin") == 0)) {       // Cleric and Paladin buff for praying
+      ac+=1;                                                               // + AC - maybe these scale later?
+      damage-=dice(1, 2);                                                  // tiny damage reduction
     }
   }
   
@@ -161,20 +134,20 @@ int player_attack(pc *attacker, mob *target) {
 }
 
 // pass window to draw health bar and what entity (monster, etc.)
-void health_bar(WINDOW *win, mob *entity) {
+void health_bar(WINDOW *win, int cur_hp, int max_hp, int is_pc, char name[32]) {
   int hp, max_y, max_x, y, x;
 
   getmaxyx(win, max_y, max_x);
   // where the bar goes depends on the entity
-  if (entity->is_pc == 1) {
+  if (is_pc == 1) {
     y = max_y - 6; 
     x = max_x - 11;
   } else {
     y = max_y - 3;
     x = max_x - 11;
   }
-  hp = ((float) entity->cur_hp / entity->max_hp * 10); // get amount of health
-  if (entity->cur_hp > 0 && hp < 1) hp = 1; // need at least one # if mob is still alive
+  hp = ((float) cur_hp / max_hp * 10); // get amount of health
+  if (cur_hp > 0 && hp < 1) hp = 1; // need at least one # if mob is still alive
 
   // we want to print a # for roughly every 10% of health
   // then make missing health turn red, other ones green
@@ -193,19 +166,19 @@ void health_bar(WINDOW *win, mob *entity) {
     wattroff(win, COLOR_PAIR(1) | A_BOLD);
   }
   wattron(win, COLOR_PAIR(6) | A_BOLD);
-  mvwprintw(win, y + 2, x, "  %s  ", entity->name);        // bar label
+  mvwprintw(win, y + 2, x, "  %s  ", name);        // bar label
   wattroff(win, COLOR_PAIR(6) | A_BOLD);
   wrefresh(win);
 }
 
 // handle player actions and battle choices, return choice
-int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob *monster, char *combat_prompt) {
+int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, mob *monster, char *combat_prompt) {
   int choice = 2, heal_amt = 0, player_damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
   mvwprintw(game_text, 0, 0, "%s's turn...", player->name);
-  health_bar(game_text, player);
-  health_bar(game_text, monster);
+  health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
+  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
   
   num_choices = actions(player);
   choice = choose(select, num_choices, combat_prompt);
@@ -213,12 +186,11 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, m
     case 0: mvwprintw(game_text, 2, 0, "You swing at %s", monster->name);
             wrefresh(game_text);
             napms(250);
-            player_damage = attack(player, monster);
+            player_damage = player_attack(player, monster);
             if (player_damage > 0) { // move this into attack function?
               wattron(game_text, COLOR_PAIR(7) | A_BOLD);
               mvwprintw(game_text, 4, 0, "You hit %s for %d damage!", monster->name, player_damage);
               wattroff(game_text, COLOR_PAIR(7) | A_BOLD);
-              //health_bar(game_text, monster);
             } else {
               wattron(game_text, COLOR_PAIR(1) | A_BOLD);
               mvwprintw(game_text, 4, 0, "The %s dodges your strike.", monster->name);
@@ -273,7 +245,7 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, m
               mvwprintw(game_text, 3, 0, "You swing at %s", monster->name);
               wrefresh(game_text);
               napms(250);
-              player_damage = attack(player, monster);
+              player_damage = player_attack(player, monster);
               if (player_damage > 0) { // move this into attack function?
                 wattron(game_text, COLOR_PAIR(7) | A_BOLD);
                 mvwprintw(game_text, 4, 0, "You hit %s for %d damage!", monster->name, player_damage);
@@ -294,8 +266,8 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, m
     player->xp+=monster->xp;
   }
   refresh_stats(stats, player); // update stats window
-  health_bar(game_text, player);
-  health_bar(game_text, monster);
+  health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
+  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
   wrefresh(game_text);
   wclear(select);         // stop after turn is complete so player can see results of their turn
   mvwaddstr(select, 0, 0, "Press any key to continue...");
@@ -307,26 +279,26 @@ int player_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, m
 
 // handle npc actions and battle choices, return choice
 // this will only return attack at first, but eventually will support other options
-int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob *monster) {
+int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, pc *player, mob *monster) {
   int choice, damage = 0;
 
   wclear(game_text);  // clear the window and take the turn
   mvwprintw(game_text, 0, 0, "%s's turn...", monster->name);
-  health_bar(game_text, player);
-  health_bar(game_text, monster);
+  health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
+  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
   
   choice = dice(1, 6) * 0;
   switch (choice) {
     case 0: mvwprintw(game_text, 2, 0, "%s tries to hit you.", monster->name);
             wrefresh(game_text);
             napms(250);
-            damage = attack(monster, player);
+            damage = monster_attack(monster, player);
             if (damage > 0) {
               wattron(game_text, COLOR_PAIR(1) | A_BOLD);
               mvwprintw(game_text, 4, 0, "%s hit you for %d damage!", monster->name, damage);
               wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
               refresh_stats(stats, player); // update stats window
-              health_bar(game_text, player);
+              health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
             } else {
               wattron(game_text, COLOR_PAIR(7) | A_BOLD);
               mvwprintw(game_text, 4, 0, "You dodge %s's ferocious strike.", monster->name);
@@ -351,7 +323,7 @@ int npc_turn(WINDOW *select, WINDOW *game_text, WINDOW *stats, mob *player, mob 
   return choice;
 }
 
-int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int environ) {
+int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int environ) {
   int choice, init_mob, init_player, monster_roll, result = 2; // result 2: you fled  1: you won  13: you died
   mob monster;        // create struct for monster
   char combat_prompt[96];
@@ -379,8 +351,8 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
   wrefresh(select);
   getch();
   wclear(game_text);
-  health_bar(game_text, player);
-  health_bar(game_text, &monster);
+  health_bar(game_text, player->cur_hp, player->max_hp, 1, player->name);
+  health_bar(game_text, monster->cur_hp, monster->max_hp, 1, monster->name);
 
   init_mob = ((monster.dex - 10) / 2) + monster.dodge;
   init_player = ((player->dex - 10) / 2) + player->dodge; // tweak this later, wizard buffs, etc.
@@ -400,14 +372,8 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
         result = 1;
         break; // you won!
       }
-      //refresh_stats(stats, player); // update stats window
-      //health_bar(game_text, player);
-      //health_bar(game_text, &monster);
       // now monster goes
       npc_turn(select, game_text, stats, player, &monster);
-      //refresh_stats(stats, player); // update stats window
-      //health_bar(game_text, player);
-      //health_bar(game_text, &monster);
       if (player->cur_hp < 1) {
         result = 13;
         break; // you died, so sad
@@ -419,9 +385,6 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
         result = 13;
         break; // you died. later, call game over function
       }
-      //refresh_stats(stats, player); // update stats window
-      //health_bar(game_text, player);
-      //health_bar(game_text, &monster);
       // then player goes
       choice = player_turn(select, game_text, stats, player, &monster, combat_prompt);
       if (choice_key[choice] == 2) break; // get out, you fled
@@ -429,13 +392,7 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, mob *player, int en
         result = 1;
         break; // you won!
       }
-      //refresh_stats(stats, player); // update stats window
-      //health_bar(game_text, player);
-      //health_bar(game_text, &monster);
     }
-    //if (choice == 1) break; // exit combat loop, you escaped!
-    //health_bar(game_text, &monster);
-    //wrefresh(stats);
     wclear(game_text);
   }
   wclear(game_text);
