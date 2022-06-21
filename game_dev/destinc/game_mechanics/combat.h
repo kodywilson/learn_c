@@ -123,63 +123,33 @@ int monster_attack(mob *attacker, mob *target) {
   return damage; // later, find a way to reflect damage absorption. For now, less than 1 means they missed
 }
 
-int player_attack(mob *attacker, mob *target) {
+int player_attack(pc *attacker, mob *target) {
   int ac, damage, roll;
 
-  // note - mob stat blocks include dex bonus (if any) in armor category
-  // Determine if attacker is player or monster and then calculate outcome of attack
-  if ( attacker->is_pc == 1 ) { // first we handle when attacker is pc
-    // check for finesse weapon and higher dex than str
-    if ((attacker->worn_items[1].finesse == 1) && (attacker->dex >= attacker->str)) {
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2);                                 // use dex to hit for finesse
-      damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->dex - 10) / 2); // dex for damage for finesse
-    } else { // now go off strength and make sure they are holding a weapon!
-      roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit unless finesse
-      if (strcmp(attacker->worn_items[1].name, "- empty -") == 0) {
-        damage = dice(1, 2) + ((attacker->str - 10) / 2);                                                 // bare hands!
-      } else {
-        damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->str - 10) / 2); // str for damage unless finesse
-      }
-    }
-    if (attacker->buffs[2] == 1) {                          // check for player buff
-      if ((strcmp(attacker->role, "Cleric") == 0) || (strcmp(attacker->role, "Paladin") == 0)) {          // Cleric and Paladin buff for praying
-        roll+=1;                                                               // tiny boost to roll
-        damage+=dice(1, 2);                                                    // minor damage boost
-      }
-      if (strcmp(attacker->role, "Rogue") == 0) {          // Rogues get a decent boost to combat
-        roll+=2;                                                               // boost to roll - tweak if too much!
-        damage+=dice(1, 4);                                                    // damage boost - tweak if too much!
-      }
-    }
-    ac = AC_BASE + target->armor;     // Base AC + armor for monsters // later may add mods
-  } else { // monster is attacker, use different formulas
-    roll = dice(1, 20) + attacker->to_hit;  // monster roll = d20 + to hit
-    if ((target->worn_items[0].type == 0) || (target->worn_items[0].type == 6)) {                 // light or no armor
-      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val + ((target->dex - 10) / 2);  // Base AC + dodge + armor + dex bonus
-    }
-    if (target->worn_items[0].type == 1) {                                                        // medium armor - max +2 dex bonus
-      ac = (AC_BASE + target->dodge + target->worn_items[0].armor_val) + ((((target->dex - 10) / 2) > 2) ? 2 : ((target->dex - 10) / 2));  // Base AC + dodge + armor + dex bonus
-    }
-    if (target->worn_items[0].type == 2) {                             // heavy armor
-      ac = AC_BASE + target->dodge + target->worn_items[0].armor_val;  // Base AC + dodge + armor
-    }
-    // check for shield
-    if (strcmp(target->worn_items[2].name, "- empty -") != 0) {
-      ac+=target->worn_items[2].armor_val;  // add shield AC
-    }
-    damage = dice(attacker->dice_num, attacker->dice_dam) + attacker->dmg; // number of dice, type of dice, +dmg
-    // now handle buffs which may modify these numbers a bit
-    if (target->buffs[2] == 1) {               // check for player buff
-      if ((strcmp(target->role, "Rogue") == 0) || (strcmp(target->role, "Wizard") == 0)) {        // Rogue and Wizard class buff
-        ac+=2;                                                               // + AC - maybe these scale later?
-        damage-=dice(1, 2) + 1;                                              // small damage reduction
-      }
-      if ((strcmp(target->role, "Cleric") == 0) || (strcmp(target->role, "Paladin") == 0)) {       // Cleric and Paladin buff for praying
-        ac+=1;                                                               // + AC - maybe these scale later?
-        damage-=dice(1, 2);                                                  // tiny damage reduction
-      }
+  // check for finesse weapon and higher dex than str
+  if ((attacker->worn_items[1].finesse == 1) && (attacker->dex >= attacker->str)) {
+    roll = dice(1, 20) + attacker->to_hit + ((attacker->dex - 10) / 2);                                 // use dex to hit for finesse
+    damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->dex - 10) / 2); // dex for damage for finesse
+  } else { // now go off strength and make sure they are holding a weapon!
+    roll = dice(1, 20) + attacker->to_hit + ((attacker->str - 10) / 2);                                 // str to hit unless finesse
+    if (strcmp(attacker->worn_items[1].name, "- empty -") == 0) {
+      damage = dice(1, 2) + ((attacker->str - 10) / 2);                                                 // bare hands!
+    } else {
+      damage = dice(attacker->worn_items[1].dice_num, attacker->worn_items[1].dmg_dice) + ((attacker->str - 10) / 2); // str for damage unless finesse
     }
   }
+  if (attacker->buffs[2] == 1) {                          // check for player buff
+    if ((strcmp(attacker->role, "Cleric") == 0) || (strcmp(attacker->role, "Paladin") == 0)) {          // Cleric and Paladin buff for praying
+      roll+=1;                                                               // tiny boost to roll
+      damage+=dice(1, 2);                                                    // minor damage boost
+    }
+    if (strcmp(attacker->role, "Rogue") == 0) {          // Rogues get a decent boost to combat
+      roll+=2;                                                               // boost to roll - tweak if too much!
+      damage+=dice(1, 4);                                                    // damage boost - tweak if too much!
+    }
+  }
+  // note - mob stat blocks include dex bonus (if any) included in armor attribute
+  ac = AC_BASE + target->armor;     // Base AC + armor for monsters
   
   if (roll >= ac ) { // check if attacker rolled greater than or equal to target AC
     target->cur_hp-=damage;
