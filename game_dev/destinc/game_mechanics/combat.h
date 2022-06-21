@@ -337,7 +337,9 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int env
     case 1: monster_roll = dice(1, BOSS) - 1; monster = bosses[monster_roll]; break; // generate boss monster 
     default: monster_roll = dice(1, MOBS) - 1; break;  // dice never return 0 so subtract one for proper array indexing
   }
-  // later, have the mobs hitpoints determined by hit die so there is some randomness.
+  // We have our opponent, now randomly determine health according to monster hit die
+  monster.max_hp = dice(monster.hit_die_num, monster.hit_die);
+  monster.cur_hp = monster.max_hp;
   // switch(environ) { // ok, I am cheating a bit here and leveraging the environ variable to differentiate between regular and boss mobs
   //   case 0: monster_roll = dice(1, MOBS) - 1; build_character(mobs[monster_roll].name, mobs[monster_roll], &monster); break;// generate foe break;   // 4 choices, so roll 4 sided die       |  Need to fix later to support both
   //   case 1: monster_roll = dice(1, BOSS) - 1; build_character(bosses[monster_roll].name, bosses[monster_roll], &monster); break;// generate foe break; 
