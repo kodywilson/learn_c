@@ -5,11 +5,12 @@
 #include "entities/npc.h"                // non player characters (usually monsters)
 #include "art/text.h"
 #include <ncurses.h>
-#include "art/letters.h"
-#include "art/assets.h"
+#include "art/letters.h"                 // big ascii letters
+#include "art/assets.h"                  // ascii art
 #include "art/graphics.h"
-#include "game_mechanics/choices.h"
-#include "game_mechanics/file.h"
-#include "game_mechanics/character.h"
-#include "game_mechanics/combat.h"
-#include "entities/locations.h"
+#include "art/animations/animations.h"   // load animations
+#include "game_mechanics/choices.h"      // handle making choices
+#include "game_mechanics/file.h"         // create and setup game files
+#include "game_mechanics/character.h"    // inventory, character creation, etc.
+#include "game_mechanics/combat.h"       // fighting
+#include "entities/locations.h"          // various places you can visit in the game

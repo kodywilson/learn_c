@@ -10,7 +10,7 @@
 
 int main() {
   srand(time(0)); // seed rand using time
-  int choice, max_y, max_x;
+  int choice, max_y, max_x, new_game;
   // last four of next line are oft used offsets
   int game_text_y, game_text_x, main_loop, saves, y_high, x_high, y_low, x_low;
   pc player; // create player struct
@@ -90,7 +90,7 @@ int main() {
       if (choice_key[choice] == 0) {
         choice = choose_save(game_text, select, saves);
         player = saved_games[choice];
-        //load_save(choice, &player);
+        new_game = 0;
       } else {
         wclear(game_text);
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
@@ -109,7 +109,7 @@ int main() {
             wrefresh(game_text);
             player = player_classes[choose_class(game_text, select)];
             update_name(select, input, &player);
-            //save_game(game_text, select, player, saves);
+            new_game = 1;
           } else {
             wclear(game_text);
             mvwaddstr(game_text, y_high, x_high, "Ok, fair enough. Let's load a saved game.");
@@ -117,6 +117,7 @@ int main() {
             napms(1000);
             choice = choose_save(game_text, select, saves);
             player = saved_games[choice];
+            new_game = 0;
           }
         } else {
           wclear(game_text);
@@ -124,7 +125,7 @@ int main() {
           wrefresh(game_text);
           player = player_classes[choose_class(game_text, select)];
           update_name(select, input, &player);
-          //save_game(game_text, select, player, saves);
+          new_game = 1;
         }
         wrefresh(game_text);
       }
@@ -134,7 +135,7 @@ int main() {
       napms(1000);
       player = player_classes[choose_class(game_text, select)];
       update_name(select, input, &player);
-      //save_game(game_text, select, player, saves);
+      new_game = 1;
     }
   } else {   // this needs to be updated to create file if missing
     mvwaddstr(game_text, y_high, x_high, "There is no save game file!");
@@ -161,13 +162,19 @@ int main() {
   mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
   wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(select_border);
-  // Initial greeting
-  wclear(game_text);
-  mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome to your Destiny...", player.name);
-  mvwprintw(game_text, y_high + 1, x_high, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
-  mvwaddstr(game_text, y_low, x_low, "Press any key to begin...");
-  wrefresh(game_text);
-  getch();
+  // New game or previous one?
+  if (new_game == 0) {
+    // Initial greeting
+    wclear(game_text);
+    mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome back to Destiny...", player.name);
+    //mvwprintw(game_text, y_high + 1, x_high, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
+    mvwaddstr(game_text, y_low, x_low, "Press any key to begin...");
+    wrefresh(game_text);
+    getch();
+  } else {
+    // new game stuff here
+  }
+  
 
   main_loop = 1;
   // Main game loop
