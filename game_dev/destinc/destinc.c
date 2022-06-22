@@ -78,7 +78,7 @@ int main() {
 
   keypad(select, true); // enable the keypad on the select window
 
-  wattron(game_text, COLOR_PAIR(4));
+  //wattron(game_text, COLOR_PAIR(4)); // not sure I like the blue text...
 
   // setup game directory and save file if needed
   setup_file(game_text, select);
@@ -148,6 +148,17 @@ int main() {
     getch();
   }
 
+  // New game or previous one?
+  if (new_game == 0) {
+    // Initial greeting
+    wclear(game_text);
+    mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome back to Destiny...", player.name);
+    //mvwprintw(game_text, y_high + 1, x_high, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
+    wrefresh(game_text);
+    pause_text(select);
+  } else {
+    intro_screen(stdscr, player.name);
+  }
   // Intro
   wclear(select);
   wrefresh(select);
@@ -167,20 +178,10 @@ int main() {
   mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
   wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(select_border);
-  // New game or previous one?
-  if (new_game == 0) {
-    // Initial greeting
-    wclear(game_text);
-    mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome back to Destiny...", player.name);
-    //mvwprintw(game_text, y_high + 1, x_high, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
-    mvwaddstr(game_text, y_low, x_low, "Press any key to begin...");
-    wrefresh(game_text);
-    getch();
-  } else {
-    clear();
-    intro_screen(stdscr, player.name);
-  }
-  
+
+  wrefresh(stats_border);
+  wrefresh(game_text_border);
+  wrefresh(select_border);
 
   main_loop = 1;
   // Main game loop
