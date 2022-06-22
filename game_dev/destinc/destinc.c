@@ -172,7 +172,8 @@ int main() {
     wrefresh(game_text);
     getch();
   } else {
-    // new game stuff here
+    clear();
+    intro_screen(stdscr, player.name);
   }
   
 
