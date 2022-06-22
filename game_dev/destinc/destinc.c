@@ -36,6 +36,11 @@ int main() {
   init_pair(6, COLOR_YELLOW, COLOR_BLACK);
   init_pair(7, COLOR_GREEN, COLOR_BLACK);
 
+  init_pair(17,0,0);
+	init_pair(18,1,0);
+	init_pair(19,3,0);
+	init_pair(20,4,0);
+
   getmaxyx(stdscr, max_y, max_x);
   curs_set(0); // turn off visible cursor
 
