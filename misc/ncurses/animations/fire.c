@@ -25,6 +25,7 @@ int main(int argc, char** argv)
 void flames(void)
 	{
 	int width, height, size, *b, i;
+  int timer;
 	const char characters[] = {' ', '.', ':', '^', '*', 'x', 's', 'S', '#', '$'};
 	
 	getmaxyx(stdscr,height,width);
@@ -38,6 +39,8 @@ void flames(void)
 	b=calloc((size+width+1),sizeof(int));
 	nodelay(stdscr,TRUE);
 	srand(time(NULL));
+
+  timer = time(NULL);
 
 	for (;;)
 		{
@@ -65,8 +68,10 @@ void flames(void)
 			}
 		refresh();
 		timeout(30);
-		if (getch() != ERR)
-			break;
+    napms(10);
+    if ((timer + 10) <= time(NULL)) break;
+		//if (getch() != ERR)
+		//	break;
 		}
 	
 	free(b);

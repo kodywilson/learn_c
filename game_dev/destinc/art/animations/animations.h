@@ -7,8 +7,12 @@
    http://maettig.com/code/javascript/asciifire.html
 */
 
-void flames(WINDOW *win) {
+void *flames(void *win_in) {
 	int width, height, size, *b, i;
+  int timer;
+  //WINDOW *win = (WINDOW) win_in;
+  WINDOW *win = malloc(sizeof(win_in));
+  //dungeon *d1 = malloc(sizeof(dungeon));
 	const char characters[] = {' ', '.', ':', '^', '*', 'x', 's', 'S', '#', '$'};
 	
 	getmaxyx(win,height,width);
@@ -19,6 +23,9 @@ void flames(WINDOW *win) {
 	nodelay(win,TRUE);
 	srand(time(NULL));
 
+  timer = time(NULL);
+
+  pthread_detach(pthread_self()); // detach thread from main()
 	for (;;) {
 		for (i =0; i < width/9; i++)
 			b[(int)(((float)rand()/(float)RAND_MAX)*width+width*(height-1))]=65;
@@ -42,12 +49,14 @@ void flames(WINDOW *win) {
 		}
 		wrefresh(win);
 		timeout(30);
-		if (getch() != ERR)
-			break;
+    napms(15);
+    if ((timer + 30) <= time(NULL)) break;
+		//if (getch() != ERR)
+		//	break;
 }
-	wclear(win);
-  wrefresh(win);
 	free(b);
+  free(win);
+  pthread_exit(NULL);	 // terminate thread
 }
 
 #include "intro.h"
