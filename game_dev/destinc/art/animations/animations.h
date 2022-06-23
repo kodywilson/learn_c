@@ -7,14 +7,14 @@
    http://maettig.com/code/javascript/asciifire.html
 */
 
-void *flames(void *data) {
+void *flames(void *window) {
 	int width, height, size, *b, i;
   int timer;
-  int max_y, max_x;
-  WINDOW *animation;
+  //int max_y, max_x;
+  WINDOW *animation = window;
 
-  getmaxyx(stdscr, max_y, max_x);
-  animation  = newwin(max_y * 2 / 3, max_x, (max_y / 3) + 1, 0);
+  //getmaxyx(animation, max_y, max_x);
+  //animation  = newwin(max_y * 2 / 3, max_x, (max_y / 3) + 1, 0);
 
 	const char characters[] = {' ', '.', ':', '^', '*', 'x', 's', 'S', '#', '$'};
 	

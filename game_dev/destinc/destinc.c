@@ -158,7 +158,7 @@ int main() {
     wrefresh(game_text);
     pause_text(select);
   } else {
-    intro_screen(stdscr, player.name);
+    intro_screen(game_text, select, player.name);
   }
   clear();
   refresh();
