@@ -101,7 +101,8 @@ int main() {
         mvwaddstr(game_text, y_high, x_high, "Ok, you chose to create a new game.");
         if (saves >= SAVE_SLOTS) {
           wattron(game_text, COLOR_PAIR(1) | A_BOLD);
-          mvwprintw(game_text, y_low, x_low, "Please note: only %d saves are supported. You are at the limit and will need to overwrite one save to create a new game.", saves);
+          mvwprintw(game_text, y_low - 1, x_low, "Please note: only %d saves are supported.", saves);
+          mvwprintw(game_text, y_low, x_low, "You are at the limit and will need to overwrite one save to save this new game.");
           wattroff(game_text, COLOR_PAIR(1) | A_BOLD);
           wattron(game_text, COLOR_PAIR(4));
           wrefresh(game_text);
@@ -159,6 +160,14 @@ int main() {
   } else {
     intro_screen(stdscr, player.name);
   }
+  clear();
+  refresh();
+  clear_box(stats_border);
+  clear_box(game_text_border);
+  clear_box(select_border);
+  clear_box(input);
+  wrefresh(game_text_border);
+  wrefresh(select_border);
   // Intro
   wclear(select);
   wrefresh(select);

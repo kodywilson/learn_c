@@ -1,31 +1,33 @@
 // The Introduction screen for new characters
 
 void intro_screen(WINDOW *win, char name[32]) {
-  WINDOW *animation, *text;
+  WINDOW *text;
   pthread_t  thread_id;
   int max_y, max_x, show_text = 0;
 
   getmaxyx(win, max_y, max_x);
-  animation  = newwin(max_y * 2 / 3, max_x, (max_y / 3) + 1, 0);
   text       = newwin(max_y / 3, max_x, 0, 0);
 
   // create flames and within flames loop, refresh text with intro cut scene text
   // using a timer (so every three seconds or something like that)
   // open flames in a separate thread
-  pthread_create(&thread_id, NULL, flames, (void*) animation);
+  pthread_create(&thread_id, NULL, flames, NULL);
+  //void* ret_from_thread;
 
-	for (;;) {
+	//for (;;) {
+  for (int i = 0; i < 1; i++) {
     wclear(text);
-    bigly(text, DOOM, intro_scene_text[show_text]);
+    //bigly(text, DOOM, intro_scene_text[show_text]);
+    //bigly(text, DOOM, intro_scene_text[i]);
     wrefresh(text);
-    show_text++;
-    napms(5000);
+    //show_text++;
+    napms(2000);
+    //if (show_text == (INTRO_TEXT - 1)) break;
   }
 
-  pthread_exit(NULL);	 // terminate thread
+   //pthread_exit(NULL);
+  pthread_join(thread_id, NULL);	 // join threads
 
-  wclear(animation);
-  wrefresh(animation);
   wclear(text);
   wrefresh(text);
 }
