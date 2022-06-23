@@ -4,7 +4,8 @@
 #include "entities/pc.h"                 // player characters
 #include "entities/npc.h"                // non player characters (usually monsters)
 #include "art/text.h"
-#include <ncurses.h>
+#include <ncurses.h>                     // console control api
+#include <pthread.h>                     // concurrency for posix systems
 #include "art/letters.h"                 // big ascii letters
 #include "art/assets.h"                  // ascii art
 #include "art/graphics.h"
