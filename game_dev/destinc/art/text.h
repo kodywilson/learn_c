@@ -1,7 +1,13 @@
 #include <string.h>
 
+#define INTRO_TEXT 8
 #define BOSS_TEXT 9
 #define MOVE_TEXT 12
+
+char *intro_scene_text[MOVE_TEXT] = 
+  {"DREAM", "AGAIN", "FLAMES", "TERROR",
+   "AWAKE", "ALIVE", "HOPE",
+   "DESTINY"};
 
 char *rand_move_text[MOVE_TEXT] = 
   {"You hear rats feet scampering across broken glass.", "Fresh air mixes with foul as your torch flickers...", "You smell something terrible.", "The smell of rotting flesh fills your lungs.",

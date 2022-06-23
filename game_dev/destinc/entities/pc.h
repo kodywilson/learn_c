@@ -125,4 +125,4 @@ pc player_classes[PCS] = {
   }
 };
 
-char *class_list[PCS] = {"Cleric", "Knight", "Rogue", "Wizard"};
+char *class_list[PCS] = {"Cleric", "Paladin", "Rogue", "Wizard"};

@@ -10,7 +10,7 @@
 
 int main() {
   srand(time(0)); // seed rand using time
-  int choice, max_y, max_x, new_game;
+  int choice, max_y, max_x, new_game = 9;
   // last four of next line are oft used offsets
   int game_text_y, game_text_x, main_loop, saves, y_high, x_high, y_low, x_low;
   pc player; // create player struct
