@@ -76,9 +76,14 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
 
   getmaxyx(win, win_y, win_x);
 
-  // where to start printing the letters - later, make these arguments
-  text_y = (win_y / 2 - 5) / 2;
-  text_x = (win_x - (strlen(text) * (fonts[font].width[0][0]) + 1)) / 2; // estimate size using 1st character
+  // where to start printing the letters
+  if (position == 0) { // left justify
+    text_y = 0;
+    text_x = 0;
+  } else {             // center text
+    text_y = (win_y / 2 - 5) / 2;
+    text_x = (win_x - (strlen(text) * (fonts[font].width[0][0]) + 1)) / 2; // estimate size using 1st character
+  }
 
   // Iterate over text and print the letters
   for (int let = 0; text[let] != '\0'; let++) {
@@ -96,9 +101,10 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
     }
     text_x++; // accounts for space between each character
 
-    wrefresh(win);
-    napms(100);
+    if (effect == 1) wrefresh(win);
+    napms(effect_mod);
   }
+  wrefresh(win);
 }
 
 //

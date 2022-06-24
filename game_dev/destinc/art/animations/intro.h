@@ -8,18 +8,22 @@ void intro_screen(WINDOW *game_text, WINDOW *select, char name[32]) {
   //getmaxyx(win, max_y, max_x);
   //text       = newwin(max_y / 3, max_x, 0, 0);
 
+  clear();
+  refresh();
+
   // create flames and within flames loop, refresh text with intro cut scene text
   // using a timer (so every three seconds or something like that)
   // open flames in a separate thread
-  pthread_create(&thread_id, NULL, flames, game_text);
+  pthread_create(&thread_id, NULL, flames, stdscr);
   //void* ret_from_thread;
 
 	//for (;;) {
-  for (int i = 0; i < 1; i++) {
-    wclear(select);
+  for (int i = 0; i < 4; i++) {
+    waddstr(stdscr, intro_scene_text[i]);
+    //wclear(select);
     //bigly(text, DOOM, intro_scene_text[show_text]);
     //bigly(text, DOOM, intro_scene_text[i]);
-    wrefresh(select);
+    //wrefresh(select);
     //show_text++;
     napms(2000);
     //if (show_text == (INTRO_TEXT - 1)) break;
