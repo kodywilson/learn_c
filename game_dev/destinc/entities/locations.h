@@ -686,7 +686,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     }
   }
   wclear(game_text);
-  bigly(game_text, DOOM, "YAY");
+  bigly(game_text, DOOM, 1, 0, 0, "YAY");
   napms(500);
   wclear(game_text);
   mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");

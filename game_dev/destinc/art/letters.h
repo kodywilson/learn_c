@@ -70,8 +70,8 @@ int letter_start(int letter, font_t font) {
   return start;
 }
 
-//void bigly(WINDOW *win, int font, char *text) {
-void bigly(WINDOW *win, int font, char *text) {
+// window, which font, left justified or centered, print at once or delay, effect modifier, text to be printed
+void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char *text) {
   int ch, text_y, text_x, start, letter_width, win_y, win_x;
 
   getmaxyx(win, win_y, win_x);
