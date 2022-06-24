@@ -158,9 +158,11 @@ int main() {
     wrefresh(game_text);
     pause_text(select);
   } else {
-    intro_screen(game_text, select, player.name);
+    intro_screen(player.name);
+    getch();
   }
   clear();
+  wattron(game_text, COLOR_PAIR(5));
   refresh();
   clear_box(stats_border);
   clear_box(game_text_border);

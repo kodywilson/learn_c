@@ -4,7 +4,7 @@
 #define BOSS_TEXT 9
 #define MOVE_TEXT 12
 
-char *intro_scene_text[MOVE_TEXT] = 
+char *intro_scene_text[INTRO_TEXT] = 
   {"DREAM", "AGAIN", "FLAMES", "TERROR",
    "AWAKE", "ALIVE", "HOPE",
    "DESTINY"};
@@ -15,7 +15,7 @@ char *rand_move_text[MOVE_TEXT] =
    "Your torch flickers briefly, and you hear the sound of water.", "You hear the sound of water dripping.", "A breeze causes your torch to flicker.",
    "Fear grips your heart as you step into this area.", "You feel an eerie sensation..."};
 
-char *rand_boss_text[MOVE_TEXT] = 
+char *rand_boss_text[BOSS_TEXT] = 
   {"The moment you enter this area, you feel a keen sense of dread...", "Your nose is assailed by a gut wrenching smell.",
    "It is quite. Too quite...", "A low and gutteral sounds meets your ears.", "You hear something and it does not sound good. Not at all.",
    "Is your torch flickering or is that your hand shaking in fear?", "You can hardly believe what rushes toward you!",

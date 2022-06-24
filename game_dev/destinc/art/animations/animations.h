@@ -7,11 +7,12 @@
    http://maettig.com/code/javascript/asciifire.html
 */
 
-void *flames(void *window) {
+//void *flames(void *window) { // was using this when I was playing around with threads
+void flames(WINDOW *animation) {
 	int width, height, size, *b, i;
   int timer;
   //int max_y, max_x;
-  WINDOW *animation = window;
+  //WINDOW *animation = window;
 
   //getmaxyx(animation, max_y, max_x);
   //animation  = newwin(max_y * 2 / 3, max_x, (max_y / 3) + 1, 0);
@@ -23,7 +24,7 @@ void *flames(void *window) {
 	wclear(animation);
 	
 	b=calloc((size+width+1),sizeof(int));
-	nodelay(animation,TRUE);
+	//nodelay(animation,TRUE);
 	srand(time(NULL));
 
   timer = time(NULL);
@@ -52,11 +53,11 @@ void *flames(void *window) {
 		wrefresh(animation);
 		timeout(30);
     napms(15);
-    if ((timer + 10) <= time(NULL)) break;
+    if ((timer + 20) <= time(NULL)) break;
   }
 	free(b);
-
-  return (void*) 1;
+  //nodelay(animation,FALSE);
+  //return (void*) 1; // for pthreads
 }
 
 #include "intro.h"
