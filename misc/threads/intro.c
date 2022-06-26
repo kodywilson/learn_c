@@ -10,7 +10,7 @@
 void* func(void* x) {
     int xi = (int)x;
 
-    printf("Inside thread; x = %d\n", xi);
+    printf("Inside thread: x = %d\n", xi);
 
     sleep(10);
 
