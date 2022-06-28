@@ -10,7 +10,7 @@
 // one 2d array of widths:  [6, 7, 6, 6, ...] width of each uppercase character
 typedef struct Font {   //  [5, 5, 6, 6, ...] width of each lowercase character
   char up[9][356];      //  uppercase letters
-  //char low[9][356]; ; //  lowercase letters
+  char low[9][356]; ;   //  lowercase letters
   int height[2];        //  varies between upper and lowercase: height[upper][lower] ie. [6, 8]
   int width[2][26];     //  first array is width of uppercase, second is width of lowercase, each character
 } font_t;
@@ -103,7 +103,7 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
       text_y = (win_y / 2 - 5) / 2;
       for (int j = 0; j < fonts[font].height[!is_capital(ch)]; j++) { // j < height
         if (is_capital(ch)) mvwaddch(win, text_y, text_x, fonts[font].up[j][i]);
-        //else mvaddch(text_y, text_x, fonts[font].low[j][i + letter_width]); // need to add lowercase to font first
+        else mvaddch(text_y, text_x, fonts[font].low[j][i + letter_width]); // need to add lowercase to font first
         text_y++;
       }
       text_x++;
