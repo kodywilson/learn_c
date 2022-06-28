@@ -48,22 +48,22 @@ font_t fonts[1] = {
 //
 // functions for manipulating ascii art characters
 
-// pass letter to see if capital - is_capital('D')
-// Many of my arrays are indexed such that capital is indexed 0. Use !is_capital() when you
-// need to get back zero for capital.
-int is_capital(int letter) {
-  int result;
-  if ( letter >= 65 && letter <= 90) result = 1;
-  if ( letter >= 97 && letter <= 122) result = 0;
+// returns letter type (capital, lowercase, punctuation) 0 = not sure, 1, punctuation, 2, capital, 3, lowercase
+int letter_type(int letter) {
+  int result = 0;
+  if ( letter >= 32 && letter <= 64) result = 1;
+  if ( letter >= 65 && letter <= 90) result = 2;
+  if ( letter >= 97 && letter <= 122) result = 3;
   return result;
 }
 
-// returns position in English alphabet for letter
+// returns position in array for letter, symbol, or number
 int letter_position(int letter) {
   int position;
-  if (is_capital(letter)) position = letter - 'A';  // ie. D is 68, 68 - 65 = 3  Array indexing starts at 0
-  if (!is_capital(letter)) position = letter - 'a'; // so 3 is returned which is the fourth array position
-  return position;                                  // mathing our expectation as D is the 4th letter of the alphabet
+  if (letter_type(letter) == 1) position = letter - ' ';
+  if (letter_type(letter) == 2) position = letter - 'A';  // ie. D is 68 and A is 65, 68 - 65 = 3  Array indexing starts at 0
+  if (letter_type(letter) == 3) position = letter - 'a';  // so 3 is returned which is the fourth array position
+  return position;                                        // mathing our expectation as D is the 4th letter of the alphabet
 }
 
 // returns position in array where letter starts
@@ -71,9 +71,10 @@ int letter_position(int letter) {
 int letter_start(int letter, font_t font) {
   int start = 0;
   int space= 1;       // later, change this to passed argument if there are fonts spaced differently
-  if (is_capital(letter)) {    // this is a capital letter
+  if (letter_type(letter) == 2) {    // this is a capital letter
     for (int i = 0; i < letter - 'A'; i++) start = start + font.width[0][i] + space;  // add up to target letter start
-  } else {                     // this is a lowercase letter
+  }
+  if (letter_type(letter) == 3) {                     // this is a lowercase letter
     for (int i = 0; i < letter - 'a'; i++) start = start + font.width[1][i]  + space; // add up to target letter start
   }
   return start;
@@ -97,13 +98,13 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
   // Iterate over text and print the letters
   for (int let = 0; text[let] != '\0'; let++) {
     ch            = text[let];
-    letter_width  = fonts[font].width[!is_capital(ch)][letter_position(ch)];
+    letter_width  = fonts[font].width[letter_type(ch) - 2][letter_position(ch)];
     start         = letter_start(ch, fonts[font]);
     for (int i = start; i < start + letter_width; i++) {
       text_y = (win_y / 2 - 5) / 2;
-      for (int j = 0; j < fonts[font].height[!is_capital(ch)]; j++) { // j < height
-        if (is_capital(ch)) mvwaddch(win, text_y, text_x, fonts[font].up[j][i]);
-        else mvwaddch(win, text_y, text_x, fonts[font].low[j][i]);
+      for (int j = 0; j < fonts[font].height[!letter_type(ch)]; j++) { // j < height
+        if (letter_type(ch) == 2) mvwaddch(win, text_y, text_x, fonts[font].up[j][i]);
+        if (letter_type(ch) == 3) mvwaddch(win, text_y, text_x, fonts[font].low[j][i]);
         text_y++;
       }
       text_x++;
