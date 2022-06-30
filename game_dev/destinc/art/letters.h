@@ -60,7 +60,7 @@ int letter_type(int letter) {
 // returns position in array for letter, symbol, or number
 int letter_position(int letter) {
   int position;
-  if (letter_type(letter) == 1) position = letter - ' ';
+  if (letter_type(letter) == 1) position = letter - ' ';  // start of punctation and then numbers, etc.
   if (letter_type(letter) == 2) position = letter - 'A';  // ie. D is 68 and A is 65, 68 - 65 = 3  Array indexing starts at 0
   if (letter_type(letter) == 3) position = letter - 'a';  // so 3 is returned which is the fourth array position
   return position;                                        // mathing our expectation as D is the 4th letter of the alphabet
