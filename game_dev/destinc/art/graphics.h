@@ -72,7 +72,7 @@ void stars(WINDOW *win, int num_stars) {
 void intro(WINDOW *win, int num_stars) {
 
   stars(win, num_stars);
-  bigly(win, DOOM, 1, 1, 100, "DESTINY");
+  bigly(win, DOOM, 1, 1, 100, "Your Destiny!");
 
   attrset(A_UNDERLINE | COLOR_PAIR(1));
   center(stdscr, "Press any key to begin...");

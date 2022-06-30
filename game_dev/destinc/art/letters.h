@@ -13,7 +13,7 @@ typedef struct Font {   //  [5, 5, 6, 6, ...] width of each lowercase character
   char low[9][356];     //  lowercase letters
   char misc[9][356];    //  punctation, math, and numbers
   int height[3];        //  varies between upper, lowercase, and symbols: height[upper][lower][symbols] ie. [6, 8, 7]
-  int width[3][32];     //  first array is width of uppercase, second is width of lowercase, third is width of misc
+  int width[3][33];     //  first array is width of uppercase, second is width of lowercase, third is width of misc
 } font_t;
 
 // see lower part of the file for font samples - they look weird in arrays because of the escape characters
@@ -40,12 +40,12 @@ font_t fonts[1] = {
     },
     { // punctation, math, and numbers
       "      _   _ _     _  _      _    _   __           _    __ __       _              _                    __  _____   __    _____   _____     ___   _____    ____   ______  _____   _____             __          __     ___            ",
-      "     | | ( | )  _| || |_   | |  (_) / /   ___    ( )  / / \ \   /\| |/\     _    ( )                  / / |  _  | /  |  / __  \ |____ |   /   | |  ___|  / ___| |___  / |  _  | |  _  |  _   _    / /  ______  \ \   |__ \     ____  ",
-      "     | |  V V  |_  __  _| / __)    / /   ( _ )    \| | |   | |  \ ` ' /   _| |_  |/   ______         / /  | |/' | `| |  `' / /'     / /  / /| | |___ \  / /___     / /   \ V /  | |_| | (_) (_)  / /  |______|  \ \     ) |   / __ \ ",
-      "     | |        _| || |_  \__ \   / /    / _ \/\     | |   | | |_     _| |_   _|     |______|       / /   |  /| |  | |    / /       \ \ / /_| |     \ \ | ___ \   / /    / _ \  \____ |         < <    ______    > >   / /   / / _` |",
-      "     |_|       |_  __  _| (   /  / / _  | (_>  <     | |   | |  / , . \    |_|                 _   / /    \ |_/ / _| |_ ./ /___ .___/ / \___  | /\__/ / | \_/ | ./ /    | |_| | .___/ /  _   _   \ \  |______|  / /   |_|   | | (_| |",
-      "     (_)         |_||_|    |_|  /_/ (_)  \___/\/     | |   | |  \/|_|\/                       (_) /_/      \___/  \___/ \_____/ \____/      |_/ \____/  \_____/ \_/     \_____/ \____/  (_) ( )   \_\          /_/    (_)    \ \__,_|",
-      "                                                      \_\ /_/                                                                                                                               |/                                \____/ "
+      "     | | ( | )  _| || |_   | |  (_) / /   ___    ( )  / / \\ \\   /\\| |/\\     _    ( )                  / / |  _  | /  |  / __  \\ |____ |   /   | |  ___|  / ___| |___  / |  _  | |  _  |  _   _    / /  ______  \\ \\   |__ \\     ____  ",
+      "     | |  V V  |_  __  _| / __)    / /   ( _ )    \\| | |   | |  \\ ` ' /   _| |_  |/   ______         / /  | |/' | `| |  `' / /'     / /  / /| | |___ \\  / /___     / /   \\ V /  | |_| | (_) (_)  / /  |______|  \\ \\     ) |   / __ \\ ",
+      "     | |        _| || |_  \\__ \\   / /    / _ \\/\\     | |   | | |_     _| |_   _|     |______|       / /   |  /| |  | |    / /       \\ \\ / /_| |     \\ \\ | ___ \\   / /    / _ \\  \\____ |         < <    ______    > >   / /   / / _` |",
+      "     |_|       |_  __  _| (   /  / / _  | (_>  <     | |   | |  / , . \\    |_|                 _   / /    \\ |_/ / _| |_ ./ /___ .___/ / \\___  | /\\__/ / | \\_/ | ./ /    | |_| | .___/ /  _   _   \\ \\  |______|  / /   |_|   | | (_| |",
+      "     (_)         |_||_|    |_|  /_/ (_)  \\___/\\/     | |   | |  \\/|_|\\/                       (_) /_/      \\___/  \\___/ \\_____/ \\____/      |_/ \\____/  \\_____/ \\_/     \\_____/ \\____/  (_) ( )   \\_\\          /_/    (_)    \\ \\__,_|",
+      "                                                      \\_\\ /_/                                                                                                                               |/                                \\____/ "
     },
     {6, 8, 7}, // height [upper_case][lower_case][symbols] ie. [6][8][7]
     {//A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z      // enter width for each uppercase character
@@ -98,7 +98,7 @@ int letter_start(int letter, font_t font) {
 
 // window, which font, left justified or centered, print at once or delay, effect modifier, text to be printed
 void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char *text) {
-  int ch, text_y, text_x, start, letter_width, win_y, win_x;
+  int ch, text_y, text_x, start, letter_height, letter_width, win_y, win_x;
 
   getmaxyx(win, win_y, win_x);
 
@@ -114,11 +114,17 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
   // Iterate over text and print the letters
   for (int let = 0; text[let] != '\0'; let++) {
     ch            = text[let];
-    letter_width  = fonts[font].width[letter_type(ch) - 2][letter_position(ch)];
+    switch (letter_type(ch)) {
+      case 0:  letter_height = 5; letter_width = 5; break; // use defaults
+      case 1:  letter_height = fonts[font].height[2]; letter_width  = fonts[font].width[2][letter_position(ch)]; break;
+      case 2:  letter_height = fonts[font].height[0]; letter_width  = fonts[font].width[0][letter_position(ch)]; break;
+      case 3:  letter_height = fonts[font].height[1]; letter_width  = fonts[font].width[1][letter_position(ch)]; break;
+      default: letter_height = 5; letter_width = 5; break; // use defaults
+    }
     start         = letter_start(ch, fonts[font]);
     for (int i = start; i < start + letter_width; i++) {
       text_y = (win_y / 2 - 5) / 2;
-      for (int j = 0; j < fonts[font].height[!letter_type(ch)]; j++) { // j < height
+      for (int j = 0; j < letter_height; j++) { // j < height
         if (letter_type(ch) == 1) mvwaddch(win, text_y, text_x, fonts[font].misc[j][i]);
         if (letter_type(ch) == 2) mvwaddch(win, text_y, text_x, fonts[font].up[j][i]);
         if (letter_type(ch) == 3) mvwaddch(win, text_y, text_x, fonts[font].low[j][i]);
