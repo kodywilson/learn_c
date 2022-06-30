@@ -10,9 +10,10 @@
 // one 2d array of widths:  [6, 7, 6, 6, ...] width of each uppercase character
 typedef struct Font {   //  [5, 5, 6, 6, ...] width of each lowercase character
   char up[9][356];      //  uppercase letters
-  char low[9][356]; ;   //  lowercase letters
-  int height[2];        //  varies between upper and lowercase: height[upper][lower] ie. [6, 8]
-  int width[2][26];     //  first array is width of uppercase, second is width of lowercase, each character
+  char low[9][356];     //  lowercase letters
+  char misc[9][356];    //  punctation, math, and numbers
+  int height[3];        //  varies between upper, lowercase, and symbols: height[upper][lower][symbols] ie. [6, 8, 7]
+  int width[3][32];     //  first array is width of uppercase, second is width of lowercase, third is width of misc
 } font_t;
 
 // see lower part of the file for font samples - they look weird in arrays because of the escape characters
@@ -37,11 +38,23 @@ font_t fonts[1] = {
       "                                              __/ |              _/ |                                        | |         | |                                                        __/ |      ",                  
       "                                             |___/              |__/                                         |_|         |_|                                                       |___/       "
     },
-    {6, 8}, // height [upper_case][lower_case] ie. [6][8]
+    { // punctation, math, and numbers
+      "      _   _ _     _  _      _    _   __           _    __ __       _              _                    __  _____   __    _____   _____     ___   _____    ____   ______  _____   _____             __          __     ___            ",
+      "     | | ( | )  _| || |_   | |  (_) / /   ___    ( )  / / \ \   /\| |/\     _    ( )                  / / |  _  | /  |  / __  \ |____ |   /   | |  ___|  / ___| |___  / |  _  | |  _  |  _   _    / /  ______  \ \   |__ \     ____  ",
+      "     | |  V V  |_  __  _| / __)    / /   ( _ )    \| | |   | |  \ ` ' /   _| |_  |/   ______         / /  | |/' | `| |  `' / /'     / /  / /| | |___ \  / /___     / /   \ V /  | |_| | (_) (_)  / /  |______|  \ \     ) |   / __ \ ",
+      "     | |        _| || |_  \__ \   / /    / _ \/\     | |   | | |_     _| |_   _|     |______|       / /   |  /| |  | |    / /       \ \ / /_| |     \ \ | ___ \   / /    / _ \  \____ |         < <    ______    > >   / /   / / _` |",
+      "     |_|       |_  __  _| (   /  / / _  | (_>  <     | |   | |  / , . \    |_|                 _   / /    \ |_/ / _| |_ ./ /___ .___/ / \___  | /\__/ / | \_/ | ./ /    | |_| | .___/ /  _   _   \ \  |______|  / /   |_|   | | (_| |",
+      "     (_)         |_||_|    |_|  /_/ (_)  \___/\/     | |   | |  \/|_|\/                       (_) /_/      \___/  \___/ \_____/ \____/      |_/ \____/  \_____/ \_/     \_____/ \____/  (_) ( )   \_\          /_/    (_)    \ \__,_|",
+      "                                                      \_\ /_/                                                                                                                               |/                                \____/ "
+    },
+    {6, 8, 7}, // height [upper_case][lower_case][symbols] ie. [6][8][7]
     {//A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z      // enter width for each uppercase character
       {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7},    // width uppercase
-      {7, 7, 6, 7, 6, 5, 7, 7, 3, 5, 6, 3, 11, 7, 7, 7, 7, 6, 5, 5, 7, 7, 10, 6, 7, 5}   // width lowercase
-    }//a, b, c, d, e, f, g, h, i, j, k, l,  m, n, o, p, q, r, s, t, u, v,  w, x, y, z    // enter width for each lowercase character
+      {7, 7, 6, 7, 6, 5, 7, 7, 3, 5, 6, 3, 11, 7, 7, 7, 7, 6, 5, 5, 7, 7, 10, 6, 7, 5},  // width lowercase
+     //a, b, c, d, e, f, g, h, i, j, k, l,  m, n, o, p, q, r, s, t, u, v,  w, x, y, z    // enter width for each lowercase character
+     // , !, ", #,  $, %, &, `, (, ), *, +, ', -, ., /, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, :, ;, <, =, >, ?, @
+      {4, 3, 5, 10, 5, 7, 8, 3, 4, 4, 9, 7, 3, 8, 3, 7, 7, 5, 7, 7, 7, 7, 7, 7, 7, 7, 3, 3, 5, 8, 5, 6, 9} // width symbols
+    }
   }
 };
 
