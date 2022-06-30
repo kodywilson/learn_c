@@ -84,6 +84,9 @@ int letter_position(int letter) {
 int letter_start(int letter, font_t font) {
   int start = 0;
   int space= 1;       // later, change this to passed argument if there are fonts spaced differently
+  if (letter_type(letter) == 1) {    // this is a capital letter
+    for (int i = 0; i < letter - ' '; i++) start = start + font.width[2][i] + space;  // add up to target letter start
+  }
   if (letter_type(letter) == 2) {    // this is a capital letter
     for (int i = 0; i < letter - 'A'; i++) start = start + font.width[0][i] + space;  // add up to target letter start
   }
@@ -116,6 +119,7 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
     for (int i = start; i < start + letter_width; i++) {
       text_y = (win_y / 2 - 5) / 2;
       for (int j = 0; j < fonts[font].height[!letter_type(ch)]; j++) { // j < height
+        if (letter_type(ch) == 1) mvwaddch(win, text_y, text_x, fonts[font].misc[j][i]);
         if (letter_type(ch) == 2) mvwaddch(win, text_y, text_x, fonts[font].up[j][i]);
         if (letter_type(ch) == 3) mvwaddch(win, text_y, text_x, fonts[font].low[j][i]);
         text_y++;
