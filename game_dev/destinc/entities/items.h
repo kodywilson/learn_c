@@ -38,7 +38,7 @@ typedef struct Item {
   int  alignment;     // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
 } item;
 
-// "empty" item. Trying this for initializing all slots with a placeholder
+// "empty" item. Use to initialize slots prior to use
 item empty_slot = {
   "- empty -",    // item name
   "This slot has nothing in it.", // item description
@@ -63,9 +63,6 @@ item empty_slot = {
   0,                  // Damaged? Gear dropped from monsters is likely damaged and sells for much less... 0 = no, 1 = yes
   0                   // Alignment required? 0 = no restrictions, 1 = lawful, good, 2 = lawful, neutral, 3 = lawful, evil, etc. Use look up table
 };
-
-//char *armors_names[ALL_ARMOR] = {"clothes", "padded"};
-//char *armors_descs[ALL_ARMOR] = {"Simple clothing, better than nothing.", "Stiffly padded clothing. Slightly more armor than plain clothes."};
 
 item armors[ALL_ARMOR] = {
   // No armor, just plain clothes
