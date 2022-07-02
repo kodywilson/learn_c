@@ -197,7 +197,7 @@ int main() {
   main_loop = 1;
   // Main game loop
   while(main_loop) {
-    main_loop = town(game_text, select, stats, &player);
+    main_loop = town(game_text, select, stats, saves, &player);
     napms(250);
   }
 

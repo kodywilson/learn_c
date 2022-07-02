@@ -717,7 +717,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
 }
 
 // you are visiting the town
-int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
+int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, int saves, pc *player) {
   int choice, done = 1;
 
   while(done) {
@@ -738,10 +738,11 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
               mvwaddstr(game_text, 1, 1, "You follow the eastern path toward the dungeon, stopping");
               mvwaddstr(game_text, 2, 1, "when you reach battered gates at the entrance.");
               mvwaddstr(game_text, 4, 1, "Bracing yourself, you step down into the darkness.");
-              mvwaddstr(select, 0, 0, "Press any key to continue...");
+              mvwaddstr(select, 0, 0, "Saving game, press any key to continue...");
               wrefresh(game_text);
               wrefresh(select);
               getch();
+              save_game(game_text, select, player, saves);
               dungeon(game_text, select, stats, player);
               break;
       case 3: character_sheet(game_text, select, stats, player); break;
