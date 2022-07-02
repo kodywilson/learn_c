@@ -10,6 +10,8 @@ int main() {
   //(x – h)2 + (y – v)2 = r2
   //x2 + y2 = r2
 
+
+
   endwin();
   return 0;
 }
