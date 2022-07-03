@@ -685,35 +685,40 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
       if (choice == 0) break; // end dungeon loop
     }
   }
-  wclear(game_text);
-  bigly(game_text, DOOM, 1, 0, 0, "YAY");
-  napms(500);
-  wclear(game_text);
-  mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");
-  if (distance > 0) {
-    mvwprintw(game_text, 2, 0, "%s, you traveled %d squares, earned %d coin(s), %d XP, and defeated %d monster(s) and %d boss(es)...", player->name, distance, player->coin - start_coin, player->xp - start_xp, mob_count, boss_count);
-  }
-  wrefresh(game_text);
-  celebrate(game_text);
-  // Remove player buffs
-  if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
-    mvwaddstr(game_text, 7, 0, "Drako wishes you well and fades away, ready to help another day.");
-  };
-  buff = 0;
-  for (int i = 0; i < MAX_BUFFS; i++) {
-    if (buff == 0) {
-      if (player->buffs[i] == 1) {
-        mvwaddstr(game_text, 5, 0, "Your buffs fade. Hit the Tavern for more!");
-        buff = 1;
-      }
+  if (result == 13) {
+    game_over(player->name);
+  } else {
+    wclear(game_text);
+    bigly(game_text, DOOM, 1, 0, 0, "YAY");
+    napms(500);
+    wclear(game_text);
+    mvwaddstr(game_text, 0, 0, "Congratulations! You made it back out of the dungeon in one piece!");
+    if (distance > 0) {
+      mvwprintw(game_text, 2, 0, "%s, you traveled %d squares, earned %d coin(s), %d XP, and defeated %d monster(s) and %d boss(es)...", player->name, distance, player->coin - start_coin, player->xp - start_xp, mob_count, boss_count);
     }
-    player->buffs[i] = 0;
+    wrefresh(game_text);
+    celebrate(game_text);
+    // Remove player buffs
+    if ((strcmp(player->role, "Wizard") == 0) && (player->buffs[2] == 1)) {
+      mvwaddstr(game_text, 7, 0, "Drako wishes you well and fades away, ready to help another day.");
+    };
+    buff = 0;
+    for (int i = 0; i < MAX_BUFFS; i++) {
+      if (buff == 0) {
+        if (player->buffs[i] == 1) {
+          mvwaddstr(game_text, 5, 0, "Your buffs fade. Hit the Tavern for more!");
+          buff = 1;
+        }
+      }
+      player->buffs[i] = 0;
+    }
+    wrefresh(game_text);
+    wclear(select);
+    mvwaddstr(select, 0, 0, "Press any key to continue...");
+    wrefresh(select);
+    getch();
   }
-  wrefresh(game_text);
-  wclear(select);
-  mvwaddstr(select, 0, 0, "Press any key to continue...");
-  wrefresh(select);
-  getch();
+  // end dungeon
 }
 
 // you are visiting the town
