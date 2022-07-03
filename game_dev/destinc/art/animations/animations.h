@@ -61,3 +61,4 @@ void flames(WINDOW *animation) {
 }
 
 #include "intro.h"
+#include "game_over.h"

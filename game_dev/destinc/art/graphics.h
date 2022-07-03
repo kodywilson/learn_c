@@ -15,6 +15,10 @@ void clear_box(WINDOW *win) {
   box(win, 0, 0);
 }
 
+void disintegrate() {
+  // disintegrate effect
+}
+
 // print stars in the window
 void stars(WINDOW *win, int num_stars) {
   int win_y, win_x;
