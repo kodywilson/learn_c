@@ -36,7 +36,7 @@ void intro_screen(char name[32]) {
   mvwaddstr(text, 7, 0, "As your full consciousness returns, you take stock of your surroundings.");
   mvwaddstr(text, 8, 0, "You seem to be in a small town. You have no weapon, only a few coins in one pocket...");
   wrefresh(text);
-  flames(animation);
+  flames(animation, 20);
   wclear(animation);
   mvwaddstr(animation, 4, 0, "Press any key to continue...");
   wrefresh(animation);

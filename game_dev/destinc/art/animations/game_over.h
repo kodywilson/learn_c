@@ -1,6 +1,6 @@
 // Sadly, it's game over
 
-void game_over(char name[32]) {
+void game_over(WINDOW *win, char name[32]) {
   WINDOW *animation, *text;
   
   int max_y, max_x;
@@ -11,8 +11,9 @@ void game_over(char name[32]) {
 
   clear();
   refresh();
+  getch();
 
-  bigly(stdscr, DOOM, 1, 1, 200, "GAME OVER");
+  bigly(win, DOOM, 1, 1, 100, "GAME OVER");
   napms(3000);
 
   //clear(); // maybe use these, going to see what it looks like with flames first
@@ -26,7 +27,7 @@ void game_over(char name[32]) {
   // mvwaddstr(text, 7, 0, "As your full consciousness returns, you take stock of your surroundings.");
   // mvwaddstr(text, 8, 0, "You seem to be in a small town. You have no weapon, only a few coins in one pocket...");
   // wrefresh(text);
-  flames(animation);
+  flames(animation, 5);
   wclear(animation);
   mvwaddstr(animation, 4, 0, "Press any key to continue...");
   wrefresh(animation);

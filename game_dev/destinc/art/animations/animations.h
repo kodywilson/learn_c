@@ -8,7 +8,7 @@
 */
 
 //void *flames(void *window) { // was using this when I was playing around with threads
-void flames(WINDOW *animation) {
+void flames(WINDOW *animation, int duration) {
 	int width, height, size, *b, i;
   int timer;
   //int max_y, max_x;
@@ -53,7 +53,7 @@ void flames(WINDOW *animation) {
 		wrefresh(animation);
 		timeout(30);
     napms(15);
-    if ((timer + 20) <= time(NULL)) break;
+    if ((timer + duration) <= time(NULL)) break;
   }
 	free(b);
   //nodelay(animation,FALSE);

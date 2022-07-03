@@ -114,6 +114,7 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
   // Iterate over text and print the letters
   for (int let = 0; text[let] != '\0'; let++) {
     ch            = text[let];
+    // first determine characteristics of character to print
     switch (letter_type(ch)) {
       case 0:  letter_height = 5; letter_width = 5; break; // use defaults
       case 1:  letter_height = fonts[font].height[2]; letter_width  = fonts[font].width[2][letter_position(ch)]; break;
@@ -122,9 +123,10 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
       default: letter_height = 5; letter_width = 5; break; // use defaults
     }
     start         = letter_start(ch, fonts[font]);
+    // now print out character
     for (int i = start; i < start + letter_width; i++) {
       text_y = (win_y / 2 - 5) / 2;
-      for (int j = 0; j < letter_height; j++) { // j < height
+      for (int j = 0; j < letter_height; j++) {
         if (letter_type(ch) == 1) mvwaddch(win, text_y, text_x, fonts[font].misc[j][i]);
         if (letter_type(ch) == 2) mvwaddch(win, text_y, text_x, fonts[font].up[j][i]);
         if (letter_type(ch) == 3) mvwaddch(win, text_y, text_x, fonts[font].low[j][i]);
@@ -137,7 +139,7 @@ void bigly(WINDOW *win, int font, int position, int effect, int effect_mod, char
     if (effect == 1) wrefresh(win);
     napms(effect_mod);
   }
-  wrefresh(win);
+  //wrefresh(win);
 }
 
 //
