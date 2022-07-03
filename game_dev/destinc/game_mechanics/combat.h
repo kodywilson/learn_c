@@ -377,7 +377,7 @@ int combat(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player, int env
       }
       // now monster goes
       npc_turn(select, game_text, stats, player, &monster);
-      if (player->cur_hp < 1) {
+      if (player->cur_hp <= 0) {
         result = 13;
         break; // you died, so sad
       }

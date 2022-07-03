@@ -678,6 +678,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     }
     refresh_stats(stats, player); // update stats window
     wrefresh(game_text);
+    if (result == 13) break; // break out of loop, you died
     if (dungeon_map[y_pos][x_pos] == 'E') {
       reset_choices();
       num_choices = y_n();
@@ -747,7 +748,7 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, int saves, pc *player
               wrefresh(game_text);
               wrefresh(select);
               getch();
-              save_game(game_text, select, player, saves);
+              save_game(game_text, select, *player, saves);
               dungeon(game_text, select, stats, player);
               break;
       case 3: character_sheet(game_text, select, stats, player); break;
