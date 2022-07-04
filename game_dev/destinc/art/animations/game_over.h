@@ -1,6 +1,6 @@
 // Sadly, it's game over
 
-void game_over(char name[32]) {
+void game_over(WINDOW *win, char name[32]) {
   WINDOW *animation, *text;
   
   int max_y, max_x;
@@ -13,21 +13,24 @@ void game_over(char name[32]) {
   refresh();
 
   bigly(win, DOOM, 1, 1, 100, "GAME OVER");
-  napms(3000);
+  napms(2000);
 
-  //clear(); // maybe use these, going to see what it looks like with flames first
-  //refresh();
-
-  flames(animation, 5);
+  flames(animation, 8);
+  wclear(win);
+  wrefresh(win);
   wclear(text);
   mvwaddstr(text, 2, 0, "Swirling sensations of light surround you. Is this what it feels like to lose your grip on life?");
+  wrefresh(text);
   napms(2000);
   mvwaddstr(text, 3, 0, "You hear a musical voice calling your name, a sound sweeter than any heard before.");
+  wrefresh(text);
   napms(2000);
   mvwprintw(text, 4, 0, "%s....... %s........ Awaken, you must fulfill your destiny. The world needs you %s.", name, name, name);
   // mvwaddstr(text, 5, 0, "You remember your village was attacked at night, the flames, the screams... chaos and terror ...");
+  wrefresh(text);
   napms(2000);
   mvwaddstr(text, 7, 0, "As your full consciousness returns, you take stock of your surroundings.");
+  wrefresh(text);
   napms(2000);
   mvwaddstr(text, 8, 0, "You seem to be back in town, right where your journey first began...");
   wrefresh(text);
