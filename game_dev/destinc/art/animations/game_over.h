@@ -1,6 +1,6 @@
 // Sadly, it's game over
 
-void game_over(WINDOW *win, char name[32]) {
+void game_over(char name[32]) {
   WINDOW *animation, *text;
   
   int max_y, max_x;
@@ -11,7 +11,6 @@ void game_over(WINDOW *win, char name[32]) {
 
   clear();
   refresh();
-  getch();
 
   bigly(win, DOOM, 1, 1, 100, "GAME OVER");
   napms(3000);
@@ -19,15 +18,19 @@ void game_over(WINDOW *win, char name[32]) {
   //clear(); // maybe use these, going to see what it looks like with flames first
   //refresh();
 
-  // wclear(text);
-  // mvwaddstr(text, 2, 0, "You awaken with a start! You're alive, somehow you survived the flames, but ... how?");
-  // mvwaddstr(text, 3, 0, "They dance in your vision even now, forever seared into your mind. The heat ... unbearable ...");
-  // mvwprintw(text, 4, 0, "%s...yes, you are %s or were...You are not sure who you are now or ... where?", name, name);
-  // mvwaddstr(text, 5, 0, "You remember your village was attacked at night, the flames, the screams... chaos and terror ...");
-  // mvwaddstr(text, 7, 0, "As your full consciousness returns, you take stock of your surroundings.");
-  // mvwaddstr(text, 8, 0, "You seem to be in a small town. You have no weapon, only a few coins in one pocket...");
-  // wrefresh(text);
   flames(animation, 5);
+  wclear(text);
+  mvwaddstr(text, 2, 0, "Swirling sensations of light surround you. Is this what it feels like to lose your grip on life?");
+  napms(2000);
+  mvwaddstr(text, 3, 0, "You hear a musical voice calling your name, a sound sweeter than any heard before.");
+  napms(2000);
+  mvwprintw(text, 4, 0, "%s....... %s........ Awaken, you must fulfill your destiny. The world needs you %s.", name, name, name);
+  // mvwaddstr(text, 5, 0, "You remember your village was attacked at night, the flames, the screams... chaos and terror ...");
+  napms(2000);
+  mvwaddstr(text, 7, 0, "As your full consciousness returns, you take stock of your surroundings.");
+  napms(2000);
+  mvwaddstr(text, 8, 0, "You seem to be back in town, right where your journey first began...");
+  wrefresh(text);
   wclear(animation);
   mvwaddstr(animation, 4, 0, "Press any key to continue...");
   wrefresh(animation);

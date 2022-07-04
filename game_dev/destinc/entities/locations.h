@@ -687,7 +687,10 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     }
   }
   if (result == 13) {
-    game_over(game_text, player->name);
+    game_over(player->name);
+    for (int i = 0; i < MAX_BUFFS; i++) {  // reset all buffs on death
+      player->buffs[i] = 0;
+    }
   } else {
     wclear(game_text);
     bigly(game_text, DOOM, 1, 0, 0, "YAY");
