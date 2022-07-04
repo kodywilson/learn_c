@@ -134,3 +134,33 @@ void celebrate(WINDOW *win) {
   //napms(500);
   draw_cartwheel(win);
 }
+
+void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, WINDOW *game_text, WINDOW *select_border, WINDOW *select) {
+  clear_box(stats_border);
+  clear_box(game_text_border);
+  clear_box(select_border);
+  clear_box(input);
+  wclear(stats);
+  wclear(game_text);
+  wclear(select);
+   // set up stats window border
+  wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(stats_border, 0, (((max_x * 7) / 8) / 2) - 2, " Stats ");
+  wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
+  wrefresh(stats_border);
+  // set up game text window border
+  wattron(game_text_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(game_text_border, 0, (max_x / 2) - 5, " Game Text ");
+  wattroff(game_text_border, COLOR_PAIR(6) | A_BOLD);
+  wrefresh(game_text_border);
+  // set up actions window border
+  wattron(select_border, COLOR_PAIR(6) | A_BOLD);
+  mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
+  wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
+  wrefresh(select_border);
+  // finish window setup
+  wattron(game_text, COLOR_PAIR(5));
+  wrefresh(stats);
+  wrefresh(game_text);
+  wrefresh(select);
+}

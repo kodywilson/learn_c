@@ -69,12 +69,14 @@ int main() {
   y_low = game_text_y - 1;
   x_low = game_text_x - game_text_x + 1; // LOL
 
-  clear_box(stats_border);
-  clear_box(game_text_border);
-  clear_box(select_border);
-  clear_box(input);
-  wrefresh(game_text_border);
-  wrefresh(select_border);
+  // clear_box(stats_border);
+  // clear_box(game_text_border);
+  // clear_box(select_border);
+  // clear_box(input);
+  // wrefresh(game_text_border);
+  // wrefresh(select_border);
+
+  all_windows(stats_border, stats, game_text_border, game_text, select_border, select);
 
   keypad(select, true); // enable the keypad on the select window
 
@@ -161,38 +163,9 @@ int main() {
     intro_screen(player.name);
     getch();
   }
-  clear();
-  wattron(game_text, COLOR_PAIR(5));
-  refresh();
-  clear_box(stats_border);
-  clear_box(game_text_border);
-  clear_box(select_border);
-  clear_box(input);
-  wrefresh(game_text_border);
-  wrefresh(select_border);
-  // Intro
-  wclear(select);
-  wrefresh(select);
-  // set up stats window border
-  wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(stats_border, 0, (((max_x * 7) / 8) / 2) - 2, " Stats ");
-  wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
-  wrefresh(stats_border);
-  refresh_stats(stats, &player); // print stats window
-  // set up game text window border
-  wattron(game_text_border, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(game_text_border, 0, (max_x / 2) - 5, " Game Text ");
-  wattroff(game_text_border, COLOR_PAIR(6) | A_BOLD);
-  wrefresh(game_text_border);
-  // set up actions window border
-  wattron(select_border, COLOR_PAIR(6) | A_BOLD);
-  mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
-  wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
-  wrefresh(select_border);
-
-  wrefresh(stats_border);
-  wrefresh(game_text_border);
-  wrefresh(select_border);
+  //clear();
+  //refresh();
+  all_windows(stats_border, stats, game_text_border, game_text, select_border, select);
 
   main_loop = 1;
   // Main game loop

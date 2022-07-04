@@ -16,6 +16,9 @@ void game_over(WINDOW *win, char name[32]) {
   napms(2000);
 
   flames(animation, 8);
+  wclear(animation);
+  wrefresh(animation);
+
   wclear(win);
   wrefresh(win);
   wclear(text);
@@ -35,6 +38,7 @@ void game_over(WINDOW *win, char name[32]) {
   mvwaddstr(text, 8, 0, "You seem to be back in town, right where your journey first began...");
   wrefresh(text);
   wclear(animation);
+  wattron(animation, COLOR_PAIR(5));
   mvwaddstr(animation, 4, 0, "Press any key to continue...");
   wrefresh(animation);
   wgetch(animation);
