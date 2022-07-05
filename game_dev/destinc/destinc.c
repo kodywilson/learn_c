@@ -173,7 +173,8 @@ int main() {
     main_loop = town(game_text, select, stats, saves, &player);
     if (main_loop == 13) {
       game_over(game_text, player.name);
-
+      player.cur_hp = player.max_hp;     // restore health
+      player.cur_mana = player.max_mana; // restore mana
       all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
     }
     napms(250);

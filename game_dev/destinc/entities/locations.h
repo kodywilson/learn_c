@@ -730,7 +730,7 @@ int dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
 int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, int saves, pc *player) {
   int choice, done = 1;
 
-  while(done) {
+  while(done == 1) {
     wclear(game_text);
     mvwaddstr(game_text, 1, 1, "You walk into the center of town, looking here and there.");
     mvwaddstr(game_text, 3, 1, "Warmth and cheer emanate from an old tavern to the west,");
@@ -753,7 +753,7 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, int saves, pc *player
               wrefresh(select);
               getch();
               save_game(game_text, select, *player, saves);
-              if (dungeon(game_text, select, stats, player) == 13) done = 13; // you died in the dungeon
+              done = dungeon(game_text, select, stats, player);
               break;
       case 3: character_sheet(game_text, select, stats, player); break;
       case 4: wclear(game_text);
