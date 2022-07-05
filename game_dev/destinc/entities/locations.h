@@ -476,7 +476,7 @@ int can_move(int y, int x, int direction) {
 }
 
 // you are visiting the dungeon
-void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
+int dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
   int buff, choice, lucky_coin, num_choices, specials = 0, y_pos = 2, x_pos = 0; // starting position in the dungeon
   int distance, start_coin, start_xp, mob_count, boss_count, result;
   char dungeon_prompt[96];                       // later, make this something you pass in
@@ -687,10 +687,10 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     }
   }
   if (result == 13) {
-    game_over(game_text, player->name);
     for (int i = 0; i < MAX_BUFFS; i++) {  // reset all buffs on death
       player->buffs[i] = 0;
     }
+    return 13;
   } else {
     wclear(game_text);
     bigly(game_text, DOOM, 1, 0, 0, "YAY");
@@ -722,6 +722,7 @@ void dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     wrefresh(select);
     getch();
   }
+  return 1;
   // end dungeon
 }
 
@@ -752,7 +753,7 @@ int town(WINDOW *game_text, WINDOW *select, WINDOW *stats, int saves, pc *player
               wrefresh(select);
               getch();
               save_game(game_text, select, *player, saves);
-              dungeon(game_text, select, stats, player);
+              if (dungeon(game_text, select, stats, player) == 13) done = 13; // you died in the dungeon
               break;
       case 3: character_sheet(game_text, select, stats, player); break;
       case 4: wclear(game_text);

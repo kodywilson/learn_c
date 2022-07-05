@@ -171,6 +171,11 @@ int main() {
   // Main game loop
   while(main_loop) {
     main_loop = town(game_text, select, stats, saves, &player);
+    if (main_loop == 13) {
+      game_over(game_text, player.name);
+
+      all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
+    }
     napms(250);
   }
 
