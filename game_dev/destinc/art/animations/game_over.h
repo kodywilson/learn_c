@@ -42,6 +42,10 @@ void game_over(WINDOW *win, char name[32]) {
   mvwaddstr(animation, 4, 0, "Press any key to continue...");
   wrefresh(animation);
   wgetch(animation);
+  wclear(animation);
+  wclear(text);
+  wrefresh(animation);
+  wrefresh(text);
    //pthread_exit(NULL);
   //pthread_join(thread_id, NULL);	 // join threads
 
