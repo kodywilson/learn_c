@@ -166,6 +166,7 @@ int main() {
   //clear();
   //refresh();
   all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
+  refresh_stats(stats, &player); // update stats window
 
   main_loop = 1;
   // Main game loop
@@ -176,6 +177,7 @@ int main() {
       player.cur_hp = player.max_hp;     // restore health
       player.cur_mana = player.max_mana; // restore mana
       all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
+      refresh_stats(stats, &player); // update stats window
     }
     napms(250);
   }
