@@ -76,7 +76,7 @@ int main() {
   // wrefresh(game_text_border);
   // wrefresh(select_border);
 
-  all_windows(stats_border, stats, game_text_border, game_text, select_border, select);
+  all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
 
   keypad(select, true); // enable the keypad on the select window
 
@@ -165,7 +165,7 @@ int main() {
   }
   //clear();
   //refresh();
-  all_windows(stats_border, stats, game_text_border, game_text, select_border, select);
+  all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
 
   main_loop = 1;
   // Main game loop

@@ -135,7 +135,7 @@ void celebrate(WINDOW *win) {
   draw_cartwheel(win);
 }
 
-void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, WINDOW *game_text, WINDOW *select_border, WINDOW *select) {
+void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, WINDOW *game_text, WINDOW *select_border, WINDOW *select, WINDOW *input, int max_x) {
   clear_box(stats_border);
   clear_box(game_text_border);
   clear_box(select_border);
