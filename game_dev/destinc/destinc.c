@@ -69,18 +69,9 @@ int main() {
   y_low = game_text_y - 1;
   x_low = game_text_x - game_text_x + 1; // LOL
 
-  // clear_box(stats_border);
-  // clear_box(game_text_border);
-  // clear_box(select_border);
-  // clear_box(input);
-  // wrefresh(game_text_border);
-  // wrefresh(select_border);
-
   all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
 
   keypad(select, true); // enable the keypad on the select window
-
-  //wattron(game_text, COLOR_PAIR(4)); // not sure I like the blue text...
 
   // setup game directory and save file if needed
   setup_file(game_text, select);
@@ -156,15 +147,12 @@ int main() {
     // Initial greeting
     wclear(game_text);
     mvwprintw(game_text, y_high, x_high, "Greetings brave %s! Welcome back to Destiny...", player.name);
-    //mvwprintw(game_text, y_high + 1, x_high, "You are a %s with %d hit points (life).", player.role, player.cur_hp);
     wrefresh(game_text);
     pause_text(select);
   } else {
     intro_screen(player.name);
     getch();
   }
-  //clear();
-  //refresh();
   all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
   refresh_stats(stats, &player); // update stats window
 
@@ -182,7 +170,7 @@ int main() {
     napms(250);
   }
 
-  // Save game on exit. Later, add more places to save before player leaves the game.
+  // Save game on exit. We also save when entering the dungeon.
   save_game(game_text, select, player, saves);
 
   endwin();
