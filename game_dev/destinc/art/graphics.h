@@ -83,18 +83,6 @@ void intro(WINDOW *win, int num_stars) {
   getch();
 }
 
-void refresh_stats(WINDOW *win, pc *player) {
-  //int stats_y, stats_x;
-  //getmaxyx(win, stats_y, stats_x);
-
-  wclear(win);
-  // later we will color code the mana and hp depending on status (red green)
-  mvwprintw(win, 0, 0,
-  "Name: %s | XP: %d | Lvl: %d  -|-  Coin: %d | HP: %d | Mana: %d",
-  player->name, player->xp, player->lvl, player->coin, player->cur_hp, player->cur_mana);
-  wrefresh(win);
-}
-
 void draw_cartwheel(WINDOW *win) {
   int frame_y, frame_x, start_y, start_x, win_y, win_x;
 

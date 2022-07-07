@@ -264,6 +264,19 @@ void format_stat(WINDOW *win, char *text, int stat, int y_pos) {
   wattroff(win, COLOR_PAIR(5) | COLOR_PAIR(1) | COLOR_PAIR(7) | A_BOLD);
 }
 
+void refresh_stats(WINDOW *win, pc *player) {
+
+  wclear(win);
+  // later we will color code the mana and hp depending on status (red green)
+  mvwprintw(win, 0, 0,
+  "Name: %s | XP: %d | Lvl: %d  -|-  Coin: %d", player->name, player->xp, player->lvl, player->coin);
+  waddstr(win, " | HP: ");
+  color_health(win, player->cur_hp, player->max_hp);
+  waddstr(win, " | Mana: ");
+  color_health(win, player->cur_mana, player->max_mana);
+  wrefresh(win);
+}
+
 // Show character sheet - ability scores, etc.
 // calculate AC
 void character_sheet(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
