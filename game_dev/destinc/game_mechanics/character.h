@@ -242,6 +242,16 @@ void level_up(WINDOW *game_text, WINDOW *select, pc *player) {
   getch();
 }
 
+// color health and mana
+//void color_health(WINDOW *win, int start_y, int start_x, int stat, int stat_max) {
+void color_health(WINDOW *win, int stat, int stat_max) {
+  if (stat >= stat_max / 2) wattron(win, COLOR_PAIR(7) | A_BOLD);
+  else wattron(win, COLOR_PAIR(1) | A_BOLD);
+  //wprintw(win, start_y, start_x, "%d", stat);
+  wprintw(win, "%d", stat);
+  wattroff(win, COLOR_PAIR(5) | COLOR_PAIR(1) | COLOR_PAIR(7) | A_BOLD);
+}
+
 // color stats according to level of bonus (or negative if relevant)
 void format_stat(WINDOW *win, char *text, int stat, int y_pos) {
   wattron(win, COLOR_PAIR(5));

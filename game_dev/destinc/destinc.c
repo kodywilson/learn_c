@@ -36,6 +36,7 @@ int main() {
   init_pair(6, COLOR_YELLOW, COLOR_BLACK);
   init_pair(7, COLOR_GREEN, COLOR_BLACK);
 
+  // These are used for the flames animation
   init_pair(17,0,0);
 	init_pair(18,1,0);
 	init_pair(19,3,0);
