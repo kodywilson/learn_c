@@ -28,7 +28,7 @@ void game_over(WINDOW *win, char name[32]) {
   mvwaddstr(text, 3, 0, "You hear a musical voice calling your name, a sound sweeter than any heard before.");
   wrefresh(text);
   napms(2000);
-  mvwprintw(text, 4, 0, "%s....... %s........ Awaken, you must fulfill your destiny. The world needs you %s.", name, name, name);
+  mvwprintw(text, 5, 0, "%s....... %s........ Awaken, you must fulfill your destiny. The world needs you %s.", name, name, name);
   // mvwaddstr(text, 5, 0, "You remember your village was attacked at night, the flames, the screams... chaos and terror ...");
   wrefresh(text);
   napms(2000);
