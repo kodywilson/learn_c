@@ -51,7 +51,7 @@ void flames(WINDOW *animation, int duration) {
 			}
 		}
 		wrefresh(animation);
-		timeout(30);
+		//timeout(30);
     napms(15);
     if ((timer + duration) <= time(NULL)) break;
   }
