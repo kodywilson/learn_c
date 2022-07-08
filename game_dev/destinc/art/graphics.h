@@ -84,11 +84,9 @@ void intro(WINDOW *win, int num_stars) {
 }
 
 void draw_cartwheel(WINDOW *win) {
-  int animations, frame_y, frame_x, start_y, start_x, win_y, win_x;
+  int frame_y, frame_x, start_y, start_x, win_y, win_x;
 
   getmaxyx(win, win_y, win_x);  // grab window size
-
-  animations = (win_x / 6) + 1; // enough to cross window and vanish off the other side
 
   // where to start printing the frames - later, make these arguments
   // it might look cool to have the animation start off screen and then go all the way across...
@@ -97,7 +95,7 @@ void draw_cartwheel(WINDOW *win) {
 
   // loop a few times so player cartwheels across the screen
   // add way for player to hit spacebar or something to get out of animation more quickly
-  for (int sequence = 0; sequence < animations; sequence++) {
+  for (int sequence = 0; sequence < (win_x / 2); sequence++) {
     // Iterate over frames and print the frame
     for (int frame = 1; frame < CART_WHEEL_FRAMES - 2; frame++) {
       for (int i = 0; i < 3; i++) {
@@ -108,12 +106,14 @@ void draw_cartwheel(WINDOW *win) {
         }
       }
       wrefresh(win);
-      if ((frame <= 1) && (sequence == 0)) napms(500);  // slight pause before we start cartwheeling
-      else napms(75);
+      //if ((frame <= 1) && (sequence == 0)) napms(500);  // slight pause before we start cartwheeling
+      //else napms(75);
+      napms(85);
       mvwaddch(win, frame_y, 0, ' '); // move cursor to left position so we can clear to bottom
       wclrtobot(win);
       frame_x+=2;
     }
+    if (frame_x > win_x) break;
   }
   // napms(1000); // only pause if we display final frames. Maybe play frames one and two then pause on frame with arms up?
 }
