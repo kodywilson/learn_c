@@ -629,7 +629,6 @@ int dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     // let player view character sheet while adventuring
     strncpy(choices[num_choices], "View Character Sheet", MAX_CHOICE_LEN);  choice_key[num_choices] = 100; num_choices++;
     choice = choose(select, num_choices, dungeon_prompt); // make choice based on options built above where we test each direction
-    // now add options for special squares
     // DEBUG
     // mvwprintw(game_text, 10, 1, "You selected %d: %s", choice, choices[choice]);
     // wrefresh(game_text);
@@ -649,7 +648,6 @@ int dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     }
     if (choice_key[choice] < 6) distance++;  // you explored another room
     // then handle special choice
-    // if (choice_key[choice] > 3 ) handle special action. Use lookup tables
     if (dungeon_map[y_pos][x_pos] == '$') { // random stuff happens on general spaces, not special ones like T or B
       // random flavor text
       if (dice(1, 20) > 12) mvwprintw(game_text, 1, 0, "%s", rand_move_text[dice(1, MOVE_TEXT) - 1]);

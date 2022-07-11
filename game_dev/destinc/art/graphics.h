@@ -125,6 +125,7 @@ void celebrate(WINDOW *win) {
   draw_cartwheel(win);
 }
 
+// draw borders and labels around each box
 void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, WINDOW *game_text, WINDOW *select_border, WINDOW *select, WINDOW *input, int max_x) {
   clear_box(stats_border);
   clear_box(game_text_border);
@@ -133,7 +134,8 @@ void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, 
   wclear(stats);
   wclear(game_text);
   wclear(select);
-   // set up stats window border
+  // set up stats window border
+  mvwaddch(stats_border, 0, 1, '|');
   wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(stats_border, 0, (((max_x * 7) / 8) / 2) - 2, " Stats ");
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
