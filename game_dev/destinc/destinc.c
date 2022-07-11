@@ -165,8 +165,6 @@ int main() {
       game_over(game_text, player.name);
       choice = choose_save(game_text, select, saves);
       player = saved_games[choice];
-      //player.cur_hp = player.max_hp;     // restore health
-      //player.cur_mana = player.max_mana; // restore mana
       all_windows(stats_border, stats, game_text_border, game_text, select_border, select, input, max_x);
       refresh_stats(stats, &player); // update stats window
     }
