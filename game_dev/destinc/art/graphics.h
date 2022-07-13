@@ -141,11 +141,13 @@ void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, 
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(stats_border);
   // set up game text window border
+  mvwaddch(game_text_border, 0, 1, '|');
   wattron(game_text_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(game_text_border, 0, (max_x / 2) - 5, " Game Text ");
   wattroff(game_text_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(game_text_border);
   // set up actions window border
+  mvwaddch(select_border, 0, 1, '|');
   wattron(select_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
   wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
