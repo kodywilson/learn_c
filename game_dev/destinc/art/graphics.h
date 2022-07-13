@@ -127,9 +127,11 @@ void celebrate(WINDOW *win) {
 
 // draw borders and labels around each box
 void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, WINDOW *game_text, WINDOW *select_border, WINDOW *select, WINDOW *input, int max_x) {
-  int stats_max_y, stats_max_x;
+  int stats_max_y, stats_max_x, game_text_max_y, game_text_max_x, select_max_y, select_max_x;
 
   getmaxyx(stats_border, stats_max_y, stats_max_x);
+  getmaxyx(game_text_border, game_text_max_y, game_text_max_x);
+  getmaxyx(select_border, select_max_y, select_max_x);
   
   clear_box(stats_border);
   clear_box(game_text_border);
@@ -149,13 +151,19 @@ void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, 
   wattroff(stats_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(stats_border);
   // set up game text window border
-  mvwaddch(game_text_border, 0, 1, '|');
+  mvwaddch(game_text_border, 0, game_text_max_x / 4, '|');
+  mvwaddch(game_text_border, 0, game_text_max_x * 3 / 4, '|');
+  mvwaddch(game_text_border, game_text_max_y - 1, game_text_max_x / 4, '|');
+  mvwaddch(game_text_border, game_text_max_y - 1, game_text_max_x * 3 / 4, '|');
   wattron(game_text_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(game_text_border, 0, (max_x / 2) - 5, " Game Text ");
   wattroff(game_text_border, COLOR_PAIR(6) | A_BOLD);
   wrefresh(game_text_border);
   // set up actions window border
-  mvwaddch(select_border, 0, 1, '|');
+  mvwaddch(select_border, 0, select_max_x / 4, '|');
+  mvwaddch(select_border, 0, select_max_x * 3 / 4, '|');
+  mvwaddch(select_border, select_max_y - 1, select_max_x / 4, '|');
+  mvwaddch(select_border, select_max_y - 1, select_max_x * 3 / 4, '|');
   wattron(select_border, COLOR_PAIR(6) | A_BOLD);
   mvwaddstr(select_border, 0, (max_x / 2) - 4, " Actions ");
   wattroff(select_border, COLOR_PAIR(6) | A_BOLD);
