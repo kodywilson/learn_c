@@ -140,10 +140,10 @@ void all_windows(WINDOW *stats_border, WINDOW *stats, WINDOW *game_text_border, 
   wclear(select);
   // set up stats window border
   // create function to add these!
-  mvwaddch(stats_border, 0, 1, '|');
-  mvwaddch(stats_border, 0, stats_max_x - 1, '|');
-  mvwaddch(stats_border, stats_max_y, 1, '|');
-  mvwaddch(stats_border, stats_max_y, stats_max_x - 1, '|');
+  mvwaddch(stats_border, 0, stats_max_x / 4, '|');
+  mvwaddch(stats_border, 0, stats_max_x * 3 / 4, '|');
+  mvwaddch(stats_border, stats_max_y, stats_max_x / 4, '|');
+  mvwaddch(stats_border, stats_max_y, stats_max_x * 3 / 4, '|');
   mvwaddch(stats_border, 0, 1, '|');
   mvwaddch(stats_border, 0, 1, '|');
   wattron(stats_border, COLOR_PAIR(6) | A_BOLD);
