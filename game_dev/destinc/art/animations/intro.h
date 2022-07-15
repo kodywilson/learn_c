@@ -12,13 +12,7 @@ void intro_screen(char name[32]) {
   clear();
   refresh();
 
-  // create flames and within flames loop, refresh text with intro cut scene text
-  // using a timer (so every three seconds or something like that)
-  // open flames in a separate thread
-  //waddstr(select, "This is a test");
-  //wrefresh(select);
-  //getch();
-  //pthread_create(&thread_id, NULL, flames, game_text);
+  //pthread_create(&thread_id, NULL, flames, game_text); // was playing around with pthreads
   //void* ret_from_thread;
 
   for (int i = 0; i < INTRO_TEXT; i++) {
