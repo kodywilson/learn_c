@@ -13,6 +13,7 @@ void intro_screen(char name[32]) {
   refresh();
 
   //pthread_create(&thread_id, NULL, flames, game_text); // was playing around with pthreads
+  // pthreads don't play nicely with ncurses unless you compile it to support them
   //void* ret_from_thread;
 
   for (int i = 0; i < INTRO_TEXT; i++) {
@@ -35,9 +36,7 @@ void intro_screen(char name[32]) {
   mvwaddstr(animation, 4, 0, "Press any key to continue...");
   wrefresh(animation);
   wgetch(animation);
-   //pthread_exit(NULL);
+  //pthread_exit(NULL);
   //pthread_join(thread_id, NULL);	 // join threads
 
-  //wclear(text);
-  //wrefresh(text);
 }
