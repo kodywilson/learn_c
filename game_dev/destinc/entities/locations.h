@@ -628,10 +628,11 @@ int dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     // let player view character sheet while adventuring
     strncpy(choices[num_choices], "View Character Sheet", MAX_CHOICE_LEN);  choice_key[num_choices] = 100; num_choices++;
     choice = choose(select, num_choices, dungeon_prompt); // make choice based on options built above where we test each direction
-    // DEBUG
-    // mvwprintw(game_text, 10, 1, "You selected %d: %s", choice, choices[choice]);
-    // wrefresh(game_text);
-    // getch();
+    if (DEBUG) {
+      mvwprintw(game_text, 10, 1, "You selected %d: %s", choice, choices[choice]);
+      wrefresh(game_text);
+      getch();
+    }
     wclear(game_text);
     // handle movement
     switch (choice_key[choice]) {
