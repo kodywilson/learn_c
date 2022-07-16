@@ -608,12 +608,11 @@ int dungeon(WINDOW *game_text, WINDOW *select, WINDOW *stats, pc *player) {
     // Each room in the dungeon we will roll for random combat anyway. Here we could roll for random interesting thing. Then roll
     // for random results from taking that action. Stats and class abilities could influence the rolls...
     wclear(game_text);
-    // DEBUG
-    // for (int i = 0; i < 4; i++) {
-    //   mvwprintw(game_text, i, 1, "Choice %d: %s", i, choices[i]);
-    //   wrefresh(game_text);
-    //   getch();
-    // }
+    if (DEBUG) {
+      for (int i = 0; i < 4; i++) mvwprintw(game_text, i, 1, "Choice %d: %s", i, choices[i]);
+      wrefresh(game_text);
+      getch();
+    }
     // later, treasure square will have a small chance to be ambushed by a boss mob if you choose to open the chest... :)
     if (dungeon_map[y_pos][x_pos] == 'T') {   // a treasure square!
       if (been_here(y_pos, x_pos, square_stack)) {}
